@@ -83,6 +83,39 @@
       "sha256": "2dd82fbd63c921bf88bdc473a7943581e5a36956e49a3de3344830836bcc0907",
       "width": 1280,
       "height": 720
+    },
+    {
+      "id": "hero-stand-1",
+      "kind": "image",
+      "source": "User-provided Stand1.png animation frame attached in this chat on 2026-10-30; copied without modification",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "runtimeFile": "../../../assets/images/hero/Stand1.png",
+      "sha256": "f1931f07e27ab56282393213279a1c2baad54a5317db838d1d4de8f059016e84",
+      "width": 548,
+      "height": 1025
+    },
+    {
+      "id": "hero-stand-2",
+      "kind": "image",
+      "source": "User-provided Stand2.png animation frame attached in this chat on 2026-10-30; copied without modification",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "runtimeFile": "../../../assets/images/hero/Stand2.png",
+      "sha256": "2bc9e526794b90c2c14ee8c9907ec0c0c10d6a7dfc0bd976d1dbd3820ffea86d",
+      "width": 548,
+      "height": 1025
+    },
+    {
+      "id": "hero-stand-3",
+      "kind": "image",
+      "source": "User-provided Stand3.png animation frame attached in this chat on 2026-10-30; copied without modification",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "runtimeFile": "../../../assets/images/hero/Stand3.png",
+      "sha256": "0c969165359592ae5c06a0d3b333b0fc44f9315e5488207c548aa4a8671b5757",
+      "width": 548,
+      "height": 1025
     }
   ],
   "art": "User-provided test images in root assets/images; used as temporary debug assets. Authorship and redistribution license not supplied.",

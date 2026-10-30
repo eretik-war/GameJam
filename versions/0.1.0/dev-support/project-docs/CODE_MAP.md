@@ -26,5 +26,6 @@
 | JSON-ассеты Enemy/Attack | корень assets/enemies, assets/attacks; src/enemies/enemy.ts, attack.ts | EnemySession, loadSession, tests/domain.test.ts |
 | Изображения и упаковка | корень assets/images; src/presentation/images.ts; tools/build.mjs JPG/PNG dataurl | main.ts, offline/HTTP |
 | Фон боевой зоны и наложение инвентаря | assets/images/battle-location.png; main.ts первый спрайт; style.css absolute-слои | qa/INVENTORY_OVERLAY.md; сцену и юнитов не смещают |
+| Герой: три кадра/idle/положение | src/presentation/hero-animation.ts; createHeroAnimation, placeHero | main.ts renderer/тикер; HERO_ANIMATION.md; qa/HERO_ANIMATION.md |
 
 Контракт противников: [ENEMIES](ENEMIES.md). Проверки объединённой сцены: [SCENE_ASSETS](../qa/SCENE_ASSETS.md).
