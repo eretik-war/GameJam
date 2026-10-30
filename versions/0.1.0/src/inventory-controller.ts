@@ -59,14 +59,9 @@ export class InventoryController {
   render(): void {
     const preparation = this.model.stage === TypeGameStage.Preparation;
     this.root.dataset.stage = this.model.stage;
-    this.element('stage-number').textContent = preparation ? '02' : '01';
-    this.element('stage-title').textContent = preparation ? 'Подготовка' : 'Бой';
-    this.element('battle-number').textContent = `Бой ${String(this.model.battle).padStart(2, '0')}`;
-    this.element('equipment-state').textContent = preparation ? 'Можно менять' : 'Заблокировано';
+    this.element('equipment-state').textContent = preparation ? 'Подготовка' : 'Бой';
     this.element('storage-panel').hidden = !preparation;
-    this.element('player-space').hidden = preparation;
     this.element('storage-count').textContent = `${this.model.storedCount} / ${this.model.slots(TypeInventoryArea.Storage).length}`;
-    this.element('phase-hint').textContent = preparation ? 'Расположите предметы и начните следующий бой.' : 'После боя можно выбрать один новый предмет.';
     this.#phaseButton.textContent = preparation ? 'Начать бой →' : 'Завершить бой →';
     this.#phaseButton.disabled = this.model.awaitingReward;
     this.renderSlots(this.#equipment, TypeInventoryArea.Equipment);

@@ -4,38 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; connect-src 'none';">
-  <title>GameJam · Инвентарь</title>
+  <title>GameJam · начало</title>
   <style>/*__STYLE__*/</style>
 </head>
 <body>
   <main id="app">
-    <header class="topbar">
-      <div class="game-title"><span class="brand-mark" aria-hidden="true">G</span><div><p class="eyebrow">GAMEJAM / ПРОТОТИП</p><h1>Инвентарь</h1></div></div>
-      <div class="stage-indicator" aria-live="polite"><span id="stage-number">01</span><div><span class="eyebrow">ТЕКУЩИЙ ЭТАП</span><strong id="stage-title">Бой</strong></div></div>
-    </header>
-    <section class="battlefield" aria-label="Игровое поле">
-      <div class="field-heading"><span id="battle-number">Бой 01</span><span class="field-label">ПОЛЕ БОЯ</span><span class="prototype-label">UI / 0.1</span></div>
-      <section class="equipment-panel" aria-labelledby="equipment-title">
-        <div class="panel-heading"><h2 id="equipment-title">Активные предметы</h2><span id="equipment-state">Заблокировано</span></div>
-        <div id="equipment-slots" class="equipment-grid" role="group" aria-label="Три активных слота"></div>
-        <p class="panel-note">3 слота экипировки</p>
+    <header><p class="eyebrow">GAMEJAM / PIXIJS 7.4.3</p><h1>Противники и статусы</h1><p>Два противника: здоровье, щит и независимые статусные эффекты.</p></header>
+    <div class="inventory-layout">
+      <section class="inventory-panel" aria-label="Инвентарь">
+        <section class="equipment-panel" aria-labelledby="equipment-title">
+          <div class="inventory-heading"><h2 id="equipment-title">Активные предметы</h2><span id="equipment-state">Бой</span></div>
+          <div id="equipment-slots" class="equipment-grid" role="group" aria-label="Три активных слота"></div>
+        </section>
+        <section id="storage-panel" class="storage-panel" aria-labelledby="storage-title" hidden>
+          <div class="inventory-heading"><h2 id="storage-title">Карманы</h2><span id="storage-count">0 / 12</span></div>
+          <div id="storage-slots" class="storage-grid" role="group" aria-label="Хранилище: четыре столбца, три строки"></div>
+        </section>
       </section>
-      <div id="player-space" class="player-space" aria-label="Область персонажа"><span class="space-cross" aria-hidden="true">+</span><span>Область персонажа</span></div>
-      <section id="storage-panel" class="storage-panel" aria-labelledby="storage-title" hidden>
-        <div class="panel-heading"><h2 id="storage-title">Карманы</h2><span id="storage-count">0 / 12</span></div>
-        <div id="storage-slots" class="storage-grid" role="group" aria-label="Хранилище: четыре столбца, три строки"></div>
-        <p class="panel-note">Перетащите предмет или выберите его и ячейку кликами.</p>
-      </section>
-      <section class="opponents" aria-label="Противники">
-        <div class="opponents-heading"><h2>Противники</h2><span id="turn">Ход 1</span></div>
-        <div id="scene" role="img" aria-label="Область противников; выбор также доступен кнопками"></div>
-        <nav id="selection" aria-label="Выбор противника"></nav>
-      </section>
-      <div class="phase-controls"><p id="phase-hint">После боя можно выбрать один новый предмет.</p><button id="phase-action" class="primary-button">Завершить бой →</button></div>
+      <div class="inventory-game">
+    <section class="workspace" aria-label="Пример игровых данных">
+      <div><div class="scene-heading"><h2>Поле</h2><strong id="turn">Ход 1</strong></div><div id="scene" role="img" aria-label="Два NPC; выбор также доступен кнопками ниже"></div><nav id="selection" aria-label="Выбор NPC"></nav></div>
+      <aside><section id="parameters" aria-live="polite"></section><div class="actions"><button id="end-turn">Начало следующего хода</button><button id="restore">Нанести 12 урона</button><button id="burn">Горение · +3 хода</button><button id="save">Сохранить</button><button id="load">Загрузить</button></div></aside>
     </section>
+      <div class="inventory-phase-controls"><button id="phase-action">Завершить бой →</button></div>
+      </div>
+    </div>
     <p id="status" role="status">Запуск…</p>
-    <details class="debug-panel"><summary>Тестовые команды противников</summary><div class="debug-content"><section id="parameters" aria-live="polite"></section><div class="actions"><button id="end-turn">Начало следующего хода</button><button id="restore">Нанести 12 урона</button><button id="burn">Горение · +3 хода</button><button id="save">Сохранить противников</button><button id="load">Загрузить противников</button></div></div></details>
-    <footer>Предметы пока обозначены цветом и номером. Бонусы экипировки будут добавлены позже.</footer>
+    <footer>Здесь показана структура данных. Тему, правила боя и инвентарь создаём под ваш геймджем. PixiJS 7.4.3 · MIT · Mathew Groves, Chad Engler.</footer>
     <dialog id="reward-dialog" aria-labelledby="reward-title" aria-describedby="reward-description">
       <p class="eyebrow">БОЙ ЗАВЕРШЁН</p><h2 id="reward-title">Выберите награду</h2><p id="reward-description">Выберите один предмет. Он сразу попадёт в карманы.</p>
       <div id="reward-options" class="reward-grid"></div>

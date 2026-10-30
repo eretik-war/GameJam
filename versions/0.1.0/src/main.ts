@@ -17,7 +17,7 @@ try {
   const turn = requireElement('turn');
   let session = createSession();
   const app = new PIXI.Application<HTMLCanvasElement>({
-    backgroundAlpha: 0, antialias: true, autoDensity: true,
+    backgroundColor: 0x121f30, antialias: true, autoDensity: true,
     resolution: Math.min(window.devicePixelRatio || 1, 2), resizeTo: canvasHost,
   });
   canvasHost.appendChild(app.view);
@@ -35,21 +35,21 @@ try {
     const width = app.screen.width;
     views.forEach((view, index) => {
       const container = new PIXI.Container();
-      container.x = width * (index + 0.5) / views.length;
-      container.y = app.screen.height / 2;
-      const cardWidth = Math.min(196, width / views.length - 16);
+      container.x = width * (index + 1) / (views.length + 1);
+      container.y = app.screen.height / 2 - 10;
       const shape = new PIXI.Graphics();
-      shape.lineStyle(1, session.selectedId === view.id ? 0xb7c9c6 : 0x344760);
-      shape.beginFill(0x1a2734).drawRoundedRect(-cardWidth / 2, -44, cardWidth, 88, 6).endFill();
+      shape.lineStyle(3, session.selectedId === view.id ? 0xffffff : 0x344760);
+      shape.beginFill(view.tint).drawRoundedRect(-40, -44, 80, 88, 18).endFill();
       container.addChild(shape);
-      const label = new PIXI.Text(`${view.id}\nHP ${view.health} / ${view.maxHealth}`, {
-        fontFamily: 'Arial', fontSize: 16, fill: 0xc4d2dd, align: 'center', lineHeight: 26,
+      const label = new PIXI.Text(`${view.id}\n${view.health} / ${view.maxHealth}`, {
+        fontFamily: 'Arial', fontSize: 18, fill: 0xeef7ff, align: 'center',
       });
-      label.anchor.set(0.5);
+      label.anchor.set(0.5, 0);
+      label.y = 56;
       container.addChild(label);
       container.eventMode = 'static';
       container.cursor = 'pointer';
-      container.hitArea = new PIXI.Rectangle(-cardWidth / 2, -44, cardWidth, 88);
+      container.hitArea = new PIXI.Rectangle(-48, -52, 96, 160);
       container.on('pointertap', () => { session.Select(view.id); render(); });
       app.stage.addChild(container);
     });
@@ -95,12 +95,12 @@ try {
   action('end-turn', () => { session.EndTurn(); return 'Статусы сработали в начале хода.'; });
   action('restore', () => { session.selected.TakeDamage(12); return 'Применено 12 урона: сначала щит, затем здоровье.'; });
   action('burn', () => { session.selected.AddStatus('burning', 3); return 'Горение продлено на 3 хода.'; });
-  action('save', () => { localStorage.setItem('gamejam.enemies.v2', session.Save()); return 'Состояние противников сохранено в этом браузере.'; });
+  action('save', () => { localStorage.setItem('gamejam.enemies.v2', session.Save()); return 'Прогресс сохранён в этом браузере.'; });
   action('load', () => {
     const text = localStorage.getItem('gamejam.enemies.v2');
     if (!text) throw new Error('Сохранение ещё не создано.');
     session = loadSession(text);
-    return 'Состояние противников восстановлено.';
+    return 'Прогресс восстановлен.';
   });
   function onVisibilityChange(): void {
     if (disposed) return;
