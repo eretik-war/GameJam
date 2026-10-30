@@ -95,3 +95,6 @@ summary: Добавление/замена ресурсов: лицензии/п
 
 file: `dev-support/project-docs/ENEMIES.md`
 summary: Реализованные противники, щит, статусы и границы демо.
+
+file: `dev-support/qa/SCENE_ASSETS.md`
+summary: Проверки объединённой сцены, JSON-ассетов, полосок и статусов; границы desktop/file проверок и интеграции с инвентарём.
