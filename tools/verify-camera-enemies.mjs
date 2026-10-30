@@ -74,9 +74,20 @@ try {
     await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
     await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
   };
-  const clickId = async id => { await escape(); return clickSelector(`#${id}`); };
+  const setDebug = async visible => {
+    if (await evaluate('document.querySelector(".debug").hidden') === !visible) return;
+    await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'd', code: 'KeyD', windowsVirtualKeyCode: 68 });
+    await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'd', code: 'KeyD', windowsVirtualKeyCode: 68 });
+    assert.equal(await evaluate('document.querySelector(".debug").hidden'), !visible);
+  };
+  const clickId = async id => {
+    await escape();
+    await setDebug(await evaluate(`!!document.getElementById(${JSON.stringify(id)}).closest('.debug')`));
+    return clickSelector(`#${id}`);
+  };
   const parameter = type => evaluate(`document.querySelector('[data-parameter="${type}"]').textContent`);
   const sceneBounds = async () => {
+    await setDebug(false);
     await evaluate('document.getElementById("scene").scrollIntoView({block:"start"})');
     return evaluate('document.querySelector("#scene canvas").getBoundingClientRect().toJSON()');
   };
@@ -102,12 +113,13 @@ try {
     await navigate(url, `document.querySelector('#app')?.dataset.ready === 'true' && [...document.images].every(i => i.complete && i.naturalWidth > 0)`);
     assert.match(await parameter('enemy-layer'), /Наземный/);
     await screenshot(`camera-scene-${mode}-1440.png`);
-    // The latest shared UI hides debug until D; exercise it without changing the product default.
-    if (await evaluate('document.querySelector(".debug").hidden')) {
-      await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'd', code: 'KeyD', windowsVirtualKeyCode: 68 });
-      await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'd', code: 'KeyD', windowsVirtualKeyCode: 68 });
-      assert.equal(await evaluate('document.querySelector(".debug").hidden'), false);
-    }
+    assert.equal(await evaluate('document.querySelector(".debug").hidden'), true);
+    const viewportGeometry = () => evaluate('({scene:document.getElementById("scene").getBoundingClientRect().toJSON(),width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight})');
+    const fullscreen = await viewportGeometry();
+    assert.equal(fullscreen.scene.height, 900);
+    assert.equal(fullscreen.height, 900);
+    await setDebug(true); assert.deepEqual(await viewportGeometry(), fullscreen);
+    await setDebug(false); assert.deepEqual(await viewportGeometry(), fullscreen);
     const initialGeometry = await geometry();
     await clickId('phase-action');
     assert.equal(await evaluate('document.getElementById("reward-dialog").open'), true);
@@ -148,6 +160,7 @@ try {
     assert.match(await parameter('health'), /23/);
     await resize(1280, 720); await pause(250);
     scene = await sceneBounds();
+    assert.equal(scene.height, 720);
     await click(scene.x + scene.width * .75, scene.y + scene.height * .75 - 150);
     assert.match(await evaluate('document.querySelector("#parameters h2").textContent'), /enemy-5/);
     await pause(650);
@@ -174,7 +187,7 @@ try {
   assert.deepEqual(errors, []);
   const external = requests.filter(url => /^https?:/.test(url) && !url.startsWith(`http://127.0.0.1:${httpPort}/`));
   assert.deepEqual(external, []);
-  const report = { checkedAt: new Date().toISOString(), browser: 'Chrome headless / SwiftShader', desktop: ['1440x900', '1280x720'], modes: ['HTTP', 'file://'], pageErrors: errors.length, externalRequests: external.length, variants: 4, statusTypes: 4, inventoryOverlayGeometryUnchanged: true, itemIconsInSameBuild: requireItemIcons };
+  const report = { checkedAt: new Date().toISOString(), browser: 'Chrome headless / SwiftShader', desktop: ['1440x900', '1280x720'], modes: ['HTTP', 'file://'], pageErrors: errors.length, externalRequests: external.length, variants: 4, statusTypes: 4, inventoryOverlayGeometryUnchanged: true, itemIconsInSameBuild: requireItemIcons, sceneFillsViewport: true, debugOverlayDoesNotResizeScene: true };
   await fs.writeFile(path.join(out, 'camera-browser-report.json'), JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report));
   await call('Browser.close').catch(() => {});
