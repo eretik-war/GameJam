@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { createSession, loadSession } from './enemies/session';
 import { createNPCView } from './enemies/view';
+import { InventoryController } from './inventory-controller';
 
 function requireElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -10,12 +11,13 @@ function requireElement<T extends HTMLElement>(id: string): T {
 
 const status = requireElement('status');
 try {
+  const inventory = new InventoryController(requireElement('app'), message => { status.textContent = message; });
   const canvasHost = requireElement('scene');
   const panel = requireElement('parameters');
   const turn = requireElement('turn');
   let session = createSession();
   const app = new PIXI.Application<HTMLCanvasElement>({
-    backgroundColor: 0x121f30, antialias: true, autoDensity: true,
+    backgroundAlpha: 0, antialias: true, autoDensity: true,
     resolution: Math.min(window.devicePixelRatio || 1, 2), resizeTo: canvasHost,
   });
   canvasHost.appendChild(app.view);
@@ -33,21 +35,21 @@ try {
     const width = app.screen.width;
     views.forEach((view, index) => {
       const container = new PIXI.Container();
-      container.x = width * (index + 1) / (views.length + 1);
-      container.y = app.screen.height / 2 - 10;
+      container.x = width * (index + 0.5) / views.length;
+      container.y = app.screen.height / 2;
+      const cardWidth = Math.min(196, width / views.length - 16);
       const shape = new PIXI.Graphics();
-      shape.lineStyle(3, session.selectedId === view.id ? 0xffffff : 0x344760);
-      shape.beginFill(view.tint).drawRoundedRect(-40, -44, 80, 88, 18).endFill();
+      shape.lineStyle(1, session.selectedId === view.id ? 0xb7c9c6 : 0x344760);
+      shape.beginFill(0x1a2734).drawRoundedRect(-cardWidth / 2, -44, cardWidth, 88, 6).endFill();
       container.addChild(shape);
-      const label = new PIXI.Text(`${view.id}\n${view.health} / ${view.maxHealth}`, {
-        fontFamily: 'Arial', fontSize: 18, fill: 0xeef7ff, align: 'center',
+      const label = new PIXI.Text(`${view.id}\nHP ${view.health} / ${view.maxHealth}`, {
+        fontFamily: 'Arial', fontSize: 16, fill: 0xc4d2dd, align: 'center', lineHeight: 26,
       });
-      label.anchor.set(0.5, 0);
-      label.y = 56;
+      label.anchor.set(0.5);
       container.addChild(label);
       container.eventMode = 'static';
       container.cursor = 'pointer';
-      container.hitArea = new PIXI.Rectangle(-48, -52, 96, 160);
+      container.hitArea = new PIXI.Rectangle(-cardWidth / 2, -44, cardWidth, 88);
       container.on('pointertap', () => { session.Select(view.id); render(); });
       app.stage.addChild(container);
     });
@@ -93,12 +95,12 @@ try {
   action('end-turn', () => { session.EndTurn(); return 'Статусы сработали в начале хода.'; });
   action('restore', () => { session.selected.TakeDamage(12); return 'Применено 12 урона: сначала щит, затем здоровье.'; });
   action('burn', () => { session.selected.AddStatus('burning', 3); return 'Горение продлено на 3 хода.'; });
-  action('save', () => { localStorage.setItem('gamejam.enemies.v2', session.Save()); return 'Прогресс сохранён в этом браузере.'; });
+  action('save', () => { localStorage.setItem('gamejam.enemies.v2', session.Save()); return 'Состояние противников сохранено в этом браузере.'; });
   action('load', () => {
     const text = localStorage.getItem('gamejam.enemies.v2');
     if (!text) throw new Error('Сохранение ещё не создано.');
     session = loadSession(text);
-    return 'Прогресс восстановлен.';
+    return 'Состояние противников восстановлено.';
   });
   function onVisibilityChange(): void {
     if (disposed) return;
@@ -114,17 +116,16 @@ try {
     window.removeEventListener('pageshow', onPageShow);
     window.removeEventListener('pagehide', onPageHide);
     observer.disconnect();
+    inventory.dispose();
     app.destroy(true, { children: true, texture: false, baseTexture: false });
   }
   document.addEventListener('visibilitychange', onVisibilityChange);
   window.addEventListener('pageshow', onPageShow);
   window.addEventListener('pagehide', onPageHide);
   render();
-  status.textContent = 'Выберите NPC на поле или кнопкой. Изменения принадлежат только этой копии.';
+  status.textContent = 'Идёт бой. Завершите его кнопкой справа, чтобы получить первый предмет.';
   requireElement('app').dataset.ready = 'true';
 } catch (error) {
-  status.textContent = `Не удалось запустить WebGL: ${error instanceof Error ? error.message : String(error)}`;
+  status.textContent = `Не удалось запустить игру: ${error instanceof Error ? error.message : String(error)}`;
   console.error(error);
 }
-
-

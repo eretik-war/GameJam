@@ -34,6 +34,12 @@ summary: Базовый набор; команды/настройка/ошибк
 file: `dev-support/project-docs/ARCHITECTURE_2D.md`
 summary: Базовый набор; слои, инвентарь, действия, save.
 
+file: `dev-support/project-docs/INVENTORY.md`
+summary: Реализованный инвентарь: владельцы, 3 активных слота/4×3 кармана, стадии, награды, переносы, границы сохранения.
+
+file: `dev-support/qa/INVENTORY.md`
+summary: Проверка инвентаря: модель, mouse/touch/keyboard, полные карманы, HTTP/изолированный file и адаптация.
+
 file: `dev-support/standards/INFO_OBJECT_RULES.md`
 summary: Базовый набор; до изменения сущностей/каталогов/связей/сохранений.
 
