@@ -23,7 +23,8 @@ export class InventorySession {
   get battle(): number { return this.#battle; }
   get offers(): readonly string[] { return this.#offers; }
   get awaitingReward(): boolean { return this.#offers.length > 0; }
-  get canMove(): boolean { return this.stage === TypeGameStage.Preparation && !this.awaitingReward; }
+  allowCombatEquipment = false;
+  get canMove(): boolean { return (this.stage === TypeGameStage.Preparation || this.allowCombatEquipment) && !this.awaitingReward; }
   get storageFull(): boolean { return !this.#storage.includes(null); }
   get storedCount(): number { return this.#storage.filter(id => id !== null).length; }
 
@@ -66,7 +67,7 @@ export class InventorySession {
   }
 
   StartCombat(): void {
-    if (!this.canMove) throw new Error('Начать бой можно только после подготовки.');
+    if (this.stage !== TypeGameStage.Preparation || !this.canMove) throw new Error('Начать бой можно только после подготовки.');
     this.#stage = TypeGameStage.Combat;
     this.#battle++;
   }

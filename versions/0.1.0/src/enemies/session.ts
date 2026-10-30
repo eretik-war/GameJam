@@ -1,5 +1,18 @@
+import { Hero, enemyDamage } from '../domain/hero';
+import type { Item } from '../domain/items';
 import { Enemy, demoEnemyInfo, TypeEnemyParameter } from './enemy';
 export class EnemySession {
+  readonly hero = new Hero();
+  Column(index: number): number { return [0, 1, 2, 0, 1][index % 5]!; }
+  Attack(id: string, items: readonly (Item | null)[] = []): boolean {
+    const index = this.npcs.findIndex(e => e.id === id);
+    const closest = Math.min(...this.npcs.map((e, i) => e.alive ? this.Column(i) : Infinity));
+    if (!this.hero.alive || index < 0 || !this.npcs[index]!.alive || this.Column(index) !== closest) return false;
+    this.Select(id);
+    if (this.hero.CanAttack()) this.selected.TakeDamage(this.hero.AttackDamage(items));
+    for (const enemy of this.npcs) { if (!this.hero.alive) break; if (enemy.CanAttack()) this.hero.TakeDamage(enemyDamage); }
+    this.hero.BeginTurn(); this.EndTurn(); return true;
+  }
   constructor(readonly npcs: readonly Enemy[] = Array.from({ length: 5 }, (_, index) => new Enemy(`enemy-${index + 1}`, demoEnemyInfo)), public turn = 1, public selectedId = npcs[0]!.id) {}
   get selected(): Enemy { return this.npcs.find(e => e.id === this.selectedId)!; }
   Select(id: string): void { if (!this.npcs.some(e => e.id === id)) throw new Error('Unknown enemy'); this.selectedId = id; }

@@ -1,0 +1,27 @@
+{
+  "typeId": "hero.player",
+  "name": "Герой",
+  "parameters": [
+    {
+      "type": "health",
+      "value": 1000
+    },
+    {
+      "type": "shield",
+      "value": 20
+    }
+  ],
+  "visual": {
+    "image": "images/tes2.jpg",
+    "scale": 1,
+    "anchor": {
+      "x": 0.5,
+      "y": 1
+    }
+  },
+  "attackIds": [
+    "attack.test"
+  ],
+  "damage": 12,
+  "enemyDamage": 5
+}
