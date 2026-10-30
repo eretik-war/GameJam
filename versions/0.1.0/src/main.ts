@@ -43,6 +43,7 @@ try {
     return texture;
   }
   const heroTexture = getTexture('images/test1.jpg');
+  const locationTexture = getTexture('images/battle-location.png');
   const observer = new ResizeObserver(() => {
     if (disposed) return;
     app.resize(); render();
@@ -55,6 +56,12 @@ try {
     const views = session.npcs.map(createNPCView);
     const width = app.screen.width;
     const height = app.screen.height;
+    const background = new PIXI.Sprite(locationTexture);
+    background.anchor.set(0.5);
+    background.scale.set(Math.max(width / locationTexture.width, height / locationTexture.height));
+    background.position.set(width / 2, height / 2);
+    background.eventMode = 'none';
+    app.stage.addChild(background);
     const hero = new PIXI.Sprite(heroTexture);
     hero.anchor.set(0.5);
     const heroScale = Math.min(width * 0.29 / heroTexture.width, height * 0.8 / heroTexture.height);
