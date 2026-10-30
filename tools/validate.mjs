@@ -10,7 +10,7 @@ const manifest = JSON.parse(await fs.readFile(path.join(root, 'PROJECT_MANIFEST.
 const versionRoot = path.join(root, manifest.activeVersionPath);
 check(manifest.gitWorkflow === true, 'gitWorkflow must be true');
 check(manifest.repository === 'https://github.com/eretik-war/GameJam', 'Unexpected source repository');
-for (const file of ['.gitignore', '.gitattributes', '.github/workflows/check.yml', 'tools/sync.mjs', 'tools/sync-auto.ps1']) {
+for (const file of ['.gitignore', '.gitattributes', '.github/workflows/check.yml', 'tools/sync.mjs', 'tools/sync-engine.mjs', 'tools/sync-support.mjs', 'tools/sync-auto.ps1', 'SYNC_TOOL.md']) {
   check(await exists(path.join(root, file)), `Missing Git workflow file: ${file}`);
 }
 check(path.resolve(versionRoot) === path.join(root, 'versions', manifest.activeVersion), 'Active version pointer mismatch');
@@ -33,6 +33,9 @@ for (const [name, version] of Object.entries({ ...pkg.dependencies, ...pkg.devDe
   check(npmLock.packages[`node_modules/${name}`]?.version === version, `npm lock mismatch: ${name}`);
 }
 for (const name of ['AGENTS.md', 'READ_FIRST_LATEST_PROJECT.md', 'START_HERE.md']) check(await exists(path.join(root, name)), `Missing ${name}`);
+for (const name of ['AGENTS.md', 'READ_FIRST_LATEST_PROJECT.md']) {
+  check((await fs.readFile(path.join(root, name), 'utf8')).includes('[SYNC_TOOL.md](SYNC_TOOL.md)'), `Missing mandatory sync instruction link in ${name}`);
+}
 
 // Follow local Markdown links without traversing dependency trees or external drives.
 async function verifyMarkdown(directory) {

@@ -16,7 +16,7 @@
 
 ## Обмен изменениями
 
-Перед работой: `npm run sync:pull`. Отправить свои изменения: `npm run sync:push -- "Описание изменений"`. Включить получение каждые 5 минут на Windows: `npm run sync:auto:install`. Участник rgweh должен принять приглашение GitHub для отправки в общий репозиторий. Подробности и конфликты: [GITHUB_WORKFLOW](versions/0.1.0/dev-support/project-docs/GITHUB_WORKFLOW.md).
+**Сейчас GitHub приостановлен по указанию пользователя от 2026-10-30.** Работаем только локально; автоматическое получение отключено. Не запускать sync:pull/sync:push и не устанавливать автообновление до отдельного возобновления. Порядок — [GITHUB_WORKFLOW](versions/0.1.0/dev-support/project-docs/GITHUB_WORKFLOW.md#auto-push).
 
 ## Первое сообщение нейронке
 

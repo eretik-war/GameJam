@@ -9,7 +9,13 @@
     "typecheck": "tsc --noEmit",
     "test": "node tools/run-tests.mjs",
     "test:sync": "node --test tools/sync.test.mjs",
+    "sync": "node tools/sync.mjs",
     "sync:status": "node tools/sync.mjs status",
+    "sync:compare": "node tools/sync.mjs compare",
+    "sync:save": "node tools/sync.mjs save",
+    "sync:history": "node tools/sync.mjs history",
+    "sync:pause": "node tools/sync.mjs pause",
+    "sync:resume": "node tools/sync.mjs resume",
     "sync:pull": "node tools/sync.mjs pull",
     "sync:push": "node tools/sync.mjs push",
     "sync:auto:install": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/sync-auto.ps1 -Action install",
@@ -18,7 +24,8 @@
     "validate": "node tools/validate.mjs",
     "build": "node tools/build.mjs",
     "build:offline": "node tools/build.mjs --offline",
-    "check": "npm run typecheck && npm test && npm run test:sync && npm run build:offline && npm run validate"
+    "check:game": "npm run typecheck && npm test && npm run build:offline && npm run validate",
+    "check": "npm run check:game && npm run test:sync"
   },
   "dependencies": { "pixi.js": "7.4.3" },
   "devDependencies": { "typescript": "5.9.3", "esbuild": "0.25.12", "@types/node": "22.15.30" }

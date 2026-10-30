@@ -1,0 +1,222 @@
+{
+  "scope": "NPC chat before current GitHub audit; not all project chats",
+  "threadId": "01a18c0f-6679-7401-939e-855aa3ac603a",
+  "first": "2026-10-30T09:06:27.002Z",
+  "end": "2026-10-30T10:47:33.571Z",
+  "models": [
+    "gpt-6.1-sol"
+  ],
+  "efforts": [
+    "xhigh"
+  ],
+  "usage": {
+    "input_tokens": 20069227,
+    "cached_input_tokens": 19824768,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 126641,
+    "reasoning_output_tokens": 54154,
+    "total_tokens": 20195868,
+    "non_cached_input_tokens": 244459,
+    "blended_tokens": 371100,
+    "cache_hit_percent": 98.78
+  },
+  "uniqueUsageRecords": 96,
+  "meanInputPerUsageRecord": 212960,
+  "maxInputPerUsageRecord": 376650,
+  "toolBatches": 90,
+  "grouped": {
+    "git": {
+      "batches": 35
+    },
+    "checks": {
+      "batches": 17
+    },
+    "browser": {
+      "batches": 24
+    },
+    "threads": {
+      "batches": 10
+    },
+    "docs": {
+      "batches": 42
+    }
+  },
+  "lexicalCommandOccurrences": {
+    "status": 9,
+    "diff": 18,
+    "log": 6,
+    "fetch": 3,
+    "add": 3,
+    "show": 17,
+    "worktree": 1
+  },
+  "totalToolOutputCharacters": 696371,
+  "largestOutputs": [
+    {
+      "timestamp": "2026-10-30T09:28:16.135Z",
+      "callId": "call_2a77b7024652406ca82f002a6d46402b",
+      "characters": 38928
+    },
+    {
+      "timestamp": "2026-10-30T09:06:46.957Z",
+      "callId": "call_191af554326b4ba589486269e70933dd",
+      "characters": 33771
+    },
+    {
+      "timestamp": "2026-10-30T09:49:25.211Z",
+      "callId": "call_2ea97f243033461dab2f4d0d0bdd2c66",
+      "characters": 33616
+    },
+    {
+      "timestamp": "2026-10-30T09:49:39.214Z",
+      "callId": "call_d6b866d342ed45709b037059a7f650f3",
+      "characters": 33423
+    },
+    {
+      "timestamp": "2026-10-30T09:07:06.796Z",
+      "callId": "call_e553fa36c3a548e68857d41d9d5289bc",
+      "characters": 33395
+    },
+    {
+      "timestamp": "2026-10-30T09:07:51.831Z",
+      "callId": "call_8b560087c90f40dcb5d3e8358a1cc620",
+      "characters": 32333
+    }
+  ],
+  "phases": [
+    {
+      "label": "initial-npc",
+      "end": "2026-10-30T09:35:51.307Z",
+      "usage": {
+        "input_tokens": 6195311,
+        "cached_input_tokens": 6061440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 63538,
+        "reasoning_output_tokens": 19035,
+        "total_tokens": 6258849
+      }
+    },
+    {
+      "label": "shared-scene-background",
+      "end": "2026-10-30T10:22:02.590Z",
+      "usage": {
+        "input_tokens": 6336906,
+        "cached_input_tokens": 6268672,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 25303,
+        "reasoning_output_tokens": 16002,
+        "total_tokens": 6362209
+      }
+    },
+    {
+      "label": "bottom-panel",
+      "end": "2026-10-30T10:27:53.441Z",
+      "usage": {
+        "input_tokens": 1547646,
+        "cached_input_tokens": 1536768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6659,
+        "reasoning_output_tokens": 3517,
+        "total_tokens": 1554305
+      }
+    },
+    {
+      "label": "attack",
+      "end": "2026-10-30T16:30:01.082Z",
+      "usage": {
+        "input_tokens": 5989364,
+        "cached_input_tokens": 5957888,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 31141,
+        "reasoning_output_tokens": 15600,
+        "total_tokens": 6020505
+      }
+    }
+  ],
+  "notes": [
+    "Cumulative usage; reasoning is included in output.",
+    "Categories overlap; lexical occurrences are not executed command counts.",
+    "Token totals include development and tests, not only Git; no exact Git-only token attribution.",
+    "Character counts describe tool-output size, not token estimates.",
+    "Command group durations overlap for mixed batches and exclude model latency; they are not Git-only wall time.",
+    "Usage snapshot includes the pre-audit context restoration; the audit and its final answer are excluded."
+  ],
+  "shellCommandGroups": {
+    "git": {
+      "batches": 36,
+      "observedSeconds": 69.445
+    },
+    "fullCheck": {
+      "batches": 10,
+      "observedSeconds": 233.913
+    },
+    "browserCheck": {
+      "batches": 10,
+      "observedSeconds": 272.365
+    },
+    "total": {
+      "batches": 85,
+      "observedSeconds": 446.475
+    }
+  },
+  "activeTurns": [
+    {
+      "started": "2026-10-30T09:06:27.003Z",
+      "completed": "2026-10-30T09:35:52.168Z",
+      "minutes": 29.42
+    },
+    {
+      "started": "2026-10-30T09:49:05.841Z",
+      "completed": "2026-10-30T10:22:02.789Z",
+      "minutes": 32.95
+    },
+    {
+      "started": "2026-10-30T10:23:06.505Z",
+      "completed": "2026-10-30T10:27:53.504Z",
+      "minutes": 4.78
+    },
+    {
+      "started": "2026-10-30T10:28:17.632Z",
+      "completed": "2026-10-30T10:47:34.028Z",
+      "minutes": 19.27
+    }
+  ],
+  "documents": [
+    {
+      "path": "AGENTS.md",
+      "lines": 28,
+      "utf8Bytes": 7033
+    },
+    {
+      "path": "READ_FIRST_LATEST_PROJECT.md",
+      "lines": 15,
+      "utf8Bytes": 3567
+    },
+    {
+      "path": "versions/0.1.0/dev-support/project-docs/GITHUB_WORKFLOW.md",
+      "lines": 93,
+      "utf8Bytes": 13533
+    },
+    {
+      "path": "versions/0.1.0/dev-support/project-docs/CURRENT_STATE.md",
+      "lines": 159,
+      "utf8Bytes": 50304
+    },
+    {
+      "path": "versions/0.1.0/dev-support/project-docs/CODE_MAP.md",
+      "lines": 43,
+      "utf8Bytes": 6121
+    }
+  ],
+  "backgroundSync": {
+    "divergedLogEntries": 16,
+    "lastKnown": {
+      "state": "diverged",
+      "ahead": 11,
+      "behind": 8,
+      "message": "Both sides have commits. Merge origin/main manually; no files changed.",
+      "checkedAt": "2026-10-30T16:28:51.743Z"
+    },
+    "note": "Local stored state; no remote refresh during audit. Scheduler is external PowerShell/Node and invokes no model."
+  }
+}
