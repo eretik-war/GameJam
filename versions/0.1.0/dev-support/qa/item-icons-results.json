@@ -1,0 +1,318 @@
+{
+  "results": [
+    {
+      "protocol": "http",
+      "width": 1440,
+      "height": 900,
+      "fourDistinctTypes": true,
+      "storageIcons": [
+        {
+          "tag": "IMG",
+          "loaded": true,
+          "naturalWidth": 128,
+          "naturalHeight": 128,
+          "width": 64.5,
+          "height": 64.5,
+          "text": "",
+          "opacity": "1",
+          "background": "rgba(0, 0, 0, 0)",
+          "source": true,
+          "draggable": false
+        },
+        {
+          "tag": "IMG",
+          "loaded": true,
+          "naturalWidth": 128,
+          "naturalHeight": 128,
+          "width": 64.5,
+          "height": 64.5,
+          "text": "",
+          "opacity": "1",
+          "background": "rgba(0, 0, 0, 0)",
+          "source": true,
+          "draggable": false
+        },
+        {
+          "tag": "IMG",
+          "loaded": true,
+          "naturalWidth": 128,
+          "naturalHeight": 128,
+          "width": 64.5,
+          "height": 64.5,
+          "text": "",
+          "opacity": "1",
+          "background": "rgba(0, 0, 0, 0)",
+          "source": true,
+          "draggable": false
+        },
+        {
+          "tag": "IMG",
+          "loaded": true,
+          "naturalWidth": 128,
+          "naturalHeight": 128,
+          "width": 64.5,
+          "height": 64.5,
+          "text": "",
+          "opacity": "1",
+          "background": "rgba(0, 0, 0, 0)",
+          "source": true,
+          "draggable": false
+        }
+      ],
+      "slotSizes": [
+        {
+          "width": 64,
+          "height": 64
+        },
+        {
+          "width": 64,
+          "height": 64
+        },
+        {
+          "width": 64,
+          "height": 64
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        }
+      ],
+      "rewardAndEquipmentShareSources": true,
+      "keyboardMove": true,
+      "dragGhostAndDrop": true,
+      "hoverCard": true,
+      "before": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "top": 0,
+        "right": 1440,
+        "bottom": 900,
+        "left": 0
+      },
+      "preparation": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "top": 0,
+        "right": 1440,
+        "bottom": 900,
+        "left": 0
+      },
+      "combat": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "top": 0,
+        "right": 1440,
+        "bottom": 900,
+        "left": 0
+      }
+    },
+    {
+      "protocol": "file",
+      "width": 1280,
+      "height": 720,
+      "fourDistinctTypes": true,
+      "storageIcons": [
+        {
+          "tag": "IMG",
+          "loaded": true,
+          "naturalWidth": 128,
+          "naturalHeight": 128,
+          "width": 64.5,
+          "height": 64.5,
+          "text": "",
+          "opacity": "1",
+          "background": "rgba(0, 0, 0, 0)",
+          "source": true,
+          "draggable": false
+        },
+        {
+          "tag": "IMG",
+          "loaded": true,
+          "naturalWidth": 128,
+          "naturalHeight": 128,
+          "width": 64.5,
+          "height": 64.5,
+          "text": "",
+          "opacity": "1",
+          "background": "rgba(0, 0, 0, 0)",
+          "source": true,
+          "draggable": false
+        },
+        {
+          "tag": "IMG",
+          "loaded": true,
+          "naturalWidth": 128,
+          "naturalHeight": 128,
+          "width": 64.5,
+          "height": 64.5,
+          "text": "",
+          "opacity": "1",
+          "background": "rgba(0, 0, 0, 0)",
+          "source": true,
+          "draggable": false
+        },
+        {
+          "tag": "IMG",
+          "loaded": true,
+          "naturalWidth": 128,
+          "naturalHeight": 128,
+          "width": 64.5,
+          "height": 64.5,
+          "text": "",
+          "opacity": "1",
+          "background": "rgba(0, 0, 0, 0)",
+          "source": true,
+          "draggable": false
+        }
+      ],
+      "slotSizes": [
+        {
+          "width": 64,
+          "height": 64
+        },
+        {
+          "width": 64,
+          "height": 64
+        },
+        {
+          "width": 64,
+          "height": 64
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        },
+        {
+          "width": 78.5,
+          "height": 78.5
+        }
+      ],
+      "rewardAndEquipmentShareSources": true,
+      "keyboardMove": true,
+      "dragGhostAndDrop": true,
+      "hoverCard": true,
+      "before": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "preparation": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "combat": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      }
+    }
+  ],
+  "errors": [],
+  "externalRequests": []
+}

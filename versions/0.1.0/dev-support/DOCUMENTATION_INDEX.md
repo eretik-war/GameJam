@@ -110,3 +110,9 @@ summary: Проверки объединённой сцены, JSON-ассето
 
 file: `dev-support/qa/HERO_HOVER.md`
 summary: Карточка героя: здоровье/щит/эффекты, экипировка, общий контроллер и проверка без смещения сцены.
+
+file: `dev-support/qa/ITEM_ICONS.md`
+summary: Четыре PNG предметов, прозрачный фон/непрозрачное тело, размеры по слотам; desktop HTTP/file, переносы и карточки.
+
+file: `dev-support/art/items/README.md`
+summary: Источник пользователя, встроенный image_gen, финальный prompt и воспроизводимое разделение на четыре иконки.

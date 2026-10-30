@@ -31,3 +31,4 @@
 Контракт противников: [ENEMIES](ENEMIES.md). Проверки объединённой сцены: [SCENE_ASSETS](../qa/SCENE_ASSETS.md).
 
 | Карточка героя | src/presentation/entity-hover-cards.ts; createHeroHoverCard; main.ts heroAnchor | Hero через createNPCView и InventorySession; qa/HERO_HOVER.md |
+| Четыре иконки предметов | assets/images/items; src/presentation/item-view.ts, images.ts | tools/extract-item-icons.ps1; tools/verify-item-icons.mjs; qa/ITEM_ICONS.md |

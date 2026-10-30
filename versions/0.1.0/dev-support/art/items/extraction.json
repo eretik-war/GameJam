@@ -1,0 +1,114 @@
+﻿[
+    {
+        "name":  "magenta",
+        "width":  128,
+        "height":  128,
+        "sourceCrop":  {
+                           "Location":  {
+                                            "IsEmpty":  false,
+                                            "X":  153,
+                                            "Y":  150
+                                        },
+                           "Size":  {
+                                        "IsEmpty":  false,
+                                        "Width":  375,
+                                        "Height":  454
+                                    },
+                           "X":  153,
+                           "Y":  150,
+                           "Width":  375,
+                           "Height":  454,
+                           "Left":  153,
+                           "Top":  150,
+                           "Right":  528,
+                           "Bottom":  604,
+                           "IsEmpty":  false
+                       },
+        "bytes":  23242,
+        "sha256":  "dc8a5990b27484be8a74e1cec695277d85a3baec97dabb7eebc45a5e43cf471d"
+    },
+    {
+        "name":  "teal",
+        "width":  128,
+        "height":  128,
+        "sourceCrop":  {
+                           "Location":  {
+                                            "IsEmpty":  false,
+                                            "X":  696,
+                                            "Y":  153
+                                        },
+                           "Size":  {
+                                        "IsEmpty":  false,
+                                        "Width":  373,
+                                        "Height":  452
+                                    },
+                           "X":  696,
+                           "Y":  153,
+                           "Width":  373,
+                           "Height":  452,
+                           "Left":  696,
+                           "Top":  153,
+                           "Right":  1069,
+                           "Bottom":  605,
+                           "IsEmpty":  false
+                       },
+        "bytes":  22769,
+        "sha256":  "bfb642cc60217dcaf9f8d03b47f2a88129e0493d4b10b19adf5ab3ca2e6ada86"
+    },
+    {
+        "name":  "blue",
+        "width":  128,
+        "height":  128,
+        "sourceCrop":  {
+                           "Location":  {
+                                            "IsEmpty":  false,
+                                            "X":  153,
+                                            "Y":  706
+                                        },
+                           "Size":  {
+                                        "IsEmpty":  false,
+                                        "Width":  380,
+                                        "Height":  458
+                                    },
+                           "X":  153,
+                           "Y":  706,
+                           "Width":  380,
+                           "Height":  458,
+                           "Left":  153,
+                           "Top":  706,
+                           "Right":  533,
+                           "Bottom":  1164,
+                           "IsEmpty":  false
+                       },
+        "bytes":  22679,
+        "sha256":  "2a201068285e25b895ff9101f2bf6dc52007444760b2849212fc8192c38db23a"
+    },
+    {
+        "name":  "gold",
+        "width":  128,
+        "height":  128,
+        "sourceCrop":  {
+                           "Location":  {
+                                            "IsEmpty":  false,
+                                            "X":  691,
+                                            "Y":  707
+                                        },
+                           "Size":  {
+                                        "IsEmpty":  false,
+                                        "Width":  384,
+                                        "Height":  459
+                                    },
+                           "X":  691,
+                           "Y":  707,
+                           "Width":  384,
+                           "Height":  459,
+                           "Left":  691,
+                           "Top":  707,
+                           "Right":  1075,
+                           "Bottom":  1166,
+                           "IsEmpty":  false
+                       },
+        "bytes":  19712,
+        "sha256":  "4c9585e3b535cd750e65e0d17c8390f70c30de59b6cbac49928b8b5dece11494"
+    }
+]

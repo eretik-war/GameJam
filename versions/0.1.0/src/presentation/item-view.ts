@@ -1,12 +1,13 @@
 import { getItemInfo } from '../domain/items';
+import { resolveImage } from './images';
 
-interface VisualItemInfo { readonly typeId: string; readonly color: string; readonly number: string }
+interface VisualItemInfo { readonly typeId: string; readonly image: string; readonly number: string }
 export const visualItemInfos: readonly VisualItemInfo[] = Object.freeze([
-  ['item.01', '#f17865', '01'], ['item.02', '#f1b653', '02'], ['item.03', '#d5da68', '03'],
-  ['item.04', '#8dcc79', '04'], ['item.05', '#5cc6ae', '05'], ['item.06', '#68cedd', '06'],
-  ['item.07', '#7ba7ee', '07'], ['item.08', '#9b8de5', '08'], ['item.09', '#c18bdf', '09'],
-  ['item.10', '#df86ac', '10'], ['item.11', '#cbad8c', '11'], ['item.12', '#b1c2ce', '12'],
-].map(([typeId, color, number]) => Object.freeze({ typeId: typeId!, color: color!, number: number! })));
+  ['item.01', 'images/items/item-magenta.png', '01'],
+  ['item.02', 'images/items/item-teal.png', '02'],
+  ['item.03', 'images/items/item-blue.png', '03'],
+  ['item.04', 'images/items/item-gold.png', '04'],
+].map(([typeId, image, number]) => Object.freeze({ typeId: typeId!, image: image!, number: number! })));
 const visuals = new Map(visualItemInfos.map(info => [info.typeId, info]));
 
 /** Same view for equipment, storage, reward and the dragged item. */
@@ -17,12 +18,13 @@ export function createItemView(typeId: string) {
   return { title: info.Name, ...visual };
 }
 
-export function createItemIcon(typeId: string): HTMLElement {
+export function createItemIcon(typeId: string): HTMLImageElement {
   const view = createItemView(typeId);
-  const icon = document.createElement('span');
+  const icon = document.createElement('img');
   icon.className = 'item-icon';
-  icon.style.setProperty('--item-color', view.color);
-  icon.textContent = view.number;
+  icon.src = resolveImage(view.image);
+  icon.alt = '';
+  icon.draggable = false;
   icon.setAttribute('aria-hidden', 'true');
   return icon;
 }
