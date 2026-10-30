@@ -23,7 +23,7 @@ file: `dev-support/project-docs/WORKFLOW.md`
 summary: Базовый набор; итерация, работа вдвоём, передача.
 
 file: `dev-support/project-docs/GITHUB_WORKFLOW.md`
-summary: GitHub, collaborator, отправка одной командой, Windows-автополучение и конфликты.
+summary: Обязательно при каждом входе/ознакомлении/восстановлении чата: постоянное разрешение на push каждой доработки и статус каждого сообщения; collaborator, Windows-автополучение и конфликты.
 
 file: `dev-support/project-docs/PIXIJS_GUIDE.md`
 summary: Базовый набор; движок, setup, API v7, lifecycle, offline.
