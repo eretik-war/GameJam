@@ -193,8 +193,55 @@
       "license": "Not supplied; user-provided local test reference",
       "sourceFile": "../dev-support/art/enemies/assembly-reference.png",
       "sha256": "d973f6a5758b373b15457142029937056b638e96a7ca8b50e4c90c2d92a857db"
+    },
+    {
+      "id": "fire",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/fire.jpg",
+      "sha256": "a632a3bc1a2eedd78cbe9df2b031447d1e71a42888b12c8e7bed545be29d7450"
+    },
+    {
+      "id": "blindness",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/blindness.png",
+      "sha256": "7499515b291058c6e97fc0412eb67e8c00305f1696b6a4208c1aeaab4597a560"
+    },
+    {
+      "id": "stun",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/stun.jpg",
+      "sha256": "6f8cd4181b1eb6a2fca6283bf41d103068a18dc8d0dcd98b7e6bab4e3442ca46"
+    },
+    {
+      "id": "regeneration",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/regeneration.png",
+      "sha256": "d28898777e8c3973f9ebec29bc7f24fea3820953dec37ae0775dbc8397368f60"
+    },
+    {
+      "id": "battle-location",
+      "kind": "image",
+      "source": "User-provided battle location image attached in this chat on 2026-10-30; copied without modifications",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "runtimeFile": "../../../assets/images/battle-location.png",
+      "sha256": "2dd82fbd63c921bf88bdc473a7943581e5a36956e49a3de3344830836bcc0907",
+      "width": 1280,
+      "height": 720
     }
   ],
-  "art": "User-provided local test images; camera PNGs retain original pixels/alpha. Authorship and redistribution license not supplied. Source art is outside runtime in dev-support/art/enemies.",
+  "art": "User-provided local test images; camera PNGs retain original pixels/alpha. Authorship and redistribution license not supplied. Source art is outside runtime in dev-support/art/enemies. Includes user-provided battle-location background and status images from origin/main.",
   "music": null
 }

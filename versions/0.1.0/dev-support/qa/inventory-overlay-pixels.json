@@ -1,0 +1,84 @@
+[
+  {
+    "enemyPixelsIdentical": true,
+    "size": "1280x720",
+    "samples": [
+      {
+        "canvasPixel": [
+          512,
+          4
+        ],
+        "sourceRGB": [
+          138,
+          138,
+          102
+        ],
+        "maxDifference": 0,
+        "actualRGB": [
+          138,
+          138,
+          102
+        ]
+      },
+      {
+        "canvasPixel": [
+          512,
+          485
+        ],
+        "sourceRGB": [
+          150,
+          139,
+          117
+        ],
+        "maxDifference": 0,
+        "actualRGB": [
+          150,
+          139,
+          117
+        ]
+      }
+    ],
+    "backgroundCoversTopAndBottom": true
+  },
+  {
+    "enemyPixelsIdentical": true,
+    "size": "1440x900",
+    "samples": [
+      {
+        "canvasPixel": [
+          576,
+          4
+        ],
+        "sourceRGB": [
+          140,
+          141,
+          101
+        ],
+        "maxDifference": 0,
+        "actualRGB": [
+          140,
+          141,
+          101
+        ]
+      },
+      {
+        "canvasPixel": [
+          576,
+          607
+        ],
+        "sourceRGB": [
+          178,
+          163,
+          134
+        ],
+        "maxDifference": 2,
+        "actualRGB": [
+          180,
+          165,
+          136
+        ]
+      }
+    ],
+    "backgroundCoversTopAndBottom": true
+  }
+]

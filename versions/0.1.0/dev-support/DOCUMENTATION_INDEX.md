@@ -40,6 +40,9 @@ summary: Реализованный инвентарь: владельцы, 3 а
 file: `dev-support/qa/INVENTORY.md`
 summary: Проверка инвентаря: модель, mouse/touch/keyboard, полные карманы, HTTP/изолированный file и адаптация.
 
+file: `dev-support/qa/INVENTORY_OVERLAY.md`
+summary: Инвентарь поверх боевой сцены без сдвига: desktop HTTP/file, неизменная геометрия/пиксели противников, фон на всю высоту зоны.
+
 file: `dev-support/standards/INFO_OBJECT_RULES.md`
 summary: Базовый набор; до изменения сущностей/каталогов/связей/сохранений.
 

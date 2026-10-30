@@ -61,6 +61,9 @@ export class Enemy {
       existing.remainingTurns += turns;
     } else this.#statuses.push({ effect, remainingTurns: turns });
   }
+  get stunned(): boolean { return this.#statuses.some(s => s.effect.typeId === 'stun'); }
+  get missChance(): number { return this.#statuses.some(s => s.effect.typeId === 'blindness') ? 0.5 : 0; }
+  CanAttack(random: () => number = Math.random): boolean { return this.alive && !this.stunned && random() >= this.missChance; }
   BeginTurn(): void {
     for (const status of [...this.#statuses]) {
       if (!this.alive) break;

@@ -65,11 +65,25 @@ try {
     await call('Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
     await call('Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
   };
-  const clickId = async id => {
-    const r = await evaluate(`document.getElementById(${JSON.stringify(id)}).getBoundingClientRect().toJSON()`);
+  const clickSelector = async selector => {
+    const r = await evaluate(`{ const e=document.querySelector(${JSON.stringify(selector)}); e.scrollIntoView({block:'nearest'}); e.getBoundingClientRect().toJSON(); }`);
     await click(r.x + r.width / 2, r.y + r.height / 2);
   };
+  const escape = async () => {
+    await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
+    await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
+  };
+  const clickId = async id => { await escape(); return clickSelector(`#${id}`); };
   const parameter = type => evaluate(`document.querySelector('[data-parameter="${type}"]').textContent`);
+  const sceneBounds = async () => {
+    await evaluate('document.getElementById("scene").scrollIntoView({block:"start"})');
+    return evaluate('document.querySelector("#scene canvas").getBoundingClientRect().toJSON()');
+  };
+  const applyEffect = async random => {
+    await evaluate(`globalThis.__qaRandom = Math.random; Math.random = () => ${random}`);
+    try { await clickId('burn'); } finally { await evaluate('Math.random = globalThis.__qaRandom; delete globalThis.__qaRandom'); }
+  };
+  const geometry = () => evaluate(`({rects:[...document.querySelectorAll('#scene,#scene canvas,.debug')].map(e=>e.getBoundingClientRect().toJSON()), width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,scrollX,scrollY})`);
 
   await resize(1280, 740);
   await navigate(pathToFileURL(path.join(out, 'camera-catalog.html')).href, `document.body.dataset.ready === 'true' && [...document.images].every(i => i.complete && i.naturalWidth > 0)`);
@@ -87,25 +101,42 @@ try {
     await navigate(url, `document.querySelector('#app')?.dataset.ready === 'true' && [...document.images].every(i => i.complete && i.naturalWidth > 0)`);
     assert.match(await parameter('enemy-layer'), /Наземный/);
     await screenshot(`camera-scene-${mode}-1440.png`);
-    let scene = await evaluate('document.querySelector("#scene canvas").getBoundingClientRect().toJSON()');
+    const initialGeometry = await geometry();
+    await clickId('phase-action');
+    assert.equal(await evaluate('document.getElementById("reward-dialog").open'), true);
+    assert.deepEqual(await geometry(), initialGeometry);
+    assert.equal(await evaluate('new Set([...document.querySelectorAll(".reward-option")].map(e=>e.dataset.typeId)).size'), 3);
+    await clickSelector('.reward-option');
+    assert.equal(await evaluate('document.getElementById("storage-panel").hidden'), false);
+    assert.deepEqual(await geometry(), initialGeometry);
+    await screenshot(`camera-inventory-${mode}.png`);
+    await clickSelector('#storage-slots [data-item-id]'); await clickSelector('#equipment-slots [data-index="0"]');
+    assert.equal(await evaluate('document.querySelectorAll("#equipment-slots [data-item-id]").length'), 1);
+    await clickId('phase-action');
+    assert.equal(await evaluate('document.getElementById("storage-panel").hidden'), true);
+    assert.deepEqual(await geometry(), initialGeometry);
+    let scene = await sceneBounds();
     // Select the lower-left enemy at the leg, then the camera of the lower-right one.
     await click(scene.x + scene.width * .53, scene.y + scene.height * .75 + 12);
     assert.match(await evaluate('document.querySelector("#parameters h2").textContent'), /enemy-4/);
     await call('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 5, y: 5 });
     await clickId('restore');
     assert.match(await parameter('health'), /26/); assert.match(await parameter('shield'), /0/);
-    await clickId('burn'); await clickId('end-turn');
+    await applyEffect(0); await clickId('end-turn');
     assert.match(await parameter('health'), /23/);
+    await applyEffect(.3); await applyEffect(.6); await applyEffect(.9);
+    for (const effect of ['burning','blindness','stun','regeneration']) assert.ok(await parameter(effect));
     await clickId('save');
     const save = await evaluate('localStorage.getItem("gamejam.enemies.v2")');
     const data = JSON.parse(save);
     assert.equal(data.enemies.length, 3);
     assert.deepEqual(data.enemies.map(e => e.spawnPointId), ['spawn-3', 'spawn-4', 'spawn-5']);
+    assert.equal(data.enemies.find(e=>e.id==='enemy-4').statuses.length, 4);
     await clickId('restore'); await clickId('load');
     assert.equal(await evaluate('localStorage.getItem("gamejam.enemies.v2")'), save);
     assert.match(await parameter('health'), /23/);
     await resize(1280, 720); await pause(250);
-    scene = await evaluate('document.querySelector("#scene canvas").getBoundingClientRect().toJSON()');
+    scene = await sceneBounds();
     await click(scene.x + scene.width * .75, scene.y + scene.height * .75 - 150);
     assert.match(await evaluate('document.querySelector("#parameters h2").textContent'), /enemy-5/);
     await pause(650);
@@ -118,16 +149,21 @@ try {
     data.enemies[0].typeId = 'enemy.camera.gold';
     await evaluate(`localStorage.setItem('gamejam.enemies.v2', ${JSON.stringify(JSON.stringify(data))})`);
     await clickId('load'); await pause(200);
+    scene = await sceneBounds();
+    await click(scene.x + scene.width * .91, scene.y + scene.height * .50 - 140);
+    assert.match(await evaluate('document.querySelector("#parameters h2").textContent'), /Жёлтая камера/);
+    await escape();
     await screenshot(`camera-gold-${mode}.png`);
     await clickId('end-turn'); await clickId('end-turn');
+    scene = await sceneBounds();
     await click(scene.x + scene.width * .53, scene.y + scene.height * .75 + 12);
     assert.equal(await evaluate('document.querySelector("[data-parameter=burning]") === null'), true);
-    console.log(`${mode}: selection at camera/leg, damage, statuses, hover, all variants, save/load and desktop resize passed`);
+    console.log(`${mode}: modular NPCs, all four statuses, inventory overlay/reward/equipment without scene shifts, save/load and desktop resize passed`);
   }
   assert.deepEqual(errors, []);
   const external = requests.filter(url => /^https?:/.test(url) && !url.startsWith(`http://127.0.0.1:${httpPort}/`));
   assert.deepEqual(external, []);
-  const report = { checkedAt: new Date().toISOString(), browser: 'Chrome headless / SwiftShader', desktop: ['1440x900', '1280x720'], modes: ['HTTP', 'file://'], pageErrors: errors.length, externalRequests: external.length, variants: 4 };
+  const report = { checkedAt: new Date().toISOString(), browser: 'Chrome headless / SwiftShader', desktop: ['1440x900', '1280x720'], modes: ['HTTP', 'file://'], pageErrors: errors.length, externalRequests: external.length, variants: 4, statusTypes: 4, inventoryOverlayGeometryUnchanged: true };
   await fs.writeFile(path.join(out, 'camera-browser-report.json'), JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report));
   await call('Browser.close').catch(() => {});
