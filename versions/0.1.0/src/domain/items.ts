@@ -9,7 +9,7 @@ export class ItemInfo {
 }
 
 export const itemInfos: readonly ItemInfo[] = Object.freeze(
-  Array.from({ length: 12 }, (_, index) => {
+  Array.from({ length: 4 }, (_, index) => {
     const number = String(index + 1).padStart(2, '0');
     return new ItemInfo(`item.${number}`, `Предмет ${number}`);
   }),

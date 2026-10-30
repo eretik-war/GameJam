@@ -1,0 +1,9 @@
+# Четыре иконки предметов
+
+Пользователь предоставил user-source.png 2026-10-30 и уточнил: предметы непрозрачные, фон прозрачный. Prepared-sheet.png — обработка встроенным image_gen: сохранены четыре цвета и общий дизайн, очищены края. Авторство/лицензия исходника не сообщены. Это обработанный пользовательский арт, не ручная отрисовка.
+
+Финальный prompt:
+
+> Use case: precise-object-edit. Edit target: the attached sheet of exactly FOUR colorful glossy oval game items. Prepare this single source sheet for inventory icon extraction. Preserve the existing art design, colors, internal curved stripes, highlights, tilt, silhouette and the 2x2 placement: magenta upper left, turquoise upper right, blue lower left, yellow/gold lower right. Make the body of every item fully opaque, retain a genuinely transparent empty background, and clean tiny stray colored pixels outside each silhouette. Do not put a semitransparent wash over the bodies. Keep all four items separated by generous clear gutters so each can be cropped individually. Clean, sharp finished 2D game sprite artwork readable when reduced to about 50 px. No new design details, no labels, numbers, slot frames, drop shadows, glow outside the silhouette, text, watermark or additional objects. Return one edited sheet containing precisely those four unchanged subjects.
+
+`powershell.exe -NoProfile -File tools/extract-item-icons.ps1` детерминированно разделяет лист на четыре отдельных PNG в assets/images/items, сохраняет пропорции и центрирует силуэт на холсте 128×128 с полем 4 px. Размер взят из существующей ячейки минимум 64 CSS px с запасом 2x; геометрия слотов не меняется. В награде существующий максимум — 78 CSS px. Остаточная прозрачность тела (alpha ≥240) нормализована до 255; сглаживание границы сохранено. Центр каждого предмета alpha 255, углы alpha 0. Crop/SHA/bytes — extraction.json и RESOURCE_REGISTRY.

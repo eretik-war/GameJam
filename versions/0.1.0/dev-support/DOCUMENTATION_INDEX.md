@@ -107,3 +107,9 @@ summary: Реализованные противники, щит, статусы
 
 file: `dev-support/qa/SCENE_ASSETS.md`
 summary: Проверки объединённой сцены, JSON-ассетов, полосок и статусов; границы desktop/file проверок и интеграции с инвентарём.
+
+file: `dev-support/qa/ITEM_ICONS.md`
+summary: Четыре PNG предметов, прозрачный фон/непрозрачное тело, размеры по слотам; desktop HTTP/file, переносы и карточки.
+
+file: `dev-support/art/items/README.md`
+summary: Источник пользователя, встроенный image_gen, финальный prompt и воспроизводимое разделение на четыре иконки.

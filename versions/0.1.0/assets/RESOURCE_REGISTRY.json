@@ -116,8 +116,94 @@
       "sha256": "0c969165359592ae5c06a0d3b333b0fc44f9315e5488207c548aa4a8671b5757",
       "width": 548,
       "height": 1025
+    },
+    {
+      "id": "item-magenta",
+      "kind": "image",
+      "source": "User attachment 2026-10-30, edited with built-in image_gen; split/resized with tools/extract-item-icons.ps1",
+      "author": "User source author not supplied; AI-assisted edit",
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/items/prepared-sheet.png",
+      "sourceSha256": "334bdb57d7457d436946333d88362b2fcd5785642d37165ba718ef4fc6e6a58e",
+      "runtimeFile": "../../../assets/images/items/item-magenta.png",
+      "sha256": "dc8a5990b27484be8a74e1cec695277d85a3baec97dabb7eebc45a5e43cf471d",
+      "bytes": 23242,
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "modifications": "Centered proportional crop, 4px padding; alpha >=240 normalized to 255 on bodies; transparent background and antialiased edges"
+    },
+    {
+      "id": "item-teal",
+      "kind": "image",
+      "source": "User attachment 2026-10-30, edited with built-in image_gen; split/resized with tools/extract-item-icons.ps1",
+      "author": "User source author not supplied; AI-assisted edit",
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/items/prepared-sheet.png",
+      "sourceSha256": "334bdb57d7457d436946333d88362b2fcd5785642d37165ba718ef4fc6e6a58e",
+      "runtimeFile": "../../../assets/images/items/item-teal.png",
+      "sha256": "bfb642cc60217dcaf9f8d03b47f2a88129e0493d4b10b19adf5ab3ca2e6ada86",
+      "bytes": 22769,
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "modifications": "Centered proportional crop, 4px padding; alpha >=240 normalized to 255 on bodies; transparent background and antialiased edges"
+    },
+    {
+      "id": "item-blue",
+      "kind": "image",
+      "source": "User attachment 2026-10-30, edited with built-in image_gen; split/resized with tools/extract-item-icons.ps1",
+      "author": "User source author not supplied; AI-assisted edit",
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/items/prepared-sheet.png",
+      "sourceSha256": "334bdb57d7457d436946333d88362b2fcd5785642d37165ba718ef4fc6e6a58e",
+      "runtimeFile": "../../../assets/images/items/item-blue.png",
+      "sha256": "2a201068285e25b895ff9101f2bf6dc52007444760b2849212fc8192c38db23a",
+      "bytes": 22679,
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "modifications": "Centered proportional crop, 4px padding; alpha >=240 normalized to 255 on bodies; transparent background and antialiased edges"
+    },
+    {
+      "id": "item-gold",
+      "kind": "image",
+      "source": "User attachment 2026-10-30, edited with built-in image_gen; split/resized with tools/extract-item-icons.ps1",
+      "author": "User source author not supplied; AI-assisted edit",
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/items/prepared-sheet.png",
+      "sourceSha256": "334bdb57d7457d436946333d88362b2fcd5785642d37165ba718ef4fc6e6a58e",
+      "runtimeFile": "../../../assets/images/items/item-gold.png",
+      "sha256": "4c9585e3b535cd750e65e0d17c8390f70c30de59b6cbac49928b8b5dece11494",
+      "bytes": 19712,
+      "dimensions": {
+        "width": 128,
+        "height": 128
+      },
+      "modifications": "Centered proportional crop, 4px padding; alpha >=240 normalized to 255 on bodies; transparent background and antialiased edges"
+    },
+    {
+      "id": "item-user-source",
+      "kind": "art-source",
+      "source": "User attachment 2026-10-30",
+      "author": "Source author not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/items/user-source.png",
+      "sha256": "f7795dbb1458c055e29e442f2b0457ea5e65d7f282e5eb8ec297781ff075184d"
+    },
+    {
+      "id": "item-prepared-sheet",
+      "kind": "art-source",
+      "source": "Built-in image_gen edit of user-source.png; full prompt in art/items/README.md",
+      "author": "Source author not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/items/prepared-sheet.png",
+      "sha256": "334bdb57d7457d436946333d88362b2fcd5785642d37165ba718ef4fc6e6a58e"
     }
   ],
-  "art": "User-provided test images in root assets/images; used as temporary debug assets. Authorship and redistribution license not supplied.",
+  "art": "User-provided test images in root assets/images; used as temporary debug assets. Authorship and redistribution license not supplied. Four opaque-body item PNGs with transparent background: AI-assisted edit of user art, full prompt and sources in dev-support/art/items.",
   "music": null
 }
