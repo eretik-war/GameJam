@@ -1,0 +1,77 @@
+[
+  {
+    "name": "camera-magenta",
+    "crop": {
+      "x": 196,
+      "y": 244,
+      "width": 232,
+      "height": 164
+    },
+    "alphaBounds": {
+      "left": 201,
+      "top": 248,
+      "right": 423,
+      "bottom": 400
+    }
+  },
+  {
+    "name": "camera-teal",
+    "crop": {
+      "x": 586,
+      "y": 244,
+      "width": 232,
+      "height": 164
+    },
+    "alphaBounds": {
+      "left": 590,
+      "top": 248,
+      "right": 812,
+      "bottom": 400
+    }
+  },
+  {
+    "name": "camera-blue",
+    "crop": {
+      "x": 1006,
+      "y": 244,
+      "width": 232,
+      "height": 164
+    },
+    "alphaBounds": {
+      "left": 1010,
+      "top": 248,
+      "right": 1232,
+      "bottom": 400
+    }
+  },
+  {
+    "name": "camera-gold",
+    "crop": {
+      "x": 1406,
+      "y": 244,
+      "width": 232,
+      "height": 164
+    },
+    "alphaBounds": {
+      "left": 1410,
+      "top": 252,
+      "right": 1632,
+      "bottom": 404
+    }
+  },
+  {
+    "name": "shooter-leg",
+    "crop": {
+      "x": 73,
+      "y": 23,
+      "width": 211,
+      "height": 480
+    },
+    "alphaBounds": {
+      "left": 75,
+      "top": 25,
+      "right": 281,
+      "bottom": 500
+    }
+  }
+]

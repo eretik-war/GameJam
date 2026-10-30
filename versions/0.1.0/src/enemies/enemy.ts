@@ -2,22 +2,24 @@ import { Parameter, assertFinite } from '../domain/parameters';
 import { getStatusEffect } from './status-effects/catalog';
 import type { ActiveStatus } from './status-effects/status-effect';
 import testEnemy from '../../../../assets/enemies/test-enemy.json';
+import cameraEnemies from '../../../../assets/enemies/camera-enemies.json';
 import { getAttackInfo } from './attack';
+import { createLayerParameter, TypeBattleLayer, TypeEnemyPlacementParameter, type LayerParameter } from './placement';
 export enum TypeEnemyParameter { Health = 'health', Shield = 'shield' }
+export enum TypeEnemyRole { Shooter = 'shooter' }
 export class EnemyInfo {
   readonly Parameters: readonly Readonly<Parameter<TypeEnemyParameter>>[];
   readonly attackIds: readonly string[];
-  readonly visual: Readonly<{ scale: number; anchor: Readonly<{ x: number; y: number }> }>;
-  constructor(readonly typeId: string, readonly Name: string, health: number, shield: number, readonly imageUrl: string,
-    attackIds: readonly string[] = [], visual = { scale: 1, anchor: { x: 0.5, y: 1 } }) {
+  readonly Placement: LayerParameter<TypeEnemyPlacementParameter>;
+  constructor(readonly typeId: string, readonly Name: string, health: number, shield: number,
+    layer = TypeBattleLayer.Ground, readonly role = TypeEnemyRole.Shooter, attackIds: readonly string[] = []) {
     assertFinite(health); assertFinite(shield);
     if (!typeId || !Name || health <= 0 || shield < 0) throw new Error('Invalid enemy info');
     this.Parameters = Object.freeze([new Parameter(TypeEnemyParameter.Health, health), new Parameter(TypeEnemyParameter.Shield, shield)].map(p => Object.freeze(p)));
     attackIds.forEach(getAttackInfo);
-    if (new Set(attackIds).size !== attackIds.length || !Number.isFinite(visual.scale) || visual.scale <= 0 ||
-      ![visual.anchor.x, visual.anchor.y].every(value => Number.isFinite(value) && value >= 0 && value <= 1)) throw new Error('Invalid enemy visual or attacks');
+    if (new Set(attackIds).size !== attackIds.length || !Object.values(TypeEnemyRole).includes(role)) throw new Error('Invalid enemy role or attacks');
     this.attackIds = Object.freeze([...attackIds]);
-    this.visual = Object.freeze({ scale: visual.scale, anchor: Object.freeze({ ...visual.anchor }) });
+    this.Placement = createLayerParameter(TypeEnemyPlacementParameter.Layer, layer);
     Object.freeze(this);
   }
 }
@@ -29,6 +31,7 @@ export class Enemy {
     this.#parameters = EnemyInfo.Parameters.map(p => new Parameter(p.Type, p.Value));
   }
   get typeId(): string { return this.EnemyInfo.typeId; }
+  get layer(): TypeBattleLayer { return this.EnemyInfo.Placement.Value; }
   get Parameters() { return this.#parameters.map(p => Object.freeze(new Parameter(p.Type, p.Value))); }
   get statuses() { return this.#statuses.map(s => Object.freeze({ typeId: s.effect.typeId, name: s.effect.name, imageUrl: s.effect.imageUrl, remainingTurns: s.remainingTurns })); }
   GetParameter(type: TypeEnemyParameter): number { return this.#parameters.find(p => p.Type === type)!.Value; }
@@ -72,8 +75,17 @@ export function createEnemyInfoFromAsset(asset: typeof testEnemy): EnemyInfo {
     asset.parameters.some(p => !Object.values(TypeEnemyParameter).includes(p.type as TypeEnemyParameter))) throw new Error('Invalid asset parameters');
   const health = asset.parameters.find(p => p.type === TypeEnemyParameter.Health);
   const shield = asset.parameters.find(p => p.type === TypeEnemyParameter.Shield);
-  if (!health || !shield || !/^images\/[a-zA-Z0-9._-]+$/.test(asset.visual.image)) throw new Error('Invalid enemy asset');
-  return new EnemyInfo(asset.typeId, asset.name, health.value, shield.value, asset.visual.image, asset.attackIds, asset.visual);
+  if (!health || !shield || asset.placement?.type !== TypeEnemyPlacementParameter.Layer) throw new Error('Invalid enemy asset');
+  const placement = createLayerParameter(TypeEnemyPlacementParameter.Layer, asset.placement.value);
+  return new EnemyInfo(asset.typeId, asset.name, health.value, shield.value, placement.Value, asset.role as TypeEnemyRole, asset.attackIds);
 }
 export const demoEnemyInfo = createEnemyInfoFromAsset(testEnemy);
+export const enemyCatalog: readonly EnemyInfo[] = Object.freeze([demoEnemyInfo, ...cameraEnemies.map(createEnemyInfoFromAsset)]);
+if (new Set(enemyCatalog.map(info => info.typeId)).size !== enemyCatalog.length) throw new Error('Duplicate enemy type');
+export function getEnemyInfo(typeId: string): EnemyInfo {
+  const info = enemyCatalog.find(info => info.typeId === typeId);
+  if (!info) throw new Error(`Unknown enemy type: ${typeId}`);
+  return info;
+}
+export function createEnemyFromInfo(type: string | EnemyInfo, id: string): Enemy { return new Enemy(id, typeof type === 'string' ? getEnemyInfo(type) : type); }
 

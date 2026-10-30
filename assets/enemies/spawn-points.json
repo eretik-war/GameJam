@@ -1,0 +1,7 @@
+[
+  { "id": "spawn-1", "x": 0.53, "y": 0.30, "placement": { "type": "spawn-layer", "value": "air" } },
+  { "id": "spawn-2", "x": 0.75, "y": 0.30, "placement": { "type": "spawn-layer", "value": "air" } },
+  { "id": "spawn-3", "x": 0.91, "y": 0.50, "placement": { "type": "spawn-layer", "value": "ground" } },
+  { "id": "spawn-4", "x": 0.53, "y": 0.75, "placement": { "type": "spawn-layer", "value": "ground" } },
+  { "id": "spawn-5", "x": 0.75, "y": 0.75, "placement": { "type": "spawn-layer", "value": "ground" } }
+]

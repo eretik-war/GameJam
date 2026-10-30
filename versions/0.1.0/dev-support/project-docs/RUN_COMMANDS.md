@@ -11,6 +11,8 @@
 | npm run build | Автономный preview в versions/0.1.0/builds/preview.html |
 | npm run build:offline | Preview + versions/gamejam_0.1.0-offline.html и build-manifest |
 | npm run check | typecheck → test → test:sync → offline build → validate |
+| node tools/preview-enemies.mjs | Каталог четырёх модульных камер в versions/0.1.0/builds/camera-catalog.html |
+| node tools/verify-camera-enemies.mjs | После offline build и preview: Chrome desktop HTTP/file, выбор/статусы/сохранения, PNG в builds; CHROME_PATH переопределяет путь Chrome |
 | npm run test:sync | Две временные Git-копии: обновление, локальные правки, расхождение, проверки перед push и lock |
 | npm run sync:pull | Получить origin/main; обновить чистую папку только fast-forward |
 | npm run sync:push -- "Описание" | Проверить проект, сохранить и отправить все неигнорируемые изменения |

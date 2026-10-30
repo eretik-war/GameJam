@@ -24,6 +24,10 @@
 
 | Противники/щит/статусы | src/enemies/enemy.ts; status-effects/*.ts | enemies/session.ts, enemies/view.ts, main.ts, tests/domain.test.ts |
 | JSON-ассеты Enemy/Attack | корень assets/enemies, assets/attacks; src/enemies/enemy.ts, attack.ts | EnemySession, loadSession, tests/domain.test.ts |
-| Изображения и упаковка | корень assets/images; src/presentation/images.ts; tools/build.mjs JPG dataurl | main.ts, offline/HTTP |
+| Изображения и упаковка | корень assets/images; src/presentation/images.ts; tools/build.mjs JPG/PNG dataurl | main.ts, offline/HTTP |
+| Слои противников и точки спавна | src/enemies/placement.ts, spawn.ts; assets/enemies/spawn-points.json | EnemyInfo, EnemySession; tests/enemies.test.ts |
+| Каталог четырёх камер | assets/enemies/test-enemy.json, camera-enemies.json; src/enemies/enemy.ts | единая фабрика createEnemyFromInfo, EnemySession/loadSession |
+| Модульный VisualInfo и точки крепления | assets/enemies/camera-visuals.json; src/enemies/visual-info.ts | createEnemyVisualLayout → presentation/enemy-visual.ts → Pixi, DOM и preview |
+| Извлечение и проверка камер | tools/extract-enemy-parts.ps1, preview-enemies.mjs, verify-camera-enemies.mjs | исходники dev-support/art/enemies; qa/MODULAR_ENEMIES.md |
 
 Контракт противников: [ENEMIES](ENEMIES.md). Проверки объединённой сцены: [SCENE_ASSETS](../qa/SCENE_ASSETS.md).

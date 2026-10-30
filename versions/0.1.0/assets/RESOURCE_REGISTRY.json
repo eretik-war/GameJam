@@ -36,8 +36,165 @@
       "license": "Not supplied; test placeholder",
       "runtimeFile": "../../../assets/images/testeffect.jpg",
       "sha256": "6f8cd4181b1eb6a2fca6283bf41d103068a18dc8d0dcd98b7e6bab4e3442ca46"
+    },
+    {
+      "id": "camera-magenta",
+      "kind": "image",
+      "source": "User attachment, 2026-10-30; exact crop, no image generation",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test asset",
+      "sourceFile": "../dev-support/art/enemies/camera-source.png",
+      "sourceSha256": "a1e761d0b98f7b099b36b4fe6f883dad80a32e61196e284486dc83f2563ab267",
+      "runtimeFile": "../../../assets/images/enemies/camera-magenta.png",
+      "sha256": "e0b123474f5ae0bd7da59ceedcc6775d3ca9c94c37679e4ea00923a62668b20b",
+      "bytes": 24196,
+      "dimensions": {
+        "width": 232,
+        "height": 164
+      },
+      "modifications": {
+        "crop": {
+          "x": 196,
+          "y": 244,
+          "width": 232,
+          "height": 164
+        },
+        "alpha": "Preserved; all cropped RGBA pixels verified against source",
+        "tool": "tools/extract-enemy-parts.ps1"
+      }
+    },
+    {
+      "id": "camera-teal",
+      "kind": "image",
+      "source": "User attachment, 2026-10-30; exact crop, no image generation",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test asset",
+      "sourceFile": "../dev-support/art/enemies/camera-source.png",
+      "sourceSha256": "a1e761d0b98f7b099b36b4fe6f883dad80a32e61196e284486dc83f2563ab267",
+      "runtimeFile": "../../../assets/images/enemies/camera-teal.png",
+      "sha256": "182930d7c22dc7c29b61a883cac70a438ced46275f655b7da0daa6526096eae1",
+      "bytes": 23906,
+      "dimensions": {
+        "width": 232,
+        "height": 164
+      },
+      "modifications": {
+        "crop": {
+          "x": 586,
+          "y": 244,
+          "width": 232,
+          "height": 164
+        },
+        "alpha": "Preserved; all cropped RGBA pixels verified against source",
+        "tool": "tools/extract-enemy-parts.ps1"
+      }
+    },
+    {
+      "id": "camera-blue",
+      "kind": "image",
+      "source": "User attachment, 2026-10-30; exact crop, no image generation",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test asset",
+      "sourceFile": "../dev-support/art/enemies/camera-source.png",
+      "sourceSha256": "a1e761d0b98f7b099b36b4fe6f883dad80a32e61196e284486dc83f2563ab267",
+      "runtimeFile": "../../../assets/images/enemies/camera-blue.png",
+      "sha256": "1504819de92472ef6836784fa506e1310f77be5755c322a83eadca29e8defc71",
+      "bytes": 24971,
+      "dimensions": {
+        "width": 232,
+        "height": 164
+      },
+      "modifications": {
+        "crop": {
+          "x": 1006,
+          "y": 244,
+          "width": 232,
+          "height": 164
+        },
+        "alpha": "Preserved; all cropped RGBA pixels verified against source",
+        "tool": "tools/extract-enemy-parts.ps1"
+      }
+    },
+    {
+      "id": "camera-gold",
+      "kind": "image",
+      "source": "User attachment, 2026-10-30; exact crop, no image generation",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test asset",
+      "sourceFile": "../dev-support/art/enemies/camera-source.png",
+      "sourceSha256": "a1e761d0b98f7b099b36b4fe6f883dad80a32e61196e284486dc83f2563ab267",
+      "runtimeFile": "../../../assets/images/enemies/camera-gold.png",
+      "sha256": "329b0e56143d7ced70ec85adbc91645bd469e2216003714b3dbb9ae0b6220217",
+      "bytes": 25025,
+      "dimensions": {
+        "width": 232,
+        "height": 164
+      },
+      "modifications": {
+        "crop": {
+          "x": 1406,
+          "y": 244,
+          "width": 232,
+          "height": 164
+        },
+        "alpha": "Preserved; all cropped RGBA pixels verified against source",
+        "tool": "tools/extract-enemy-parts.ps1"
+      }
+    },
+    {
+      "id": "shooter-leg",
+      "kind": "image",
+      "source": "User attachment, 2026-10-30; exact crop, no image generation",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test asset",
+      "sourceFile": "../dev-support/art/enemies/leg-source.png",
+      "sourceSha256": "c92de212c7087535e3b583aca397bfcfab2f1766672131baec503dca10c1a739",
+      "runtimeFile": "../../../assets/images/enemies/shooter-leg.png",
+      "sha256": "11dada148ff60d16f57d0f45e2388568f5f889326d0f73345d94c86c63f01dea",
+      "bytes": 15561,
+      "dimensions": {
+        "width": 211,
+        "height": 480
+      },
+      "modifications": {
+        "crop": {
+          "x": 73,
+          "y": 23,
+          "width": 211,
+          "height": 480
+        },
+        "alpha": "Preserved; all cropped RGBA pixels verified against source",
+        "tool": "tools/extract-enemy-parts.ps1"
+      }
+    },
+    {
+      "id": "enemy-art-camera-source",
+      "kind": "art-source",
+      "source": "User attachment, 2026-10-30",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test reference",
+      "sourceFile": "../dev-support/art/enemies/camera-source.png",
+      "sha256": "a1e761d0b98f7b099b36b4fe6f883dad80a32e61196e284486dc83f2563ab267"
+    },
+    {
+      "id": "enemy-art-leg-source",
+      "kind": "art-source",
+      "source": "User attachment, 2026-10-30",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test reference",
+      "sourceFile": "../dev-support/art/enemies/leg-source.png",
+      "sha256": "c92de212c7087535e3b583aca397bfcfab2f1766672131baec503dca10c1a739"
+    },
+    {
+      "id": "enemy-art-assembly-reference",
+      "kind": "art-source",
+      "source": "User attachment, 2026-10-30",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test reference",
+      "sourceFile": "../dev-support/art/enemies/assembly-reference.png",
+      "sha256": "d973f6a5758b373b15457142029937056b638e96a7ca8b50e4c90c2d92a857db"
     }
   ],
-  "art": "User-provided test images in root assets/images; used as temporary debug assets. Authorship and redistribution license not supplied.",
+  "art": "User-provided local test images; camera PNGs retain original pixels/alpha. Authorship and redistribution license not supplied. Source art is outside runtime in dev-support/art/enemies.",
   "music": null
 }

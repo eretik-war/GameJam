@@ -1,5 +1,6 @@
 import { TypeParameter, TypeNPCParameter, Parameter, RestoreParameter } from '../src/domain/parameters';
 import { createNPCFromInfo } from '../src/domain/npc';
+import { createLayerParameter, TypeBattleLayer, TypeEnemyPlacementParameter, TypeSpawnPointParameter, type LayerParameter } from '../src/enemies/placement';
 
 /** Compiler assertions; this file is typechecked, never executed. */
 export function verifyEnumDomains(): void {
@@ -13,4 +14,7 @@ export function verifyEnumDomains(): void {
   // @ts-expect-error A restore effect must use the target's enum domain.
   npc.ApplyRestore(new RestoreParameter(TypeParameter.AllReqAction, 1));
   npc.ChangeParameter(TypeNPCParameter.Health, -1);
+  // @ts-expect-error A spawn-point parameter key is not an enemy parameter key.
+  const enemyLayer: LayerParameter<TypeEnemyPlacementParameter> = createLayerParameter(TypeSpawnPointParameter.Layer, TypeBattleLayer.Ground);
+  void enemyLayer;
 }

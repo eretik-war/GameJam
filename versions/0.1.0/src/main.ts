@@ -5,6 +5,7 @@ import { createNPCView } from './enemies/view';
 import { InventoryController } from './inventory-controller';
 import { HoverCardController, type HoverCardAnchor } from './presentation/hover-card';
 import { createEnemyHoverCard, createItemHoverCard } from './presentation/entity-hover-cards';
+import { createEnemyIcon, createEnemySprite } from './presentation/enemy-visual';
 
 function requireElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -51,7 +52,8 @@ try {
   function render(): void {
     if (disposed) return;
     for (const child of app.stage.removeChildren()) child.destroy({ children: true });
-    const views = session.npcs.map(createNPCView);
+    const enemies = session.deployed;
+    const views = enemies.map(createNPCView);
     const width = app.screen.width;
     const height = app.screen.height;
     const hero = new PIXI.Sprite(heroTexture);
@@ -60,29 +62,32 @@ try {
     hero.scale.set(heroScale);
     hero.position.set(width * 0.19, height * 0.5);
     app.stage.addChild(hero);
-    const slots = [[0.53, 0.30], [0.75, 0.30], [0.91, 0.5], [0.53, 0.75], [0.75, 0.75]];
     views.forEach((view, index) => {
       const container = new PIXI.Container();
-      const slot = slots[index % slots.length]!;
-      container.x = width * slot[0]!;
-      container.y = height * slot[1]!;
-      const scale = Math.min(1.25, Math.max(0.67, width / 900), height / 360);
+      const point = session.GetSpawnPoint(view.id)!;
+      container.x = width * point.x;
+      container.y = height * point.y;
+      const scale = Math.min(1.25, width / 1100, height / 490);
       container.scale.set(scale);
-      const texture = getTexture(view.imageUrl);
-      const sprite = new PIXI.Sprite(texture);
-      sprite.anchor.set(view.visual.anchor.x, view.visual.anchor.y);
-      const spriteScale = Math.min(80 / texture.width, 88 / texture.height) * view.visual.scale;
+      const sprite = createEnemySprite(view.visual, getTexture);
+      const spriteScale = view.visual.displayScale;
       sprite.scale.set(spriteScale);
-      sprite.position.set(0, 44);
-      if (!session.npcs[index]!.alive) sprite.tint = 0x777777;
+      const bounds = view.visual.bounds;
+      sprite.position.set(-(bounds.x + bounds.width / 2) * spriteScale, 44 - (bounds.y + bounds.height) * spriteScale);
+      if (!enemies[index]!.alive) {
+        sprite.children.forEach(part => { (part as PIXI.Sprite).tint = 0x777777; });
+      }
       container.addChild(sprite);
-      const bounds = sprite.getLocalBounds();
+      const visualWidth = bounds.width * spriteScale;
+      const visualHeight = bounds.height * spriteScale;
+      const visualTop = 44 - visualHeight;
       const shape = new PIXI.Graphics();
-      shape.lineStyle(3, session.selectedId === view.id ? 0xffffff : 0x344760);
-      shape.drawRoundedRect(bounds.x * spriteScale - 3, 44 + bounds.y * spriteScale - 3,
-        sprite.width + 6, sprite.height + 6, 3);
+      if (session.selectedId === view.id) {
+        shape.lineStyle(2, 0xffffff, 0.9);
+        shape.drawRoundedRect(-visualWidth / 2 - 5, visualTop - 5, visualWidth + 10, visualHeight + 10, 5);
+      }
       container.addChild(shape);
-      const barTop = Math.min(-44, 44 - sprite.height) - 24;
+      const barTop = visualTop - 28;
       const bars = new PIXI.Graphics();
       for (const [offset, value, max, color] of [[0, view.health, view.maxHealth, 0x68d99b], [10, view.shield, view.maxShield, 0x64baff]]) {
         const y = barTop + offset!;
@@ -108,7 +113,7 @@ try {
       container.eventMode = 'static';
       container.interactiveChildren = false;
       container.cursor = 'pointer';
-      container.hitArea = new PIXI.Rectangle(-48, -52, 96, 160);
+      container.hitArea = new PIXI.Rectangle(-visualWidth / 2 - 8, barTop - 22, visualWidth + 16, 104 - barTop);
       const anchor = enemyAnchors.get(view.id) ?? { getBoundingClientRect: () => new DOMRect() };
       anchor.getBoundingClientRect = () => {
         const bounds = container.getBounds();
@@ -135,13 +140,9 @@ try {
     const title = document.createElement('h2');
     title.textContent = view.title;
     panel.append(title);
-    if (session.selected.EnemyInfo.imageUrl) {
-      const image = document.createElement('img');
-      image.src = resolveImage(session.selected.EnemyInfo.imageUrl);
-      image.alt = session.selected.EnemyInfo.Name;
-      image.style.maxWidth = '100%';
-      panel.append(image);
-    }
+    const icon = createEnemyIcon(view.visual);
+    icon.setAttribute('role', 'img'); icon.setAttribute('aria-label', session.selected.EnemyInfo.Name);
+    panel.append(icon);
     for (const parameter of view.parameters) {
       const row = document.createElement('p');
       row.textContent = `${parameter.label}: ${parameter.value}`;

@@ -98,3 +98,6 @@ summary: Реализованные противники, щит, статусы
 
 file: `dev-support/qa/SCENE_ASSETS.md`
 summary: Проверки объединённой сцены, JSON-ассетов, полосок и статусов; границы desktop/file проверок и интеграции с инвентарём.
+
+file: `dev-support/qa/MODULAR_ENEMIES.md`
+summary: Четыре камеры, прозрачные PNG, модуль ножек, точки спавна земля/воздух; проверки desktop HTTP/file и совместимости сохранений.

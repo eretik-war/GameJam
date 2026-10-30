@@ -1,0 +1,19 @@
+{
+  "cameraSize": { "width": 232, "height": 164 },
+  "displayScale": 0.46,
+  "sockets": [
+    { "id": "underside", "x": 144, "y": 161 },
+    { "id": "top", "x": 142, "y": 45 },
+    { "id": "rear", "x": 216, "y": 98 },
+    { "id": "lens", "x": 54, "y": 108 }
+  ],
+  "modules": [
+    { "id": "shooter-leg", "image": "images/enemies/shooter-leg.png", "width": 211, "height": 480, "pivot": { "x": 77, "y": 25 }, "scale": 0.725, "requiredRole": "shooter", "requiredLayer": "ground" }
+  ],
+  "variants": [
+    { "typeId": "enemy.trainee", "image": "images/enemies/camera-magenta.png", "attachments": [{ "moduleId": "shooter-leg", "socketId": "underside" }] },
+    { "typeId": "enemy.camera.teal", "image": "images/enemies/camera-teal.png", "attachments": [{ "moduleId": "shooter-leg", "socketId": "underside" }] },
+    { "typeId": "enemy.camera.blue", "image": "images/enemies/camera-blue.png", "attachments": [{ "moduleId": "shooter-leg", "socketId": "underside" }] },
+    { "typeId": "enemy.camera.gold", "image": "images/enemies/camera-gold.png", "attachments": [{ "moduleId": "shooter-leg", "socketId": "underside" }] }
+  ]
+}

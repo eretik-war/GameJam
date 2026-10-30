@@ -70,7 +70,7 @@ test('invalid saves fail without replacing the running session', () => {
 import { Enemy, EnemyInfo, TypeEnemyParameter } from '../src/enemies/enemy';
 import { createSession as createEnemySession, loadSession as loadEnemySession } from '../src/enemies/session';
 test('enemy shield absorbs damage and instances remain independent', () => {
-  const info = new EnemyInfo('test', 'Test', 30, 8, '');
+  const info = new EnemyInfo('test', 'Test', 30, 8);
   const a = new Enemy('a', info), b = new Enemy('b', info);
   a.TakeDamage(12);
   assert.equal(a.GetParameter(TypeEnemyParameter.Health), 26);
@@ -102,20 +102,21 @@ import { createNPCView as createEnemyView } from '../src/enemies/view';
 test('enemy asset resolves immutable attacks and visual metadata; rejects invalid references', () => {
   assert.equal(demoEnemyInfo.attackIds.length, 1);
   assert.equal(getAttackInfo(demoEnemyInfo.attackIds[0]!).name, 'Тестовая атака');
-  assert.ok(Object.isFrozen(demoEnemyInfo.visual.anchor));
+  assert.ok(Object.isFrozen(demoEnemyInfo.Placement));
   assert.ok(Object.isFrozen(demoEnemyInfo.attackIds));
   assert.ok(Object.isFrozen(demoEnemyInfo.Parameters[0]));
   for (const mutate of [
     (d: typeof testEnemyAsset) => { d.parameters[1]!.type = 'health'; },
     (d: typeof testEnemyAsset) => { d.attackIds = ['missing']; },
-    (d: typeof testEnemyAsset) => { d.visual.scale = -1; },
-    (d: typeof testEnemyAsset) => { d.visual.image = '../missing.jpg'; },
+    (d: typeof testEnemyAsset) => { d.placement.value = 'underground'; },
+    (d: typeof testEnemyAsset) => { d.placement.type = 'spawn-layer'; },
+    (d: typeof testEnemyAsset) => { d.role = 'unknown'; },
   ]) {
     const data = structuredClone(testEnemyAsset); mutate(data);
     assert.throws(() => createEnemyInfoFromAsset(data));
   }
   const session = createEnemySession();
-  assert.equal(session.npcs.length, 5);
+  assert.equal(session.npcs.length, 3);
   session.selected.AddStatus('burning', 1);
   const view = createEnemyView(session.selected);
   assert.equal(view.shield, 8);
@@ -126,3 +127,5 @@ test('enemy asset resolves immutable attacks and visual metadata; rejects invali
   assert.equal(createEnemyView(session.selected).statuses.length, 0);
   assert.equal(createEnemyView(session.npcs[1]!).shield, 8);
 });
+
+import './enemies.test';
