@@ -7,6 +7,7 @@ import { pathToFileURL } from 'node:url';
 import { root } from './build.mjs';
 
 const out = path.join(root, 'versions/0.1.0/builds');
+const requireItemIcons = process.argv.includes('--with-item-icons');
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function freePort() {
   const server = net.createServer(); await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -101,17 +102,27 @@ try {
     await navigate(url, `document.querySelector('#app')?.dataset.ready === 'true' && [...document.images].every(i => i.complete && i.naturalWidth > 0)`);
     assert.match(await parameter('enemy-layer'), /Наземный/);
     await screenshot(`camera-scene-${mode}-1440.png`);
+    // The latest shared UI hides debug until D; exercise it without changing the product default.
+    if (await evaluate('document.querySelector(".debug").hidden')) {
+      await call('Input.dispatchKeyEvent', { type: 'keyDown', key: 'd', code: 'KeyD', windowsVirtualKeyCode: 68 });
+      await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'd', code: 'KeyD', windowsVirtualKeyCode: 68 });
+      assert.equal(await evaluate('document.querySelector(".debug").hidden'), false);
+    }
     const initialGeometry = await geometry();
     await clickId('phase-action');
     assert.equal(await evaluate('document.getElementById("reward-dialog").open'), true);
     assert.deepEqual(await geometry(), initialGeometry);
     assert.equal(await evaluate('new Set([...document.querySelectorAll(".reward-option")].map(e=>e.dataset.typeId)).size'), 3);
+    if (requireItemIcons) {
+      await until(() => evaluate('[...document.querySelectorAll(".reward-option img.item-icon")].filter(i=>i.complete && i.naturalWidth===128 && i.naturalHeight===128).length === 3'));
+    }
     await clickSelector('.reward-option');
     assert.equal(await evaluate('document.getElementById("storage-panel").hidden'), false);
     assert.deepEqual(await geometry(), initialGeometry);
     await screenshot(`camera-inventory-${mode}.png`);
     await clickSelector('#storage-slots [data-item-id]'); await clickSelector('#equipment-slots [data-index="0"]');
     assert.equal(await evaluate('document.querySelectorAll("#equipment-slots [data-item-id]").length'), 1);
+    if (requireItemIcons) assert.equal(await evaluate('document.querySelector("#equipment-slots img.item-icon").naturalWidth'), 128);
     await clickId('phase-action');
     assert.equal(await evaluate('document.getElementById("storage-panel").hidden'), true);
     assert.deepEqual(await geometry(), initialGeometry);
@@ -163,7 +174,7 @@ try {
   assert.deepEqual(errors, []);
   const external = requests.filter(url => /^https?:/.test(url) && !url.startsWith(`http://127.0.0.1:${httpPort}/`));
   assert.deepEqual(external, []);
-  const report = { checkedAt: new Date().toISOString(), browser: 'Chrome headless / SwiftShader', desktop: ['1440x900', '1280x720'], modes: ['HTTP', 'file://'], pageErrors: errors.length, externalRequests: external.length, variants: 4, statusTypes: 4, inventoryOverlayGeometryUnchanged: true };
+  const report = { checkedAt: new Date().toISOString(), browser: 'Chrome headless / SwiftShader', desktop: ['1440x900', '1280x720'], modes: ['HTTP', 'file://'], pageErrors: errors.length, externalRequests: external.length, variants: 4, statusTypes: 4, inventoryOverlayGeometryUnchanged: true, itemIconsInSameBuild: requireItemIcons };
   await fs.writeFile(path.join(out, 'camera-browser-report.json'), JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report));
   await call('Browser.close').catch(() => {});

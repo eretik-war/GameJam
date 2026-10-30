@@ -65,7 +65,7 @@ try {
     target.on('pointertap', () => { onTap?.(); hoverCards.open(anchor, resolve); });
   }
   app.ticker.add(delta => { if (hero?.playing) hero.update(delta); });
-  const locationTexture = getTexture('images/battle-location.png');
+  const locationTexture = getTexture('images/battle-location.jpg');
   const observer = new ResizeObserver(() => {
     if (disposed) return;
     app.resize(); render();

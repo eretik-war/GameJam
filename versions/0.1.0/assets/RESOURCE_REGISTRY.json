@@ -233,13 +233,20 @@
     {
       "id": "battle-location",
       "kind": "image",
-      "source": "User-provided battle location image attached in this chat on 2026-10-30; copied without modifications",
+      "source": "User attachment codex-clipboard-c25e83ec-4a04-4e1e-a089-5a7fe2c9688d.jpg, 2026-10-30; copied byte-for-byte, no image editing or generation",
       "author": "Not supplied",
       "license": "Not supplied; user-provided project asset",
-      "runtimeFile": "../../../assets/images/battle-location.png",
-      "sha256": "2dd82fbd63c921bf88bdc473a7943581e5a36956e49a3de3344830836bcc0907",
-      "width": 1280,
-      "height": 720
+      "runtimeFile": "../../../assets/images/battle-location.jpg",
+      "sha256": "5ecf8adcff60a3042c08f71a7855476e570c5ccf249aafd5cfc9ce7b5359fa41",
+      "width": 1920,
+      "height": 1080,
+      "replaces": {
+        "runtimeFile": "../../../assets/images/battle-location.png",
+        "sha256": "2dd82fbd63c921bf88bdc473a7943581e5a36956e49a3de3344830836bcc0907",
+        "width": 1280,
+        "height": 720
+      },
+      "bytes": 1068702
     },
     {
       "id": "hero-stand-1",

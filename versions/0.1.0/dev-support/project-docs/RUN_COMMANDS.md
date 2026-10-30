@@ -13,6 +13,7 @@
 | npm run check | typecheck → test → test:sync → offline build → validate |
 | node tools/preview-enemies.mjs | Каталог четырёх модульных камер в versions/0.1.0/builds/camera-catalog.html |
 | node tools/verify-camera-enemies.mjs | После offline build и preview: Chrome desktop HTTP/file, выбор/статусы/сохранения, PNG в builds; CHROME_PATH переопределяет путь Chrome |
+| node tools/verify-camera-enemies.mjs --with-item-icons | Общая сборка: NPC/статусы/наложение и новые предметные PNG 128×128 в награде и экипировке |
 | npm run test:sync | Две временные Git-копии: обновление, локальные правки, расхождение, проверки перед push и lock |
 | npm run sync:pull | Получить origin/main; обновить чистую папку только fast-forward |
 | npm run sync:push -- "Описание" | Проверить проект, сохранить и отправить все неигнорируемые изменения |

@@ -3,7 +3,7 @@ import burning from '../../../../assets/images/fire.jpg';
 import blindness from '../../../../assets/images/blindness.png';
 import stun from '../../../../assets/images/stun.jpg';
 import regeneration from '../../../../assets/images/regeneration.png';
-import battleLocation from '../../../../assets/images/battle-location.png';
+import battleLocation from '../../../../assets/images/battle-location.jpg';
 import magenta from '../../../../assets/images/enemies/camera-magenta.png';
 import teal from '../../../../assets/images/enemies/camera-teal.png';
 import blue from '../../../../assets/images/enemies/camera-blue.png';
@@ -27,7 +27,7 @@ const images: Readonly<Record<string, string>> = Object.freeze({
   'images/blindness.png': blindness,
   'images/stun.jpg': stun,
   'images/regeneration.png': regeneration,
-  'images/battle-location.png': battleLocation,
+  'images/battle-location.jpg': battleLocation,
   'images/enemies/camera-magenta.png': magenta,
   'images/enemies/camera-teal.png': teal,
   'images/enemies/camera-blue.png': blue,
