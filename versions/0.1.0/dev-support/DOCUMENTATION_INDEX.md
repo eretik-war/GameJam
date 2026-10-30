@@ -119,3 +119,6 @@ summary: Четыре PNG предметов, прозрачный фон/неп
 
 file: `dev-support/art/items/README.md`
 summary: Источник пользователя, встроенный image_gen, финальный prompt и воспроизводимое разделение на четыре иконки.
+
+file: `dev-support/qa/COMBAT_INTEGRATION.md`
+summary: Перенос опубликованной атаки в модульную сцену: реальные колонки спавна, Hero/экипировка/ответы, save v2 и HTTP/file.

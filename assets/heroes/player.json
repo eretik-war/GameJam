@@ -1,0 +1,21 @@
+{
+  "typeId": "hero.player",
+  "name": "Герой",
+  "role": "hero",
+  "placement": { "type": "enemy-layer", "value": "ground" },
+  "parameters": [
+    {
+      "type": "health",
+      "value": 1000
+    },
+    {
+      "type": "shield",
+      "value": 20
+    }
+  ],
+  "attackIds": [
+    "attack.test"
+  ],
+  "damage": 12,
+  "enemyDamage": 5
+}

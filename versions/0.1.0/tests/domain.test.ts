@@ -84,13 +84,13 @@ test('statuses extend duration, tick through shield and expire independently', (
   a.AddStatus('burning', 1); a.AddStatus('burning', 2);
   assert.equal(a.statuses[0]!.remainingTurns, 3);
   session.EndTurn(); assert.equal(a.GetParameter(TypeEnemyParameter.Shield), 5);
-  assert.equal(session.npcs[1]!.statuses.length, 0);
+  assert.equal(session.npcs.find(e => e.id !== a.id)!.statuses.length, 0);
   const restored = loadEnemySession(session.Save()); assert.equal(restored.Save(), session.Save());
   session.EndTurn(); session.EndTurn();
   assert.equal(a.statuses.length, 0); assert.equal(a.GetParameter(TypeEnemyParameter.Health), 29);
   assert.throws(() => a.AddStatus('unknown', 2));
   assert.throws(() => a.AddStatus('burning', 0));
-  const bad = JSON.parse(restored.Save()); bad.enemies[0].statuses[0].remainingTurns = -1;
+  const bad = JSON.parse(restored.Save()); bad.enemies.find((e: any) => e.id === a.id).statuses[0].remainingTurns = -1;
   assert.throws(() => loadEnemySession(JSON.stringify(bad)));
 });
 
@@ -125,10 +125,11 @@ test('enemy asset resolves immutable attacks and visual metadata; rejects invali
   assert.equal(createEnemyView(loadEnemySession(session.Save()).selected).statuses[0]!.imageUrl, view.statuses[0]!.imageUrl);
   session.EndTurn();
   assert.equal(createEnemyView(session.selected).statuses.length, 0);
-  assert.equal(createEnemyView(session.npcs[1]!).shield, 8);
+  assert.equal(createEnemyView(session.npcs.find(e => e.id !== session.selectedId)!).shield, 8);
 });
 
 import './enemies.test';
+import './combat.test';
 test('combined effects heal, block attacks, miss at fifty percent and survive saving', () => {
   const session = createEnemySession(); const enemy = session.selected;
   enemy.TakeDamage(20);

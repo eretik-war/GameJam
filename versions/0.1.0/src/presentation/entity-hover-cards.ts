@@ -1,11 +1,11 @@
 import type { Enemy } from '../enemies/enemy';
 import { TypeGameStage, TypeInventoryArea, type InventorySession } from '../domain/inventory';
-import { createNPCView } from '../enemies/view';
+import { createCombatantView } from '../enemies/view';
 import { createItemView } from './item-view';
 import type { HoverCardView } from './hover-card';
 
 export function createEnemyHoverCard(enemy: Enemy, category = 'Противник'): HoverCardView {
-  const view = createNPCView(enemy);
+  const view = createCombatantView(enemy);
   return {
     category, title: view.title,
     description: 'Текущие характеристики и действующие эффекты.',
@@ -27,7 +27,7 @@ export function createItemHoverCard(typeId: string): HoverCardView {
 export function createHeroHoverCard(inventory: InventorySession, combatant?: Enemy): HoverCardView {
   const equipment = inventory.slots(TypeInventoryArea.Equipment);
   const storage = inventory.slots(TypeInventoryArea.Storage);
-  const view = combatant ? createNPCView(combatant) : undefined;
+  const view = combatant ? createCombatantView(combatant) : undefined;
   return {
     category: 'Герой', title: view?.title ?? 'Герой',
     description: 'Ваш персонаж на поле боя.',

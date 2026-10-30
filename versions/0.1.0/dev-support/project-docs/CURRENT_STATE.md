@@ -1,3 +1,13 @@
+# Опубликованная атака объединена с модульными NPC — 2026-10-30
+
+Пользователь указал, что атака уже опубликована. Получена текущая origin/main eae39a9, источник боевого изменения — a82415c. Его Hero/урон/ответы/общие индикаторы/режим экипировки перенесены в локальную 0.1.0 с сохранением четырёх камер, реальных spawn-point, предметных PNG, JPG-фона, общей карточки героя и полноэкранной сцены без нижнего блока.
+
+CanTarget/Attack выбирают ближайшую живую колонку по x точки спавна, а не по старому индексу пяти врагов. Резерв не участвует, смерть героя блокирует действие. Hero использует общий Enemy-владелец параметров/статусов; createCombatantView и createCombatIndicators общие, NPC-layout остаётся отдельным. Сохранение v2 дополнено необязательным hero; старые составы и размещения сохраняются.
+
+Working set: assets/heroes/player.json; domain/hero, parameters, items, inventory; Enemy/session/view, main/index/inventory-controller, combat-indicators/entity-hover-cards; tests/combat/domain, tools/verify-camera-enemies; ENEMIES/INVENTORY/CODE_MAP/DOCUMENTATION_INDEX и qa/COMBAT_INTEGRATION. Checks: npm run check — typecheck, 21 модельный/8 Git-тестов, offline build, validate; Chrome HTTP/file 1440×900/1280×720 — attack, ответы, бонус предмета, запрет дальней цели, смерть, hero save/load, PNG, статусы, D и неизменность геометрии. Ошибок/внешних запросов нет. Основной 127.0.0.1:4173 проверен HTTP 200 с hero/attack/cameras/items/JPG.
+
+Артефакты: versions/gamejam_0.1.0-offline.html; builds/camera-browser-report.json, camera-attack-http/file.png, combat-live-server.json. Новая версия/deploy не создавались. Следующий шаг задаёт пользователь. Приватная история NPC не отправляется по прежнему «пока локально»; чужие изменения CURRENT_STATE/INFO_OBJECT_RULES не включать в commit.
+
 # Нижний debug-блок: восстановлена опубликованная раскладка — 2026-10-30
 
 Пользователь попросил проверить удаление нижнего блока и указал, что оно уже должно быть на GitHub. Fetch подтвердил origin/main eae39a9: footer скрыт, #scene=100dvh, debug — absolute overlay; эта геометрия пришла ранее в a82415c. В локальном объединении сохранились 68dvh и debug в потоке. Восстановлены опубликованные правила без изменения игровых сущностей/инвентаря. D показывает панель поверх поля, места снизу нет.

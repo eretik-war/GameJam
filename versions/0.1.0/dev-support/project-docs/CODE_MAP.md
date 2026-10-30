@@ -36,3 +36,7 @@
 Контракт противников: [ENEMIES](ENEMIES.md). Проверки объединённой сцены: [SCENE_ASSETS](../qa/SCENE_ASSETS.md).
 
 | Четыре иконки предметов | assets/images/items; src/presentation/item-view.ts, images.ts | tools/extract-item-icons.ps1; tools/verify-item-icons.mjs; qa/ITEM_ICONS.md |
+
+| Герой/урон/бонусы экипировки | assets/heroes/player.json; src/domain/hero.ts, items.ts | heroInfo/heroCombatInfo, Hero.AttackDamage; tests/combat.test.ts |
+| Атака/доступная колонка/ответные удары | src/enemies/session.ts; CanTarget/Attack | main.ts; реальные spawn-point, резерв исключён; tests/combat.test.ts |
+| Единые боевые параметры/полоски | src/enemies/view.ts createCombatantView; presentation/combat-indicators.ts | герой, камеры, hover, debug; NPC-layout отдельно createNPCView |

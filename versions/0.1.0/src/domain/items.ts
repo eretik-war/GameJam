@@ -1,9 +1,12 @@
+import { assertFinite } from './parameters';
 /** Shared, immutable type data. Item instances never own presentation objects. */
 export class ItemInfo {
   readonly presentationId = 'inventory-item';
   readonly interactionId = 'inventory-move';
 
-  constructor(readonly typeId: string, readonly Name: string) {
+  constructor(readonly typeId: string, readonly Name: string, readonly attackBonus = 2) {
+    assertFinite(attackBonus);
+    if (attackBonus < 0) throw new Error('Invalid item attack bonus');
     Object.freeze(this);
   }
 }

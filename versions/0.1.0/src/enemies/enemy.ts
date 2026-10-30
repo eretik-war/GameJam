@@ -6,7 +6,7 @@ import cameraEnemies from '../../../../assets/enemies/camera-enemies.json';
 import { getAttackInfo } from './attack';
 import { createLayerParameter, TypeBattleLayer, TypeEnemyPlacementParameter, type LayerParameter } from './placement';
 export enum TypeEnemyParameter { Health = 'health', Shield = 'shield' }
-export enum TypeEnemyRole { Shooter = 'shooter' }
+export enum TypeEnemyRole { Shooter = 'shooter', Hero = 'hero' }
 export class EnemyInfo {
   readonly Parameters: readonly Readonly<Parameter<TypeEnemyParameter>>[];
   readonly attackIds: readonly string[];

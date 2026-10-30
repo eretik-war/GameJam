@@ -1,8 +1,11 @@
 import { Enemy, enemyCatalog, createEnemyFromInfo, TypeEnemyParameter } from './enemy';
 import { canSpawn, getSpawnPoint, spawnEnemy, spawnPoints } from './spawn';
+import { Hero, enemyDamage } from '../domain/hero';
+import type { Item } from '../domain/items';
 
 export type EnemyDeployment = Readonly<{ enemyId: string; spawnPointId: string }>;
 export class EnemySession {
+  readonly hero = new Hero();
   readonly #placements = new Map<string, string>();
   constructor(readonly npcs: readonly Enemy[], public turn = 1, public selectedId = npcs[0]?.id ?? '', deployments?: readonly EnemyDeployment[]) {
     if (!Number.isSafeInteger(turn) || turn < 1 || !npcs.length || new Set(npcs.map(e => e.id)).size !== npcs.length || !npcs.some(e => e.id === selectedId)) throw new Error('Invalid enemy roster');
@@ -27,10 +30,28 @@ export class EnemySession {
   get selected(): Enemy { return this.npcs.find(e => e.id === this.selectedId)!; }
   get deployed(): readonly Enemy[] { return this.npcs.filter(e => this.#placements.has(e.id)); }
   GetSpawnPoint(id: string) { const pointId = this.#placements.get(id); return pointId ? getSpawnPoint(pointId) : undefined; }
+  Column(index: number): number { return this.GetSpawnPoint(this.npcs[index]?.id ?? '')?.x ?? Infinity; }
+  CanTarget(id: string): boolean {
+    const enemy = this.npcs.find(e => e.id === id);
+    const point = this.GetSpawnPoint(id);
+    const closest = Math.min(...this.deployed.filter(e => e.alive).map(e => this.GetSpawnPoint(e.id)!.x));
+    return this.hero.alive && !!enemy?.alive && !!point && point.x === closest;
+  }
+  Attack(id: string, items: readonly (Item | null)[] = [], random: () => number = Math.random): boolean {
+    if (!this.CanTarget(id)) return false;
+    if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow');
+    this.Select(id);
+    if (this.hero.CanAttack(random)) this.selected.TakeDamage(this.hero.AttackDamage(items));
+    for (const enemy of this.deployed) {
+      if (!this.hero.alive) break;
+      if (enemy.CanAttack(random)) this.hero.TakeDamage(enemyDamage);
+    }
+    this.hero.BeginTurn(); this.EndTurn(); return true;
+  }
   Select(id: string): void { if (!this.npcs.some(e => e.id === id)) throw new Error('Unknown enemy'); this.selectedId = id; }
   EndTurn(): void { if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow'); this.npcs.forEach(e => e.BeginTurn()); this.turn++; }
   Save(): string { return JSON.stringify({ schemaVersion: 2, turn: this.turn, selectedId: this.selectedId,
-    enemies: this.npcs.map(e => ({ ...e.Save(), spawnPointId: this.#placements.get(e.id) ?? null })) }); }
+    hero: this.hero.Save(), enemies: this.npcs.map(e => ({ ...e.Save(), spawnPointId: this.#placements.get(e.id) ?? null })) }); }
 }
 export function createSession(): EnemySession {
   const occupied = new Set<string>();
@@ -43,7 +64,25 @@ export function createSession(): EnemySession {
     occupied.add(point.id); deployments.push({ enemyId: enemy.id, spawnPointId: point.id });
     return [enemy];
   });
-  return new EnemySession(enemies, 1, enemies[0]!.id, deployments);
+  const closest = [...enemies].sort((a, b) => getSpawnPoint(deployments.find(d => d.enemyId === a.id)!.spawnPointId).x -
+    getSpawnPoint(deployments.find(d => d.enemyId === b.id)!.spawnPointId).x)[0]!;
+  return new EnemySession(enemies, 1, closest.id, deployments);
+}
+function restoreCombatant(enemy: Enemy, entry: any): void {
+  const info = enemy.EnemyInfo;
+  if (!entry || entry.id !== enemy.id || entry.typeId !== info.typeId || !Array.isArray(entry.Parameters) || entry.Parameters.length !== 2) throw new Error('Invalid combatant');
+  const seen = new Set();
+  for (const p of entry.Parameters) {
+    if (!p || !Object.values(TypeEnemyParameter).includes(p.Type) || seen.has(p.Type) || typeof p.Value !== 'number' || !Number.isFinite(p.Value) || p.Value < 0 ||
+      (p.Type === TypeEnemyParameter.Health && p.Value > info.Parameters.find(parameter => parameter.Type === TypeEnemyParameter.Health)!.Value)) throw new Error('Invalid parameter');
+    seen.add(p.Type); enemy.ChangeParameter(p.Type, p.Value - enemy.GetParameter(p.Type));
+  }
+  if (!Array.isArray(entry.statuses) || entry.statuses.length > 100) throw new Error('Invalid statuses');
+  const statusIds = new Set();
+  for (const s of entry.statuses) {
+    if (!s || statusIds.has(s.typeId) || !enemy.alive) throw new Error('Invalid status');
+    statusIds.add(s.typeId); enemy.AddStatus(s.typeId, s.remainingTurns);
+  }
 }
 export function loadSession(text: string): EnemySession {
   if (text.length > 100000) throw new Error('Save too large');
@@ -53,19 +92,7 @@ export function loadSession(text: string): EnemySession {
   const enemies = data.enemies.map((entry: any) => {
     if (!entry || ids.has(entry.id)) throw new Error('Invalid enemy');
     const enemy = createEnemyFromInfo(entry.typeId, entry.id); ids.add(entry.id);
-    const info = enemy.EnemyInfo;
-    if (!Array.isArray(entry.Parameters) || entry.Parameters.length !== 2) throw new Error('Invalid parameters');
-    const seen = new Set();
-    for (const p of entry.Parameters) {
-      if (!p || !Object.values(TypeEnemyParameter).includes(p.Type) || seen.has(p.Type) || typeof p.Value !== 'number' || !Number.isFinite(p.Value) || p.Value < 0 || (p.Type === TypeEnemyParameter.Health && p.Value > info.Parameters.find(parameter => parameter.Type === TypeEnemyParameter.Health)!.Value)) throw new Error('Invalid parameter');
-      seen.add(p.Type); enemy.ChangeParameter(p.Type, p.Value - enemy.GetParameter(p.Type));
-    }
-    if (!Array.isArray(entry.statuses) || entry.statuses.length > 100) throw new Error('Invalid statuses');
-    const statusIds = new Set();
-    for (const s of entry.statuses) {
-      if (!s || statusIds.has(s.typeId) || !enemy.alive) throw new Error('Invalid status');
-      statusIds.add(s.typeId); enemy.AddStatus(s.typeId, s.remainingTurns);
-    }
+    restoreCombatant(enemy, entry);
     return enemy;
   });
   const hasPlacements = data.enemies.some((entry: any) => 'spawnPointId' in entry);
@@ -77,6 +104,8 @@ export function loadSession(text: string): EnemySession {
       return [{ enemyId: entry.id, spawnPointId: entry.spawnPointId }];
     });
   }
-  return new EnemySession(enemies, data.turn, data.selectedId, deployments);
+  const session = new EnemySession(enemies, data.turn, data.selectedId, deployments);
+  if (data.hero !== undefined) restoreCombatant(session.hero, data.hero);
+  return session;
 }
 
