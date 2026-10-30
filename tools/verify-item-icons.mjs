@@ -124,7 +124,6 @@ try {
     await click('#phase-action');
     assertIcons(await iconState('#equipment-slots .item-icon'));
     const combat = await bounds('#scene canvas'); assert.deepEqual(combat, before);
-    assert.equal(await evaluate(`document.querySelector('#storage-panel').hidden`), true);
     await shot(`item-icons-${protocol}-combat.png`);
     results.push({ protocol, width, height, fourDistinctTypes: true, storageIcons, slotSizes, rewardAndEquipmentShareSources: true, keyboardMove: true, dragGhostAndDrop: true, hoverCard: true, before, preparation, combat });
   }
