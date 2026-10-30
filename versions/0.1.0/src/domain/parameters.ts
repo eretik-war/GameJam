@@ -1,3 +1,4 @@
+import type { TypeEnemyParameter } from '../enemies/enemy';
 /** These enums belong to different domains and cannot be interchanged. */
 export enum TypeParameter {
   AllReqAction = 'all-req-action',
@@ -11,7 +12,7 @@ export enum TypeNPCParameter {
   Damage = 'damage',
 }
 
-export type ParameterType = TypeParameter | TypeNPCParameter;
+export type ParameterType = TypeParameter | TypeNPCParameter | TypeEnemyParameter;
 
 export class Parameter<TType extends ParameterType> {
   constructor(public readonly Type: TType, public Value: number) {
@@ -54,3 +55,4 @@ export function validateNPCParameters(value: unknown): Parameter<TypeNPCParamete
   if (seen.size !== Object.values(TypeNPCParameter).length) throw new Error('Required parameter is missing');
   return result;
 }
+

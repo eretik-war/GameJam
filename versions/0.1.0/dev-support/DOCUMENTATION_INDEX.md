@@ -83,3 +83,6 @@ file: `assets/RESOURCE_REGISTRY.json`
 summary: Добавление/замена ресурсов: лицензии/происхождение.
 
 Отчёт фактических проверок после подготовки: dev-support/qa/VERIFICATION.md. Generated build-manifest принадлежит tools/build.mjs. node_modules/vendor/builds/backups/work и соседние игры не входят в default reading.
+
+file: `dev-support/project-docs/ENEMIES.md`
+summary: Реализованные противники, щит, статусы и границы демо.

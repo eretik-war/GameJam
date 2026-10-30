@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { createSession, loadSession } from './domain/session';
-import { createNPCView } from './presentation/npc-view';
+import { createSession, loadSession } from './enemies/session';
+import { createNPCView } from './enemies/view';
 
 function requireElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -57,6 +57,13 @@ try {
     const title = document.createElement('h2');
     title.textContent = view.title;
     panel.append(title);
+    if (session.selected.EnemyInfo.imageUrl) {
+      const image = document.createElement('img');
+      image.src = session.selected.EnemyInfo.imageUrl;
+      image.alt = session.selected.EnemyInfo.Name;
+      image.style.maxWidth = '100%';
+      panel.append(image);
+    }
     for (const parameter of view.parameters) {
       const row = document.createElement('p');
       row.textContent = `${parameter.label}: ${parameter.value}`;
@@ -83,11 +90,12 @@ try {
     });
   }
 
-  action('end-turn', () => { session.EndTurn(); return 'Выбранный NPC потерял 10 здоровья.'; });
-  action('restore', () => { session.RestoreHealth(); return 'Применён RestoreParameter: +15 здоровья.'; });
-  action('save', () => { localStorage.setItem('gamejam.demo.v1', session.Save()); return 'Прогресс сохранён в этом браузере.'; });
+  action('end-turn', () => { session.EndTurn(); return 'Статусы сработали в начале хода.'; });
+  action('restore', () => { session.selected.TakeDamage(12); return 'Применено 12 урона: сначала щит, затем здоровье.'; });
+  action('burn', () => { session.selected.AddStatus('burning', 3); return 'Горение продлено на 3 хода.'; });
+  action('save', () => { localStorage.setItem('gamejam.enemies.v2', session.Save()); return 'Прогресс сохранён в этом браузере.'; });
   action('load', () => {
-    const text = localStorage.getItem('gamejam.demo.v1');
+    const text = localStorage.getItem('gamejam.enemies.v2');
     if (!text) throw new Error('Сохранение ещё не создано.');
     session = loadSession(text);
     return 'Прогресс восстановлен.';
@@ -118,3 +126,5 @@ try {
   status.textContent = `Не удалось запустить WebGL: ${error instanceof Error ? error.message : String(error)}`;
   console.error(error);
 }
+
+

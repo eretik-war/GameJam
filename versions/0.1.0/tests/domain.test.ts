@@ -65,3 +65,30 @@ test('invalid saves fail without replacing the running session', () => {
   assert.throws(() => new GameSession([running.selected, running.selected]));
   assert.throws(() => loadSession('not json'));
 });
+
+import { Enemy, EnemyInfo, TypeEnemyParameter } from '../src/enemies/enemy';
+import { createSession as createEnemySession, loadSession as loadEnemySession } from '../src/enemies/session';
+test('enemy shield absorbs damage and instances remain independent', () => {
+  const info = new EnemyInfo('test', 'Test', 30, 8, '');
+  const a = new Enemy('a', info), b = new Enemy('b', info);
+  a.TakeDamage(12);
+  assert.equal(a.GetParameter(TypeEnemyParameter.Health), 26);
+  assert.equal(a.GetParameter(TypeEnemyParameter.Shield), 0);
+  assert.equal(b.GetParameter(TypeEnemyParameter.Shield), 8);
+  a.TakeDamage(100); assert.equal(a.alive, false);
+  assert.throws(() => b.TakeDamage(-1));
+});
+test('statuses extend duration, tick through shield and expire independently', () => {
+  const session = createEnemySession(); const a = session.selected;
+  a.AddStatus('burning', 1); a.AddStatus('burning', 2);
+  assert.equal(a.statuses[0]!.remainingTurns, 3);
+  session.EndTurn(); assert.equal(a.GetParameter(TypeEnemyParameter.Shield), 5);
+  assert.equal(session.npcs[1]!.statuses.length, 0);
+  const restored = loadEnemySession(session.Save()); assert.equal(restored.Save(), session.Save());
+  session.EndTurn(); session.EndTurn();
+  assert.equal(a.statuses.length, 0); assert.equal(a.GetParameter(TypeEnemyParameter.Health), 29);
+  assert.throws(() => a.AddStatus('unknown', 2));
+  assert.throws(() => a.AddStatus('burning', 0));
+  const bad = JSON.parse(restored.Save()); bad.enemies[0].statuses[0].remainingTurns = -1;
+  assert.throws(() => loadEnemySession(JSON.stringify(bad)));
+});

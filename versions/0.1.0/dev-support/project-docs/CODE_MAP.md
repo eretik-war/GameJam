@@ -15,3 +15,6 @@
 Пути src/tests относительно активной versions/0.1.0. Зависимости — node_modules/package-lock в корне; vendor нужен без npm в готовом HTML. Generated: builds/preview.html и versions/gamejam_0.1.0-offline.html. Исходники не редактируются через эти артефакты.
 
 Области будущей игры: инвентарь, полноценный бой, ресурсы/звук, платформа. Сейчас у них нет реализованных модулей; не выдумывать их пути. При добавлении указать владельца, потребителей и проверки здесь.
+
+| Противники/щит/статусы | src/enemies/enemy.ts; status-effects/*.ts | enemies/session.ts, enemies/view.ts, main.ts, tests/domain.test.ts |
+Новый контракт и границы демо: ENEMIES.md.
