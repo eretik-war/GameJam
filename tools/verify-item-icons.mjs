@@ -77,6 +77,11 @@ try {
     await call('Page.navigate', { url });
     await until(() => evaluate(`document.querySelector('#scene canvas') && document.querySelectorAll('.inventory-slot').length === 15`));
     await pause(500);
+    assert.equal(await evaluate(`document.querySelector('.debug').hidden`), true);
+    await key('d', 'KeyD', 68);
+    assert.equal(await evaluate(`document.querySelector('.debug').hidden`), false);
+    await key('d', 'KeyD', 68);
+    assert.equal(await evaluate(`document.querySelector('.debug').hidden`), true);
     const before = await bounds('#scene canvas');
     const offeredSources = new Map();
     for (let index = 0; index < 4; index++) {
