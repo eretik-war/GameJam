@@ -1,0 +1,34 @@
+[
+  {
+    "mode": "http",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "delay499And500": true,
+    "cancellation": true,
+    "escape": true,
+    "liveInventory": true,
+    "combatModel": true,
+    "enemyRegression": true,
+    "animationContinues": true,
+    "unchangedScene": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "delay499And500": true,
+    "cancellation": true,
+    "escape": true,
+    "liveInventory": true,
+    "combatModel": true,
+    "enemyRegression": true,
+    "animationContinues": true,
+    "unchangedScene": true,
+    "errors": []
+  }
+]

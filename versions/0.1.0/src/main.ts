@@ -1,4 +1,5 @@
 import { effects } from './enemies/status-effects/catalog';
+import { Enemy } from './enemies/enemy';
 import * as PIXI from 'pixi.js';
 import { resolveImage } from './presentation/images';
 import { createSession, loadSession } from './enemies/session';
@@ -89,7 +90,10 @@ try {
     if (!hero && heroTextures.every(texture => texture.valid)) {
       hero = createHeroAnimation(heroTextures);
       const target = hero;
-      bindSceneCard(target, { getBoundingClientRect: () => sceneBounds(target) }, () => createHeroHoverCard(inventory.model));
+      bindSceneCard(target, { getBoundingClientRect: () => sceneBounds(target) }, () => {
+        const combatant = 'hero' in session && session.hero instanceof Enemy ? session.hero : undefined;
+        return createHeroHoverCard(inventory.model, combatant);
+      });
     }
     if (hero) {
       placeHero(hero, width, height);
