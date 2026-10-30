@@ -1,4 +1,5 @@
 import type { Enemy } from '../enemies/enemy';
+import { TypeGameStage, TypeInventoryArea, type InventorySession } from '../domain/inventory';
 import { createNPCView } from '../enemies/view';
 import { createItemView } from './item-view';
 import type { HoverCardView } from './hover-card';
@@ -20,5 +21,20 @@ export function createItemHoverCard(typeId: string): HoverCardView {
     description: 'Занимает одну ячейку инвентаря.',
     parameters: [{ label: 'Номер', value: view.number }],
     note: 'Можно разместить в активном слоте или карманах.',
+  };
+}
+
+export function createHeroHoverCard(inventory: InventorySession): HoverCardView {
+  const equipment = inventory.slots(TypeInventoryArea.Equipment);
+  const storage = inventory.slots(TypeInventoryArea.Storage);
+  return {
+    category: 'Персонаж', title: 'Герой',
+    description: 'Ваш персонаж на поле боя.',
+    parameters: [
+      { label: 'Экипировка', value: `${equipment.filter(Boolean).length} / ${equipment.length}` },
+      { label: 'Карманы', value: `${inventory.storedCount} / ${storage.length}` },
+      { label: 'Стадия', value: inventory.stage === TypeGameStage.Combat ? 'Бой' : 'Подготовка' },
+    ],
+    note: inventory.canMove ? 'Можно менять экипировку.' : 'Экипировка заблокирована.',
   };
 }

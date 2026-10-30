@@ -13,7 +13,8 @@
 | Общее представление предмета | src/presentation/item-view.ts; createItemView, createItemIcon | слоты, карманы, награды и drag ghost |
 | Ввод инвентаря/диалог/lifecycle | src/inventory-controller.ts; InventoryController | main.ts; qa/INVENTORY.md |
 | Всплывающие карточки персонажей/предметов | src/presentation/hover-card.ts; HoverCardView, HoverCardController | main.ts Pixi anchors / bindDelegated / refresh / destroy; qa/HOVER_CARDS.md |
-| Данные карточек реальных сущностей | src/presentation/entity-hover-cards.ts; createEnemyHoverCard, createItemHoverCard | enemies/view.ts и item-view.ts → единый HoverCardView |
+| Данные карточек реальных сущностей | src/presentation/entity-hover-cards.ts; createEnemyHoverCard, createHeroHoverCard, createItemHoverCard | enemies/view.ts, InventorySession и item-view.ts → единый HoverCardView |
+| Привязка карточек к Pixi-целям | src/main.ts; sceneBounds, bindSceneCard | один механизм для противников и анимированного героя; qa/HERO_HOVER.md |
 | Упаковка/HTTP/валидация | корень tools/*.mjs | package.json; dev-support/build-manifest.json |
 | GitHub/синхронизация | tools/sync.mjs, tools/sync-auto.ps1; .github/workflows/check.yml | package.json; tools/sync.test.mjs; GITHUB_WORKFLOW.md |
 | Движок | корень vendor/pixi-js/7.4.3 | ENGINE_LOCK; immutable, не редактировать |

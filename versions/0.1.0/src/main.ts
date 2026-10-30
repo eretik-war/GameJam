@@ -4,8 +4,8 @@ import { resolveImage } from './presentation/images';
 import { createSession, loadSession } from './enemies/session';
 import { createNPCView } from './enemies/view';
 import { InventoryController } from './inventory-controller';
-import { HoverCardController, type HoverCardAnchor } from './presentation/hover-card';
-import { createEnemyHoverCard, createItemHoverCard } from './presentation/entity-hover-cards';
+import { HoverCardController, type HoverCardAnchor, type HoverCardView } from './presentation/hover-card';
+import { createEnemyHoverCard, createHeroHoverCard, createItemHoverCard } from './presentation/entity-hover-cards';
 import { createEnemyIcon, createEnemySprite } from './presentation/enemy-visual';
 import { createHeroAnimation, HERO_FRAME_PATHS, placeHero } from './presentation/hero-animation';
 
@@ -46,6 +46,23 @@ try {
   }
   const heroTextures = HERO_FRAME_PATHS.map(getTexture);
   let hero: PIXI.AnimatedSprite | undefined;
+  function sceneBounds(target: PIXI.Container): DOMRect {
+    const bounds = target.getBounds();
+    const canvas = app.view.getBoundingClientRect();
+    const scaleX = canvas.width / app.screen.width;
+    const scaleY = canvas.height / app.screen.height;
+    return new DOMRect(canvas.left + bounds.x * scaleX, canvas.top + bounds.y * scaleY, bounds.width * scaleX, bounds.height * scaleY);
+  }
+  function bindSceneCard(target: PIXI.Container, anchor: HoverCardAnchor, resolve: () => HoverCardView, onTap?: () => void): void {
+    target.eventMode = 'static';
+    target.interactiveChildren = false;
+    target.cursor = 'pointer';
+    target.on('pointerover', event => {
+      if (event.pointerType !== 'touch' && !event.buttons) hoverCards.request(anchor, resolve);
+    });
+    target.on('pointerout', () => hoverCards.leave(anchor));
+    target.on('pointertap', () => { onTap?.(); hoverCards.open(anchor, resolve); });
+  }
   app.ticker.add(delta => { if (hero?.playing) hero.update(delta); });
   const locationTexture = getTexture('images/battle-location.png');
   const observer = new ResizeObserver(() => {
@@ -69,7 +86,11 @@ try {
     background.position.set(width / 2, height / 2);
     background.eventMode = 'none';
     app.stage.addChild(background);
-    if (!hero && heroTextures.every(texture => texture.valid)) hero = createHeroAnimation(heroTextures);
+    if (!hero && heroTextures.every(texture => texture.valid)) {
+      hero = createHeroAnimation(heroTextures);
+      const target = hero;
+      bindSceneCard(target, { getBoundingClientRect: () => sceneBounds(target) }, () => createHeroHoverCard(inventory.model));
+    }
     if (hero) {
       placeHero(hero, width, height);
       app.stage.addChild(hero);
@@ -122,27 +143,11 @@ try {
       label.anchor.set(0.5, 0);
       label.y = 56;
       container.addChild(label);
-      container.eventMode = 'static';
-      container.interactiveChildren = false;
-      container.cursor = 'pointer';
       container.hitArea = new PIXI.Rectangle(-visualWidth / 2 - 8, barTop - 22, visualWidth + 16, 104 - barTop);
       const anchor = enemyAnchors.get(view.id) ?? { getBoundingClientRect: () => new DOMRect() };
-      anchor.getBoundingClientRect = () => {
-        const bounds = container.getBounds();
-        const canvas = app.view.getBoundingClientRect();
-        const scaleX = canvas.width / app.screen.width;
-        const scaleY = canvas.height / app.screen.height;
-        return new DOMRect(canvas.left + bounds.x * scaleX, canvas.top + bounds.y * scaleY, bounds.width * scaleX, bounds.height * scaleY);
-      };
+      anchor.getBoundingClientRect = () => sceneBounds(container);
       enemyAnchors.set(view.id, anchor);
-      container.on('pointerover', event => {
-        if (event.pointerType !== 'touch' && !event.buttons) hoverCards.request(anchor, () => enemyCard(view.id));
-      });
-      container.on('pointerout', () => hoverCards.leave(anchor));
-      container.on('pointertap', () => {
-        session.Select(view.id); render();
-        hoverCards.open(anchor, () => enemyCard(view.id));
-      });
+      bindSceneCard(container, anchor, () => enemyCard(view.id), () => { session.Select(view.id); render(); });
       app.stage.addChild(container);
     });
     const view = createNPCView(session.selected);

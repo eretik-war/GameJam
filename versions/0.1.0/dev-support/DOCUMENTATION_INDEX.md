@@ -64,6 +64,9 @@ summary: Базовый набор; UI/ресурсы/звук: до правк�
 file: `dev-support/qa/HOVER_CARDS.md`
 summary: UI: общие карточки реальных противников, наград и предметов; задержка, drag/lifecycle и браузерные проверки.
 
+file: `dev-support/qa/HERO_HOVER.md`
+summary: UI: карточка анимированного героя, данные инвентаря, общая Pixi-привязка и проверка без смещения сцены.
+
 file: `dev-support/standards/UI_SIZE_CONTRACT.json`
 summary: UI: числовая принятая геометрия Forest Alchemy; выбирать нужный компонент.
 
