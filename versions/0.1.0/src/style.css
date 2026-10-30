@@ -3,9 +3,10 @@
 body { margin: 0; }
 main { min-height: 100dvh; display: flex; flex-direction: column; }
 .battlefield { flex: 1; position: relative; }
-#scene { width: 100%; height: max(360px, 68dvh); overflow: hidden; }
+#scene { width: 100%; height: max(360px, 100dvh); overflow: hidden; }
 canvas { display: block; }
-.debug { padding: 16px max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); background: #17263a; }
+.debug { position: absolute; bottom: 0; left: 0; right: 0; z-index: 20; padding: 16px max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); background: #17263a; }
+.debug[hidden] { display: none !important; }
 .debug-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 h1, h2 { font-size: 20px; margin: 0; }
 #parameters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; margin: 12px 0; }

@@ -3,10 +3,10 @@ import { createNPCView } from '../enemies/view';
 import { createItemView } from './item-view';
 import type { HoverCardView } from './hover-card';
 
-export function createEnemyHoverCard(enemy: Enemy): HoverCardView {
+export function createEnemyHoverCard(enemy: Enemy, category = 'Противник'): HoverCardView {
   const view = createNPCView(enemy);
   return {
-    category: 'Противник', title: view.title,
+    category, title: view.title,
     description: 'Текущие характеристики и действующие эффекты.',
     parameters: view.parameters,
     note: enemy.alive ? 'Участвует в бою' : 'Повержен',

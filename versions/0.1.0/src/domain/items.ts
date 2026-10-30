@@ -3,7 +3,7 @@ export class ItemInfo {
   readonly presentationId = 'inventory-item';
   readonly interactionId = 'inventory-move';
 
-  constructor(readonly typeId: string, readonly Name: string) {
+  constructor(readonly typeId: string, readonly Name: string, readonly attackBonus: number = 0) {
     Object.freeze(this);
   }
 }

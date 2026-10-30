@@ -1,3 +1,5 @@
+import { TypeEnemyParameter } from './enemies/enemy';
+import { TypeInventoryArea, TypeGameStage } from './domain/inventory';
 import { effects } from './enemies/status-effects/catalog';
 import * as PIXI from 'pixi.js';
 import { resolveImage } from './presentation/images';
@@ -7,6 +9,7 @@ import { InventoryController } from './inventory-controller';
 import { HoverCardController, type HoverCardAnchor } from './presentation/hover-card';
 import { createEnemyHoverCard, createItemHoverCard } from './presentation/entity-hover-cards';
 import { createHeroAnimation, HERO_FRAME_PATHS, placeHero } from './presentation/hero-animation';
+import { createCombatIndicators } from './presentation/combat-indicators';
 
 function requireElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -45,6 +48,14 @@ try {
   }
   const heroTextures = HERO_FRAME_PATHS.map(getTexture);
   let hero: PIXI.AnimatedSprite | undefined;
+  const heroAnchor: HoverCardAnchor = { getBoundingClientRect: () => {
+    if (!hero) return new DOMRect();
+    const bounds = hero.getBounds();
+    const canvas = app.view.getBoundingClientRect();
+    return new DOMRect(canvas.left + bounds.x * canvas.width / app.screen.width,
+      canvas.top + bounds.y * canvas.height / app.screen.height,
+      bounds.width * canvas.width / app.screen.width, bounds.height * canvas.height / app.screen.height);
+  } };
   app.ticker.add(delta => { if (hero?.playing) hero.update(delta); });
   const locationTexture = getTexture('images/battle-location.png');
   const observer = new ResizeObserver(() => {
@@ -67,10 +78,22 @@ try {
     background.position.set(width / 2, height / 2);
     background.eventMode = 'none';
     app.stage.addChild(background);
-    if (!hero && heroTextures.every(texture => texture.valid)) hero = createHeroAnimation(heroTextures);
+    if (!hero && heroTextures.every(texture => texture.valid)) {
+      hero = createHeroAnimation(heroTextures);
+      hero.eventMode = 'static';
+      hero.cursor = 'help';
+      hero.on('pointerover', event => {
+        if (event.pointerType !== 'touch' && !event.buttons) hoverCards.request(heroAnchor, () => createEnemyHoverCard(session.hero, 'Герой'));
+      });
+      hero.on('pointerout', () => hoverCards.leave(heroAnchor));
+    }
     if (hero) {
       placeHero(hero, width, height);
       app.stage.addChild(hero);
+      const indicators = createCombatIndicators(createNPCView(session.hero), getTexture);
+      indicators.scale.set(Math.min(1.25, Math.max(0.67, width / 900), height / 360));
+      indicators.position.set(hero.x, hero.y - hero.height - 24 * indicators.scale.y);
+      app.stage.addChild(indicators);
     }
     const slots = [[0.53, 0.30], [0.75, 0.30], [0.91, 0.5], [0.53, 0.75], [0.75, 0.75]];
     views.forEach((view, index) => {
@@ -95,22 +118,9 @@ try {
         sprite.width + 6, sprite.height + 6, 3);
       container.addChild(shape);
       const barTop = Math.min(-44, 44 - sprite.height) - 24;
-      const bars = new PIXI.Graphics();
-      for (const [offset, value, max, color] of [[0, view.health, view.maxHealth, 0x68d99b], [10, view.shield, view.maxShield, 0x64baff]]) {
-        const y = barTop + offset!;
-        bars.beginFill(0x304155).drawRect(-40, y, 80, 7).endFill();
-        const ratio = max! > 0 ? Math.min(1, value! / max!) : 0;
-        if (ratio > 0) bars.beginFill(color!).drawRect(-40, y, 80 * ratio, 7).endFill();
-      }
-      container.addChild(bars);
-      view.statuses.forEach((effect, effectIndex) => {
-        const icon = new PIXI.Sprite(getTexture(effect.imageUrl));
-        const iconScale = Math.min(16 / icon.texture.width, 16 / icon.texture.height);
-        icon.scale.set(iconScale);
-        icon.anchor.set(0.5, 1);
-        icon.position.set(-32 + effectIndex * 20, barTop - 4);
-        container.addChild(icon);
-      });
+      const indicators = createCombatIndicators(view, getTexture);
+      indicators.y = barTop;
+      container.addChild(indicators);
       const label = new PIXI.Text(view.id, {
         fontFamily: 'Arial', fontSize: 20, fill: 0xeef7ff, align: 'center',
       });
@@ -135,14 +145,17 @@ try {
       });
       container.on('pointerout', () => hoverCards.leave(anchor));
       container.on('pointertap', () => {
-        session.Select(view.id); render();
+        if (inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
+        const items = inventory.model.slots(TypeInventoryArea.Equipment).map((_, index) => inventory.model.itemAt({ area: TypeInventoryArea.Equipment, index }));
+        if (!session.Attack(view.id, items)) return;
+        render();
         hoverCards.open(anchor, () => enemyCard(view.id));
       });
       app.stage.addChild(container);
     });
     const view = createNPCView(session.selected);
     hoverCards.refresh(true);
-    turn.textContent = `Ход ${session.turn}`;
+    turn.textContent = `Ход ${session.turn} · Герой: ${session.hero.GetParameter(TypeEnemyParameter.Health)} HP · ${session.hero.GetParameter(TypeEnemyParameter.Shield)} щита`;
     panel.replaceChildren();
     const title = document.createElement('h2');
     title.textContent = view.title;
@@ -171,6 +184,12 @@ try {
     });
   }
 
+  const debug = document.querySelector<HTMLElement>('.debug')!;
+  debug.hidden = true;
+  document.addEventListener('keydown', event => {
+    if (event.code === 'KeyD' && !event.repeat && !(event.target instanceof HTMLInputElement)) debug.hidden = !debug.hidden;
+  });
+  action('hero-one-hp', () => { session.hero.ChangeParameter(TypeEnemyParameter.Health, 1 - session.hero.GetParameter(TypeEnemyParameter.Health)); return 'У героя 1 HP.'; });
   action('end-turn', () => { session.EndTurn(); return 'Статусы сработали в начале хода.'; });
   action('restore', () => { session.selected.TakeDamage(12); return 'Применено 12 урона: сначала щит, затем здоровье.'; });
   action('burn', () => { const effect = effects[Math.floor(Math.random() * effects.length)]!; const turns = effect.typeId === 'stun' ? 1 : 3; session.selected.AddStatus(effect.typeId, turns); return effect.name + ' · +' + turns + ' ход.'; });

@@ -24,6 +24,7 @@ export class InventoryController {
   #suppressClickUntil = 0;
 
   constructor(readonly root: HTMLElement, readonly announce: (message: string) => void) {
+    this.model.allowCombatEquipment = true;
     this.#equipment = this.element('equipment-slots');
     this.#storage = this.element('storage-slots');
     this.#dialog = this.element<HTMLDialogElement>('reward-dialog');
@@ -46,7 +47,7 @@ export class InventoryController {
         this.announce(this.model.storageFull ? 'Карманы заполнены. Выбор награды недоступен.' : 'Бой завершён. Выберите один из трёх предметов.');
       } else {
         this.model.StartCombat();
-        this.announce('Бой начался. Перемещение предметов заблокировано.');
+        this.announce('Бой начался. Выберите предметы и атакуйте противника.');
       }
     }), options);
     this.element('skip-reward').addEventListener('click', () => this.command(() => {
@@ -60,7 +61,7 @@ export class InventoryController {
     const preparation = this.model.stage === TypeGameStage.Preparation;
     this.root.dataset.stage = this.model.stage;
     this.element('equipment-state').textContent = preparation ? 'Подготовка' : 'Бой';
-    this.element('storage-panel').hidden = !preparation;
+    this.element('storage-panel').hidden = this.model.awaitingReward;
     this.element('storage-count').textContent = `${this.model.storedCount} / ${this.model.slots(TypeInventoryArea.Storage).length}`;
     this.#phaseButton.textContent = preparation ? 'Начать бой →' : 'Завершить бой →';
     this.#phaseButton.disabled = this.model.awaitingReward;
