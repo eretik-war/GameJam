@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-30",
+  "mode": "portable-snapshot",
+  "note": "No runtime Foundation linkage. Update snapshots explicitly, never silently.",
+  "sources": [
+    {
+      "source": "C:/Library/Kontent/WebGames/Foundation/docs/INFO_OBJECT_RULES.md",
+      "sourceSha256": "ef81ab9eb8536d83bc32ecdddc80ca75dc19897c05e06972d07aca6baa171c30",
+      "target": "versions/0.1.0/dev-support/standards/INFO_OBJECT_RULES.md",
+      "snapshotSha256": "beccb815e18688c7efc2527c52d05e689c02cb108146176394d755e066a3a6c4",
+      "date": "2026-10-30"
+    },
+    {
+      "source": "C:/Library/Kontent/WebGames/Foundation/docs/PARAMETER_OBJECT_RULES.md",
+      "sourceSha256": "305c4b6c9f7c608227c0f41277daf1b9a749d933855cf0aaa8bbb379d527fb82",
+      "target": "versions/0.1.0/dev-support/standards/PARAMETER_OBJECT_RULES.md",
+      "snapshotSha256": "821985fada31723040d0db33f3c97a33a3166d7d49a1ad62d3be838eb24f66d7",
+      "date": "2026-10-30"
+    },
+    {
+      "source": "C:/Library/Kontent/WebGames/Foundation/docs/PROJECT_READING_RULES.md",
+      "sourceSha256": "6657f27d1cfd688d41085618dde3223d86ce4976836d9a4802cdc553af6bb406",
+      "target": "versions/0.1.0/dev-support/standards/PROJECT_READING_RULES.md",
+      "snapshotSha256": "6657f27d1cfd688d41085618dde3223d86ce4976836d9a4802cdc553af6bb406",
+      "date": "2026-10-30"
+    },
+    {
+      "source": "C:/Library/Kontent/WebGames/Forest Alchemy/versions/0.1.0/dev-support/project-docs/UI_SIZE_CONTRACT.json",
+      "sourceSha256": "33d5b1d7863fec7736ee1cf3dc329c68344c72ed078bd5286a64aa6c7633bec1",
+      "target": "versions/0.1.0/dev-support/standards/UI_SIZE_CONTRACT.json",
+      "snapshotSha256": "33d5b1d7863fec7736ee1cf3dc329c68344c72ed078bd5286a64aa6c7633bec1",
+      "date": "2026-10-30"
+    },
+    {
+      "source": "C:/Library/Kontent/WebGames/Forest Alchemy/versions/0.1.0/dev-support/project-docs/ui-size-contract.css",
+      "sourceSha256": "258053d08364d01ec35e56855e01d15ece51bec4f7a36cea73ed583bba3f9807",
+      "target": "versions/0.1.0/dev-support/standards/ui-size-contract.css",
+      "snapshotSha256": "258053d08364d01ec35e56855e01d15ece51bec4f7a36cea73ed583bba3f9807",
+      "date": "2026-10-30"
+    }
+  ]
+}

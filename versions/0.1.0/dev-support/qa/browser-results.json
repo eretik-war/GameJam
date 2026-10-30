@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-30",
+  "browser": "148.0.7778.96",
+  "rendering": "Headless Chromium, software WebGL/SwiftShader",
+  "results": [
+    {
+      "name": "desktop-http",
+      "urlMode": "http",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "webgl": true,
+      "interaction": true,
+      "errors": [],
+      "consoleErrors": [],
+      "externalRequests": 0,
+      "horizontalOverflow": false,
+      "minButtonHeight": 52
+    },
+    {
+      "name": "desktop-file",
+      "urlMode": "direct-file-isolated-folder",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "webgl": true,
+      "interaction": true,
+      "errors": [],
+      "consoleErrors": [],
+      "externalRequests": 0,
+      "horizontalOverflow": false,
+      "minButtonHeight": 52
+    },
+    {
+      "name": "mobile-320x568",
+      "urlMode": "direct-file-isolated-folder",
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "webgl": true,
+      "interaction": false,
+      "errors": [],
+      "consoleErrors": [],
+      "externalRequests": 0,
+      "horizontalOverflow": false,
+      "minButtonHeight": 52
+    },
+    {
+      "name": "mobile-390x844",
+      "urlMode": "direct-file-isolated-folder",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "webgl": true,
+      "interaction": true,
+      "errors": [],
+      "consoleErrors": [],
+      "externalRequests": 0,
+      "horizontalOverflow": false,
+      "minButtonHeight": 52
+    },
+    {
+      "name": "mobile-568x320",
+      "urlMode": "direct-file-isolated-folder",
+      "viewport": {
+        "width": 568,
+        "height": 320
+      },
+      "webgl": true,
+      "interaction": true,
+      "errors": [],
+      "consoleErrors": [],
+      "externalRequests": 0,
+      "horizontalOverflow": false,
+      "minButtonHeight": 52
+    },
+    {
+      "name": "mobile-844x390",
+      "urlMode": "direct-file-isolated-folder",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "webgl": true,
+      "interaction": false,
+      "errors": [],
+      "consoleErrors": [],
+      "externalRequests": 0,
+      "horizontalOverflow": false,
+      "minButtonHeight": 52
+    }
+  ]
+}

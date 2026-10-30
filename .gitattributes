@@ -1,0 +1,15 @@
+* text=auto eol=lf
+*.mjs text eol=lf
+*.ts text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary
+*.webp binary
+vendor/** -text -eol
+# Preserve byte-exact local standards snapshots and their provenance hashes.
+versions/*/dev-support/standards/** -text -eol

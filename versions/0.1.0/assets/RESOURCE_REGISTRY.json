@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "resources": [
+    {
+      "id": "pixi-js",
+      "kind": "engine",
+      "author": "PixiJS contributors",
+      "license": "MIT",
+      "licenseFile": "../../../vendor/pixi-js/7.4.3/pixi.LICENSE.txt",
+      "source": "https://github.com/pixijs/pixijs/tree/v7.4.3",
+      "runtimeFile": "../../../vendor/pixi-js/7.4.3/pixi.min.js"
+    }
+  ],
+  "art": "Demo primitives are drawn by code; no copied Forest Alchemy assets.",
+  "music": null
+}

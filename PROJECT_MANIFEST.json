@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "projectId": "gamejam",
+  "name": "GameJam",
+  "root": "C:\\Library\\Kontent\\WebGames\\GameJam",
+  "activeVersion": "0.1.0",
+  "activeVersionPath": "versions/0.1.0",
+  "previousStableVersion": null,
+  "previousStableVersionPath": null,
+  "buildsRoot": "versions",
+  "projectDataRoot": "project-data",
+  "foundationLock": null,
+  "gitWorkflow": true,
+  "repository": "https://github.com/eretik-war/GameJam",
+  "status": "ready-starter-verified",
+  "lastUpdated": "2026-10-30",
+  "backupsRoot": "versions/0.1.0/backups",
+  "rootIsInformational": true,
+  "engineLock": "ENGINE_LOCK.json",
+  "documentationIndex": "versions/0.1.0/dev-support/DOCUMENTATION_INDEX.md",
+  "runtimeMode": "portable-local-vendor"
+}

@@ -1,0 +1,23 @@
+node_modules/
+work/
+backups/
+**/backups/
+**/builds/
+versions/*-offline.html
+versions/*/dev-support/build-manifest.json
+versions/*/dev-support/preview-manifest.json
+
+# Machine-local configuration and credentials.
+.env
+.env.*
+!.env.example
+.npmrc.local
+*.pem
+*.key
+*.pfx
+*.p12
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

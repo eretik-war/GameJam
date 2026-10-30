@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-30",
+  "result": "passed",
+  "originalRoot": "C:\\Library\\Kontent\\WebGames\\GameJam",
+  "relocatedRoot": "C:\\Library\\Kontent\\WebGames\\GameJam\\work\\transfer-smoke",
+  "foundationRequired": false,
+  "byteIdenticalBuild": true,
+  "logs": [
+    {
+      "command": "npm ci --no-audit --no-fund",
+      "exitCode": 0,
+      "stdout": "\nadded 70 packages in 4s\n",
+      "stderr": "npm warn Unknown user config \"allow-scripts\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\n"
+    },
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "stdout": "\n> gamejam-starter@0.1.0 check\n> npm run typecheck && npm test && npm run build:offline && npm run validate\n\n✔ instances own independent parameter objects; Info and snapshots stay frozen (1.1113ms)\n✔ restore is additive, clamps to explicit health range and updates the common view (0.28ms)\n✔ round-trip restores IDs, selected target, turn, values and the original Info reference (0.4273ms)\n✔ invalid saves fail without replacing the running session (1.3031ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 77.2151\n{\n  \"projectId\": \"gamejam\",\n  \"version\": \"0.1.0\",\n  \"outputs\": [\n    {\n      \"path\": \"versions/0.1.0/builds/preview.html\",\n      \"bytes\": 470137,\n      \"sha256\": \"3be7e524f47d9c3f8c911615a230e263df66c5559100bbe880dd15dfe93824b9\"\n    },\n    {\n      \"path\": \"versions/gamejam_0.1.0-offline.html\",\n      \"bytes\": 470137,\n      \"sha256\": \"3be7e524f47d9c3f8c911615a230e263df66c5559100bbe880dd15dfe93824b9\"\n    }\n  ],\n  \"engineVersion\": \"7.4.3\",\n  \"runtimeBytes\": {\n    \"engine\": 456112,\n    \"game\": 9427,\n    \"css\": 1706\n  },\n  \"externalRuntimeRequests\": 0,\n  \"sdk\": null\n}\nValid: pointers, engine SHA-256, exact npm locks, index and local documentation links.\n",
+      "stderr": "npm warn Unknown user config \"allow-scripts\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\nnpm notice run gamejam-starter@0.1.0 typecheck\nnpm notice run tsc --noEmit\nnpm notice run gamejam-starter@0.1.0 test\nnpm notice run node tools/run-tests.mjs\nnpm notice run gamejam-starter@0.1.0 build:offline\nnpm notice run node tools/build.mjs --offline\nnpm notice run gamejam-starter@0.1.0 validate\nnpm notice run node tools/validate.mjs\n"
+    }
+  ]
+}

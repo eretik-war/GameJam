@@ -1,0 +1,10 @@
+# GameJam — вход в проект
+
+Это переносимая основа новой 2D-игры для геймджема. Рабочая версия и пути — [PROJECT_MANIFEST.json](PROJECT_MANIFEST.json). Сейчас активна versions/0.1.0. PixiJS закреплён отдельно в [ENGINE_LOCK.json](ENGINE_LOCK.json); внешний Foundation для запуска и сборки не нужен.
+
+Человеку начать с [START_HERE.md](START_HERE.md). Нейронке учитывать [AGENTS.md](AGENTS.md) и выбрать режим:
+
+1. **Общее знакомство без направления:** базовый набор — PROJECT_INSTRUCTIONS, CURRENT_STATE, CODE_MAP, WORKFLOW, PIXIJS_GUIDE, RUN_COMMANDS, ARCHITECTURE_2D, INFO_OBJECT_RULES, PARAMETER_OBJECT_RULES, MOBILE_UI_ASSETS, QUALITY_CHECKLIST. Пути и остальные темы — в [индексе](versions/0.1.0/dev-support/DOCUMENTATION_INDEX.md).
+2. **Конкретная задача:** индекс → нужный раздел CODE_MAP → 1–3 тематических документа и связанные исходники. Например, NPC/предметы требуют обоих контрактов; правка размеров — MOBILE_UI_ASSETS; настройка запуска — PIXIJS_GUIDE и RUN_COMMANDS. Общий набор целиком не читать. Если задача расширилась, снова использовать индекс до изменения.
+
+Демо показывает NPC и параметры; тема, правила геймджема, платформы и окончательная механика ещё не выбраны. Не считать пример утверждённым геймдизайном. Собранный [offline HTML](versions/gamejam_0.1.0-offline.html) — результат сборки, редактировать исходники.

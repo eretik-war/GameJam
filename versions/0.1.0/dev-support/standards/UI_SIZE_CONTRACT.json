@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "referenceId": "forest-alchemy",
+  "referenceVersion": "0.1.0",
+  "updated": "2026-10-16",
+  "scope": "All component geometry for new simple PixiJS games",
+  "mandatory": true,
+  "geometryCss": "ui-size-contract.css",
+  "source": "styles.css",
+  "units": "CSS pixels after responsive layout; texture pixels are separate",
+  "inheritance": {
+    "copyAllGeometry": true,
+    "reuseVisualAssets": false,
+    "reuseSoundAssets": false,
+    "newGraphics": "Generate new project-specific atlases and background",
+    "newAudio": "Select new free commercial game music; create new effects; never generate background music",
+    "override": "Change accepted sizes only for an explicit user-requested layout change; record it"
+  },
+  "css": {
+    "allComponents": "The exported CSS contains EVERY geometry rule in cascade order, including modals, rewards, collection, tutorial, menus and responsive overrides. Copy it intact and provide your own colors, fonts and artwork.",
+    "unit": "clamp(.8px,.24vmin,1.12px)",
+    "edge": "clamp(8px,1.5vmin,20px)",
+    "gap": "clamp(6px,1.1vmin,14px)",
+    "topHeight": "clamp(46px,7.2vmin,68px)",
+    "toolbar": {
+      "desktop": "Content width at the right: review reward, multiplier, player, coins, language, settings; matching top height",
+      "portrait": "Full-width controls row; second full-width row with review reward left and flexible multiplier right",
+      "playerFont": "clamp(16px,20 * var(--u),24px)",
+      "coinsFont": "clamp(20px,26 * var(--u),34px)",
+      "settingsIcon": "94% of button side; alpha-trimmed silhouette centered"
+    },
+    "multiplier": {
+      "widthDesktop": "clamp(216px,30vw,330px)",
+      "widthVeryShortLandscape": "clamp(210px,27vw,260px)",
+      "barHeightDesktop": "clamp(16px,18 * var(--u),22px)",
+      "barHeightPortrait": "clamp(18px,22 * var(--u),28px)",
+      "font": "clamp(16px,18 * var(--u),22px)",
+      "bands": 5,
+      "bandGap": 2
+    },
+    "orders": {
+      "baseWidth": 176,
+      "baseHeight": 84,
+      "widthRange": [
+        120,
+        196
+      ],
+      "scale": "--order-w / --order-design-width; design width >=176, shared across all cards",
+      "icon": 78,
+      "counterFont": 32,
+      "rewardFont": 28,
+      "coin": 22,
+      "padding": 2,
+      "layout": "One horizontal portrait row, no wrap or horizontal scroll; icon left, counter upper right, price lower right; all parts share one scale",
+      "widthRangeMeaning": "Desktop 120–196 responsive minimum; portrait width comes from available width / order count, without 120px minimum",
+      "width": "Desktop max-content; portrait 100% of equal grid cell, min-width:0",
+      "contentColumn": "Desktop minmax(max-content,1fr); portrait minmax(0,1fr)",
+      "fieldInset": "Measured orders width on desktop and actual row height in portrait",
+      "portraitColumns": "repeat(orderCount,minmax(0,1fr)); always one row; no wrap or scroll",
+      "minTouchHeight": 44
+    },
+    "navigation": {
+      "unit": "clamp(.86px,.24vmin,1.12px)",
+      "desktopHeight": "68 * var(--nav-u)",
+      "desktopIcon": "56 * var(--nav-u)",
+      "desktopFont": "20 * var(--nav-u)",
+      "desktopWidth": "max-content",
+      "portraitHeight": "clamp(70px,80 * var(--u),88px)",
+      "portraitIcon": "69% of button height",
+      "portraitFont": "clamp(16px,4.5vw,24px)",
+      "portraitLayout": "4 buttons in one full-width row, icon above text",
+      "lockedSections": {
+        "collection": 3,
+        "rewards": 5,
+        "incubator": 8,
+        "orders": 10,
+        "review": 10,
+        "adBuy": 4,
+        "visibility": "display:none before unlock; no placeholders",
+        "mobileSizing": "Keep full-four-row cell width, center only visible buttons",
+        "ordersSpace": "No reserved space before unlock"
+      }
+    },
+    "purchases": {
+      "portraitColumns": 2,
+      "portraitWidth": "Two equal halves of all available width",
+      "portraitUnit": "clamp(.8px,calc((100vw - 2 * var(--edge) - var(--gap)) / 2 / 188),1.2px)",
+      "portraitArt": "54 * var(--offer-u)",
+      "portraitHeight": "Art + 4 * var(--offer-u) + 2px; at least 48px",
+      "portraitPriceFont": "28 * var(--offer-u)",
+      "portraitAdFont": "20 * var(--offer-u)",
+      "portraitAdIcon": "24 * var(--offer-u)",
+      "portraitPillMinimumHeight": "40 * var(--offer-u)",
+      "portraitLayout": "Image left, price/ad right; entire group centered horizontally and vertically",
+      "desktopArt": "clamp(54px,min(22vw,14vh),96px)",
+      "desktopLayout": "Vertical offers, side by side in landscape below 560px height",
+      "adWidth": "max-content; one background; no duplicate title or level text"
+    },
+    "modals": {
+      "standardWidth": "min(1120px,96vw)",
+      "maxHeight": "95dvh",
+      "settingsWidth": "min(480px,96vw)",
+      "settingsRows": "clamp(138px,39vw,190px) minmax(100px,1fr)",
+      "settingsFont": "clamp(16px,4.4vw,22px)",
+      "sliderHeight": 36,
+      "rewardArt": "clamp(68px,min(26vw,17vh),128px)",
+      "unitArt": "clamp(96px,108 * var(--u),128px)",
+      "alchemistChallengeWidth": "min(520px,96vw)",
+      "opponentNicknameFont": "clamp(22px,5.5vw,30px)"
+    },
+    "developer": {
+      "progressResetButtonMinimumHeight": 44,
+      "fontSize": 16,
+      "panelMaximumHeight": "30dvh",
+      "availability": "devMode / F2 only; never production"
+    },
+    "review": {
+      "height": "var(--top-h); portrait var(--combo-h)",
+      "imageDesktop": "78% of top height",
+      "imagePortrait": "65% of combo height",
+      "imageShortLandscape": "65% of top height",
+      "rewardCount": 20,
+      "position": "Left of multiplier, hidden until player 10 / unavailable review / claimed",
+      "mobileWidth": "max-content; max-width:40%; multiplier gets all remaining width",
+      "shortLandscape": "Below 700px width show image + count; label remains in aria-label",
+      "reminder": "Once per minute, 6 seconds; no automatic dialog",
+      "mobileLabel": "14–16px; short localized Rate game / Оценить; 18px count; both fit combo row height"
+    },
+    "battleCooldown": {
+      "desktop": "Above battle button, content width",
+      "portrait": "Fixed right edge, above shop; max-width: viewport minus 2 edges",
+      "content": "Remaining time, image and localized skip + advertisement label",
+      "busy": "Disabled until rewarded Promise settles"
+    }
+  },
+  "renderer": {
+    "field": {
+      "source": "src/render/field-layout.js",
+      "objectSize": "max(80,min(176,width * .28,height * .34))",
+      "hitRadius": "max(32,objectSize * .43)",
+      "logicalWorld": [
+        1080,
+        1080
+      ],
+      "margin": 110,
+      "spriteShape": "Square in CSS pixels despite independent X/Y field scales"
+    },
+    "battle": {
+      "source": "src/render/battle-layout.js + src/render/battle-view.js",
+      "layout": "Always vertical: player above opponent; whole frame centered in the available field on desktop",
+      "frameWidthMax": 500,
+      "logicalHeightRange": [
+        420,
+        800
+      ],
+      "smallViewport": "Scale the whole vertical composition to fit; never split teams into horizontal columns",
+      "unitSizeRange": [
+        64,
+        112
+      ],
+      "vesselSizeRange": [
+        80,
+        156
+      ],
+      "minimumLabelFont": 16
+    },
+    "levelBadge": {
+      "source": "src/render/squish-art.js",
+      "alignment": "Center visible glyph actualBoundingBox bounds"
+    },
+    "clickNumber": {
+      "source": "src/render/world-view.js",
+      "fontSize": 28,
+      "fontWeight": 900,
+      "strokeThickness": 0,
+      "lifetimeMs": 875,
+      "previousLifetimeMs": 700,
+      "durationChangePercent": 25,
+      "trajectoryWorldDistanceRange": [
+        180,
+        240
+      ],
+      "movement": "Same travel distance over 25% more time",
+      "paletteOwner": "src/render/multiplier-style.js",
+      "paletteRule": "Exact same color as matching multiplier band and label"
+    }
+  },
+  "textureGeometry": {
+    "referenceOnly": true,
+    "reusePixels": false,
+    "background": [
+      1536,
+      1024
+    ],
+    "atlas": [
+      2048,
+      1280
+    ],
+    "frames": 113,
+    "items": [
+      256,
+      256
+    ],
+    "uiIcons": [
+      128,
+      128
+    ],
+    "source": "assets/atlases/game.json; coordinates/sizes may be copied, image files may not",
+    "additionalAtlases": [
+      {
+        "levels": [
+          31,
+          65
+        ],
+        "size": [
+          1344,
+          960
+        ],
+        "cell": [
+          192,
+          192
+        ]
+      },
+      {
+        "levels": [
+          66,
+          100
+        ],
+        "size": [
+          1344,
+          960
+        ],
+        "cell": [
+          192,
+          192
+        ]
+      }
+    ]
+  },
+  "qaViewports": [
+    [
+      320,
+      568
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      568,
+      320
+    ],
+    [
+      844,
+      390
+    ],
+    [
+      930,
+      870
+    ],
+    [
+      1280,
+      720
+    ]
+  ],
+  "buildTargetBytesApprox": 10000000,
+  "refreshCommand": "node tools/project/export-ui-geometry.mjs",
+  "sourceCssSha256": "e93e105b27da94b588679d802b8111db98ff79a41b2b29695a6ae89e231a86b5",
+  "geometryCssSha256": "258053d08364d01ec35e56855e01d15ece51bec4f7a36cea73ed583bba3f9807",
+  "geometryRules": 371
+}

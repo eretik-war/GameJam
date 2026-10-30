@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "engineId": "pixi-js",
+  "packageName": "pixi.js",
+  "version": "7.4.3",
+  "runtime": "vendor/pixi-js/7.4.3/pixi.min.js",
+  "license": "vendor/pixi-js/7.4.3/pixi.LICENSE.txt",
+  "files": [
+    {
+      "path": "vendor/pixi-js/7.4.3/pixi.min.js",
+      "sha256": "8130b66141d2e81e15608e5a45e7a750d5a4808e572cc67ab16570f871980c31",
+      "bytes": 456112
+    },
+    {
+      "path": "vendor/pixi-js/7.4.3/pixi.LICENSE.txt",
+      "sha256": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
+      "bytes": 1092
+    }
+  ],
+  "source": "WebGames Foundation exact engine profile, copied without modification",
+  "sourceTreeSha256": "ce0c117af35cf3311afa8114bbf52998bfcf50e7e1f1b17e8aa366d5dfc71dde",
+  "sourceManifest": "C:/Library/Kontent/WebGames/Foundation/engines/pixi-js/versions/7.4.3/ENGINE_MANIFEST.json",
+  "policy": "Local immutable vendor copy; no CDN or live Foundation dependency. npm pixi.js is used for TypeScript types."
+}

@@ -1,0 +1,25 @@
+{
+  "name": "gamejam-starter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "node tools/dev-server.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node tools/run-tests.mjs",
+    "test:sync": "node --test tools/sync.test.mjs",
+    "sync:status": "node tools/sync.mjs status",
+    "sync:pull": "node tools/sync.mjs pull",
+    "sync:push": "node tools/sync.mjs push",
+    "sync:auto:install": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/sync-auto.ps1 -Action install",
+    "sync:auto:status": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/sync-auto.ps1 -Action status",
+    "sync:auto:remove": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/sync-auto.ps1 -Action remove",
+    "validate": "node tools/validate.mjs",
+    "build": "node tools/build.mjs",
+    "build:offline": "node tools/build.mjs --offline",
+    "check": "npm run typecheck && npm test && npm run test:sync && npm run build:offline && npm run validate"
+  },
+  "dependencies": { "pixi.js": "7.4.3" },
+  "devDependencies": { "typescript": "5.9.3", "esbuild": "0.25.12", "@types/node": "22.15.30" }
+}
