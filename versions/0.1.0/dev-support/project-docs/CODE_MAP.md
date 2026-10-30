@@ -18,3 +18,6 @@
 
 | Противники/щит/статусы | src/enemies/enemy.ts; status-effects/*.ts | enemies/session.ts, enemies/view.ts, main.ts, tests/domain.test.ts |
 Новый контракт и границы демо: ENEMIES.md.
+
+| JSON-ассеты Enemy/Attack | корень assets/enemies, assets/attacks; src/enemies/enemy.ts, attack.ts | EnemySession, loadSession, tests/domain.test.ts |
+| Изображения и упаковка | корень assets/images; src/presentation/images.ts; tools/build.mjs JPG dataurl | main.ts, offline/HTTP |

@@ -9,8 +9,35 @@
       "licenseFile": "../../../vendor/pixi-js/7.4.3/pixi.LICENSE.txt",
       "source": "https://github.com/pixijs/pixijs/tree/v7.4.3",
       "runtimeFile": "../../../vendor/pixi-js/7.4.3/pixi.min.js"
+    },
+    {
+      "id": "test1",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/test1.jpg",
+      "sha256": "00778703a3fb76e77bbe1ada99a7e1b6b0a7b99b144796cdacf86ec11595bc5d"
+    },
+    {
+      "id": "tes2",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/tes2.jpg",
+      "sha256": "e91ddc5870032ead1cffe54e20be700b32a75f5b51824ee6ab33c04bfa23d410"
+    },
+    {
+      "id": "testeffect",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/testeffect.jpg",
+      "sha256": "6f8cd4181b1eb6a2fca6283bf41d103068a18dc8d0dcd98b7e6bab4e3442ca46"
     }
   ],
-  "art": "Demo primitives are drawn by code; no copied Forest Alchemy assets.",
+  "art": "User-provided test images in root assets/images; used as temporary debug assets. Authorship and redistribution license not supplied.",
   "music": null
 }

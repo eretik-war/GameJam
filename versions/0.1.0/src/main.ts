@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { resolveImage } from './presentation/images';
 import { createSession, loadSession } from './enemies/session';
 import { createNPCView } from './enemies/view';
 
@@ -20,6 +21,16 @@ try {
   });
   canvasHost.appendChild(app.view);
   let disposed = false;
+  const textures = new Map<string, PIXI.Texture>();
+  function getTexture(path: string): PIXI.Texture {
+    const cached = textures.get(path);
+    if (cached) return cached;
+    const texture = PIXI.Texture.from(resolveImage(path));
+    textures.set(path, texture);
+    texture.baseTexture.once('loaded', () => { if (!disposed) render(); });
+    return texture;
+  }
+  const heroTexture = getTexture('images/test1.jpg');
   const observer = new ResizeObserver(() => {
     if (disposed) return;
     app.resize(); render();
@@ -31,16 +42,54 @@ try {
     for (const child of app.stage.removeChildren()) child.destroy({ children: true });
     const views = session.npcs.map(createNPCView);
     const width = app.screen.width;
+    const height = app.screen.height;
+    const hero = new PIXI.Sprite(heroTexture);
+    hero.anchor.set(0.5);
+    const heroScale = Math.min(width * 0.29 / heroTexture.width, height * 0.8 / heroTexture.height);
+    hero.scale.set(heroScale);
+    hero.position.set(width * 0.19, height * 0.5);
+    app.stage.addChild(hero);
+    const slots = [[0.53, 0.30], [0.75, 0.30], [0.91, 0.5], [0.53, 0.75], [0.75, 0.75]];
     views.forEach((view, index) => {
       const container = new PIXI.Container();
-      container.x = width * (index + 1) / (views.length + 1);
-      container.y = app.screen.height / 2 - 10;
+      const slot = slots[index % slots.length]!;
+      container.x = width * slot[0]!;
+      container.y = height * slot[1]!;
+      const scale = Math.min(1.25, Math.max(0.67, width / 900), height / 360);
+      container.scale.set(scale);
+      const texture = getTexture(view.imageUrl);
+      const sprite = new PIXI.Sprite(texture);
+      sprite.anchor.set(view.visual.anchor.x, view.visual.anchor.y);
+      const spriteScale = Math.min(80 / texture.width, 88 / texture.height) * view.visual.scale;
+      sprite.scale.set(spriteScale);
+      sprite.position.set(0, 44);
+      if (!session.npcs[index]!.alive) sprite.tint = 0x777777;
+      container.addChild(sprite);
+      const bounds = sprite.getLocalBounds();
       const shape = new PIXI.Graphics();
       shape.lineStyle(3, session.selectedId === view.id ? 0xffffff : 0x344760);
-      shape.beginFill(view.tint).drawRoundedRect(-40, -44, 80, 88, 18).endFill();
+      shape.drawRoundedRect(bounds.x * spriteScale - 3, 44 + bounds.y * spriteScale - 3,
+        sprite.width + 6, sprite.height + 6, 3);
       container.addChild(shape);
-      const label = new PIXI.Text(`${view.id}\n${view.health} / ${view.maxHealth}`, {
-        fontFamily: 'Arial', fontSize: 18, fill: 0xeef7ff, align: 'center',
+      const barTop = Math.min(-44, 44 - sprite.height) - 24;
+      const bars = new PIXI.Graphics();
+      for (const [offset, value, max, color] of [[0, view.health, view.maxHealth, 0x68d99b], [10, view.shield, view.maxShield, 0x64baff]]) {
+        const y = barTop + offset!;
+        bars.beginFill(0x304155).drawRect(-40, y, 80, 7).endFill();
+        const ratio = max! > 0 ? Math.min(1, value! / max!) : 0;
+        if (ratio > 0) bars.beginFill(color!).drawRect(-40, y, 80 * ratio, 7).endFill();
+      }
+      container.addChild(bars);
+      view.statuses.forEach((effect, effectIndex) => {
+        const icon = new PIXI.Sprite(getTexture(effect.imageUrl));
+        const iconScale = Math.min(16 / icon.texture.width, 16 / icon.texture.height);
+        icon.scale.set(iconScale);
+        icon.anchor.set(0.5, 1);
+        icon.position.set(-32 + effectIndex * 20, barTop - 4);
+        container.addChild(icon);
+      });
+      const label = new PIXI.Text(view.id, {
+        fontFamily: 'Arial', fontSize: 20, fill: 0xeef7ff, align: 'center',
       });
       label.anchor.set(0.5, 0);
       label.y = 56;
@@ -59,7 +108,7 @@ try {
     panel.append(title);
     if (session.selected.EnemyInfo.imageUrl) {
       const image = document.createElement('img');
-      image.src = session.selected.EnemyInfo.imageUrl;
+      image.src = resolveImage(session.selected.EnemyInfo.imageUrl);
       image.alt = session.selected.EnemyInfo.Name;
       image.style.maxWidth = '100%';
       panel.append(image);
@@ -69,15 +118,6 @@ try {
       row.textContent = `${parameter.label}: ${parameter.value}`;
       row.dataset.parameter = parameter.type;
       panel.append(row);
-    }
-    const buttons = requireElement('selection');
-    buttons.replaceChildren();
-    for (const npc of session.npcs) {
-      const button = document.createElement('button');
-      button.textContent = npc.id;
-      button.setAttribute('aria-pressed', String(session.selectedId === npc.id));
-      button.addEventListener('click', () => { session.Select(npc.id); render(); });
-      buttons.append(button);
     }
     // Refresh world transforms immediately so input after a DOM action uses the new scene.
     app.renderer.render(app.stage);
@@ -120,11 +160,9 @@ try {
   window.addEventListener('pageshow', onPageShow);
   window.addEventListener('pagehide', onPageHide);
   render();
-  status.textContent = 'Выберите NPC на поле или кнопкой. Изменения принадлежат только этой копии.';
+  status.textContent = 'Выберите противника нажатием на него. Изменения принадлежат только этой копии.';
   requireElement('app').dataset.ready = 'true';
 } catch (error) {
   status.textContent = `Не удалось запустить WebGL: ${error instanceof Error ? error.message : String(error)}`;
   console.error(error);
 }
-
-

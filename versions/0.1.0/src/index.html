@@ -4,22 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; connect-src 'none';">
-  <title>GameJam · начало</title>
+  <title>GameJam · сцена</title>
   <style>/*__STYLE__*/</style>
 </head>
 <body>
   <main id="app">
-    <header><p class="eyebrow">GAMEJAM / PIXIJS 7.4.3</p><h1>Противники и статусы</h1><p>Два противника: здоровье, щит и независимые статусные эффекты.</p></header>
-    <section class="workspace" aria-label="Пример игровых данных">
-      <div><div class="scene-heading"><h2>Поле</h2><strong id="turn">Ход 1</strong></div><div id="scene" role="img" aria-label="Два NPC; выбор также доступен кнопками ниже"></div><nav id="selection" aria-label="Выбор NPC"></nav></div>
-      <aside><section id="parameters" aria-live="polite"></section><div class="actions"><button id="end-turn">Начало следующего хода</button><button id="restore">Нанести 12 урона</button><button id="burn">Горение · +3 хода</button><button id="save">Сохранить</button><button id="load">Загрузить</button></div></aside>
+    <section class="battlefield" aria-label="Боевая сцена">
+      <div id="scene" role="group" aria-label="Герой слева, противники справа. Нажмите на противника для выбора."></div>
     </section>
-    <p id="status" role="status">Запуск…</p>
-    <footer>Здесь показана структура данных. Тему, правила боя и инвентарь создаём под ваш геймджем. PixiJS 7.4.3 · MIT · Mathew Groves, Chad Engler.</footer>
+    <footer class="debug">
+      <div class="debug-heading"><h1>Debug</h1><strong id="turn">Ход 1</strong></div>
+      <section id="parameters" aria-live="polite"></section>
+      <div class="actions"><button id="end-turn">Начало следующего хода</button><button id="restore">Нанести 12 урона</button><button id="burn">Горение · +3 хода</button><button id="save">Сохранить</button><button id="load">Загрузить</button></div>
+      <p id="status" role="status">Запуск…</p>
+    </footer>
   </main>
   <script>/*__ENGINE__*/</script>
   <script>/*__GAME__*/</script>
 </body>
 </html>
-
-

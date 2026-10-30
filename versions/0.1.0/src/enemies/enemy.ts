@@ -1,13 +1,23 @@
 import { Parameter, assertFinite } from '../domain/parameters';
 import { getStatusEffect } from './status-effects/catalog';
 import type { ActiveStatus } from './status-effects/status-effect';
+import testEnemy from '../../../../assets/enemies/test-enemy.json';
+import { getAttackInfo } from './attack';
 export enum TypeEnemyParameter { Health = 'health', Shield = 'shield' }
 export class EnemyInfo {
   readonly Parameters: readonly Readonly<Parameter<TypeEnemyParameter>>[];
-  constructor(readonly typeId: string, readonly Name: string, health: number, shield: number, readonly imageUrl: string) {
+  readonly attackIds: readonly string[];
+  readonly visual: Readonly<{ scale: number; anchor: Readonly<{ x: number; y: number }> }>;
+  constructor(readonly typeId: string, readonly Name: string, health: number, shield: number, readonly imageUrl: string,
+    attackIds: readonly string[] = [], visual = { scale: 1, anchor: { x: 0.5, y: 1 } }) {
     assertFinite(health); assertFinite(shield);
     if (!typeId || !Name || health <= 0 || shield < 0) throw new Error('Invalid enemy info');
     this.Parameters = Object.freeze([new Parameter(TypeEnemyParameter.Health, health), new Parameter(TypeEnemyParameter.Shield, shield)].map(p => Object.freeze(p)));
+    attackIds.forEach(getAttackInfo);
+    if (new Set(attackIds).size !== attackIds.length || !Number.isFinite(visual.scale) || visual.scale <= 0 ||
+      ![visual.anchor.x, visual.anchor.y].every(value => Number.isFinite(value) && value >= 0 && value <= 1)) throw new Error('Invalid enemy visual or attacks');
+    this.attackIds = Object.freeze([...attackIds]);
+    this.visual = Object.freeze({ scale: visual.scale, anchor: Object.freeze({ ...visual.anchor }) });
     Object.freeze(this);
   }
 }
@@ -20,7 +30,7 @@ export class Enemy {
   }
   get typeId(): string { return this.EnemyInfo.typeId; }
   get Parameters() { return this.#parameters.map(p => Object.freeze(new Parameter(p.Type, p.Value))); }
-  get statuses() { return this.#statuses.map(s => Object.freeze({ typeId: s.effect.typeId, name: s.effect.name, remainingTurns: s.remainingTurns })); }
+  get statuses() { return this.#statuses.map(s => Object.freeze({ typeId: s.effect.typeId, name: s.effect.name, imageUrl: s.effect.imageUrl, remainingTurns: s.remainingTurns })); }
   GetParameter(type: TypeEnemyParameter): number { return this.#parameters.find(p => p.Type === type)!.Value; }
   get alive(): boolean { return this.GetParameter(TypeEnemyParameter.Health) > 0; }
   ChangeParameter(type: TypeEnemyParameter, delta: number): void {
@@ -57,5 +67,13 @@ export class Enemy {
   }
   Save() { return { id: this.id, typeId: this.typeId, Parameters: this.Parameters, statuses: this.statuses.map(s => ({ typeId: s.typeId, remainingTurns: s.remainingTurns })) }; }
 }
-export const demoEnemyInfo = new EnemyInfo('enemy.trainee', 'Противник', 30, 8, '');
+export function createEnemyInfoFromAsset(asset: typeof testEnemy): EnemyInfo {
+  if (asset.parameters.length !== 2 || new Set(asset.parameters.map(p => p.type)).size !== 2 ||
+    asset.parameters.some(p => !Object.values(TypeEnemyParameter).includes(p.type as TypeEnemyParameter))) throw new Error('Invalid asset parameters');
+  const health = asset.parameters.find(p => p.type === TypeEnemyParameter.Health);
+  const shield = asset.parameters.find(p => p.type === TypeEnemyParameter.Shield);
+  if (!health || !shield || !/^images\/[a-zA-Z0-9._-]+$/.test(asset.visual.image)) throw new Error('Invalid enemy asset');
+  return new EnemyInfo(asset.typeId, asset.name, health.value, shield.value, asset.visual.image, asset.attackIds, asset.visual);
+}
+export const demoEnemyInfo = createEnemyInfoFromAsset(testEnemy);
 

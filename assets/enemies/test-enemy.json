@@ -1,0 +1,14 @@
+{
+  "typeId": "enemy.trainee",
+  "name": "Тестовый противник",
+  "parameters": [
+    { "type": "health", "value": 30 },
+    { "type": "shield", "value": 8 }
+  ],
+  "visual": {
+    "image": "images/tes2.jpg",
+    "scale": 1,
+    "anchor": { "x": 0.5, "y": 1 }
+  },
+  "attackIds": ["attack.test"]
+}

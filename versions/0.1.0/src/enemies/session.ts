@@ -1,6 +1,6 @@
 import { Enemy, demoEnemyInfo, TypeEnemyParameter } from './enemy';
 export class EnemySession {
-  constructor(readonly npcs: readonly Enemy[] = [new Enemy('enemy-1', demoEnemyInfo), new Enemy('enemy-2', demoEnemyInfo)], public turn = 1, public selectedId = npcs[0]!.id) {}
+  constructor(readonly npcs: readonly Enemy[] = Array.from({ length: 5 }, (_, index) => new Enemy(`enemy-${index + 1}`, demoEnemyInfo)), public turn = 1, public selectedId = npcs[0]!.id) {}
   get selected(): Enemy { return this.npcs.find(e => e.id === this.selectedId)!; }
   Select(id: string): void { if (!this.npcs.some(e => e.id === id)) throw new Error('Unknown enemy'); this.selectedId = id; }
   EndTurn(): void { if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow'); this.npcs.forEach(e => e.BeginTurn()); this.turn++; }

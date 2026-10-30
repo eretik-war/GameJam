@@ -92,3 +92,36 @@ test('statuses extend duration, tick through shield and expire independently', (
   const bad = JSON.parse(restored.Save()); bad.enemies[0].statuses[0].remainingTurns = -1;
   assert.throws(() => loadEnemySession(JSON.stringify(bad)));
 });
+
+import testEnemyAsset from '../../../assets/enemies/test-enemy.json';
+import { createEnemyInfoFromAsset, demoEnemyInfo } from '../src/enemies/enemy';
+import { getAttackInfo } from '../src/enemies/attack';
+import { createNPCView as createEnemyView } from '../src/enemies/view';
+
+test('enemy asset resolves immutable attacks and visual metadata; rejects invalid references', () => {
+  assert.equal(demoEnemyInfo.attackIds.length, 1);
+  assert.equal(getAttackInfo(demoEnemyInfo.attackIds[0]!).name, 'Тестовая атака');
+  assert.ok(Object.isFrozen(demoEnemyInfo.visual.anchor));
+  assert.ok(Object.isFrozen(demoEnemyInfo.attackIds));
+  assert.ok(Object.isFrozen(demoEnemyInfo.Parameters[0]));
+  for (const mutate of [
+    (d: typeof testEnemyAsset) => { d.parameters[1]!.type = 'health'; },
+    (d: typeof testEnemyAsset) => { d.attackIds = ['missing']; },
+    (d: typeof testEnemyAsset) => { d.visual.scale = -1; },
+    (d: typeof testEnemyAsset) => { d.visual.image = '../missing.jpg'; },
+  ]) {
+    const data = structuredClone(testEnemyAsset); mutate(data);
+    assert.throws(() => createEnemyInfoFromAsset(data));
+  }
+  const session = createEnemySession();
+  assert.equal(session.npcs.length, 5);
+  session.selected.AddStatus('burning', 1);
+  const view = createEnemyView(session.selected);
+  assert.equal(view.shield, 8);
+  assert.equal(view.maxShield, 8);
+  assert.equal(view.statuses[0]!.imageUrl, 'images/testeffect.jpg');
+  assert.equal(createEnemyView(loadEnemySession(session.Save()).selected).statuses[0]!.imageUrl, view.statuses[0]!.imageUrl);
+  session.EndTurn();
+  assert.equal(createEnemyView(session.selected).statuses.length, 0);
+  assert.equal(createEnemyView(session.npcs[1]!).shield, 8);
+});
