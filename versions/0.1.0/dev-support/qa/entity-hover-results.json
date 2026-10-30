@@ -1,0 +1,104 @@
+[
+  {
+    "name": "entity-hover-http",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "mode": "http",
+    "delay499And500": true,
+    "realEnemies": true,
+    "rewardTopLayer": true,
+    "storageAndEquipment": true,
+    "dragSuppression": true,
+    "combatDisabledHover": true,
+    "bounds": true,
+    "errors": [],
+    "externalRequests": []
+  },
+  {
+    "name": "entity-hover-file",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "mode": "isolated-file",
+    "delay499And500": true,
+    "realEnemies": true,
+    "rewardTopLayer": true,
+    "storageAndEquipment": true,
+    "dragSuppression": true,
+    "combatDisabledHover": true,
+    "bounds": true,
+    "errors": [],
+    "externalRequests": []
+  },
+  {
+    "name": "entity-hover-320x568",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "mode": "isolated-file",
+    "delay499And500": false,
+    "realEnemies": true,
+    "rewardTopLayer": false,
+    "storageAndEquipment": true,
+    "dragSuppression": true,
+    "combatDisabledHover": true,
+    "bounds": true,
+    "errors": [],
+    "externalRequests": []
+  },
+  {
+    "name": "entity-hover-390x844",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "mode": "isolated-file",
+    "delay499And500": false,
+    "realEnemies": true,
+    "rewardTopLayer": false,
+    "storageAndEquipment": true,
+    "dragSuppression": true,
+    "combatDisabledHover": true,
+    "bounds": true,
+    "errors": [],
+    "externalRequests": []
+  },
+  {
+    "name": "entity-hover-568x320",
+    "viewport": {
+      "width": 568,
+      "height": 320
+    },
+    "mode": "isolated-file",
+    "delay499And500": false,
+    "realEnemies": true,
+    "rewardTopLayer": false,
+    "storageAndEquipment": true,
+    "dragSuppression": true,
+    "combatDisabledHover": true,
+    "bounds": true,
+    "errors": [],
+    "externalRequests": []
+  },
+  {
+    "name": "entity-hover-844x390",
+    "viewport": {
+      "width": 844,
+      "height": 390
+    },
+    "mode": "isolated-file",
+    "delay499And500": false,
+    "realEnemies": true,
+    "rewardTopLayer": false,
+    "storageAndEquipment": true,
+    "dragSuppression": true,
+    "combatDisabledHover": true,
+    "bounds": true,
+    "errors": [],
+    "externalRequests": []
+  }
+]

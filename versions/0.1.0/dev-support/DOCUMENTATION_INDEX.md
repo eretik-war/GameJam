@@ -34,6 +34,12 @@ summary: Базовый набор; команды/настройка/ошибк
 file: `dev-support/project-docs/ARCHITECTURE_2D.md`
 summary: Базовый набор; слои, инвентарь, действия, save.
 
+file: `dev-support/project-docs/INVENTORY.md`
+summary: Реализованный инвентарь: владельцы, 3 активных слота/4×3 кармана, стадии, награды, переносы, границы сохранения.
+
+file: `dev-support/qa/INVENTORY.md`
+summary: Проверка инвентаря: модель, mouse/touch/keyboard, полные карманы, HTTP/изолированный file и адаптация.
+
 file: `dev-support/standards/INFO_OBJECT_RULES.md`
 summary: Базовый набор; до изменения сущностей/каталогов/связей/сохранений.
 
@@ -45,6 +51,9 @@ summary: Базовый набор; критерии передачи и про�
 
 file: `dev-support/project-docs/MOBILE_UI_ASSETS.md`
 summary: Базовый набор; UI/ресурсы/звук: до правки размеров, атласов/лицензий.
+
+file: `dev-support/qa/HOVER_CARDS.md`
+summary: UI: общие карточки реальных противников, наград и предметов; задержка, drag/lifecycle и браузерные проверки.
 
 file: `dev-support/standards/UI_SIZE_CONTRACT.json`
 summary: UI: числовая принятая геометрия Forest Alchemy; выбирать нужный компонент.

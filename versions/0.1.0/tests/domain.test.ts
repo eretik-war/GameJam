@@ -4,6 +4,7 @@ import { createNPCFromInfo, traineeInfo } from '../src/domain/npc';
 import { Parameter, RestoreParameter, TypeNPCParameter } from '../src/domain/parameters';
 import { GameSession, createSession, loadSession } from '../src/domain/session';
 import { createNPCView } from '../src/presentation/npc-view';
+import './inventory.test';
 
 test('instances own independent parameter objects; Info and snapshots stay frozen', () => {
   const a = createNPCFromInfo('npc.trainee', 'a');

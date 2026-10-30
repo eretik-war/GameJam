@@ -9,6 +9,18 @@
 </head>
 <body>
   <main id="app">
+    <div class="inventory-layout">
+<section class="inventory-panel" aria-label="Инвентарь">
+        <section class="equipment-panel" aria-labelledby="equipment-title">
+          <div class="inventory-heading"><h2 id="equipment-title">Активные предметы</h2><span id="equipment-state">Бой</span></div>
+          <div id="equipment-slots" class="equipment-grid" role="group" aria-label="Три активных слота"></div>
+        </section>
+        <section id="storage-panel" class="storage-panel" aria-labelledby="storage-title" hidden>
+          <div class="inventory-heading"><h2 id="storage-title">Карманы</h2><span id="storage-count">0 / 12</span></div>
+          <div id="storage-slots" class="storage-grid" role="group" aria-label="Хранилище: четыре столбца, три строки"></div>
+        </section>
+      </section>
+<div class="inventory-game">
     <section class="battlefield" aria-label="Боевая сцена">
       <div id="scene" role="group" aria-label="Герой слева, противники справа. Нажмите на противника для выбора."></div>
     </section>
@@ -17,7 +29,15 @@
       <section id="parameters" aria-live="polite"></section>
       <div class="actions"><button id="end-turn">Начало следующего хода</button><button id="restore">Нанести 12 урона</button><button id="burn">Горение · +3 хода</button><button id="save">Сохранить</button><button id="load">Загрузить</button></div>
       <p id="status" role="status">Запуск…</p>
+      <div class="inventory-phase-controls"><button id="phase-action">Завершить бой →</button></div>
     </footer>
+</div></div>
+<dialog id="reward-dialog" aria-labelledby="reward-title" aria-describedby="reward-description">
+      <p class="eyebrow">БОЙ ЗАВЕРШЁН</p><h2 id="reward-title">Выберите награду</h2><p id="reward-description">Выберите один предмет. Он сразу попадёт в карманы.</p>
+      <div id="reward-options" class="reward-grid"></div>
+      <p class="reward-note">1 предмет из 3 · затем подготовка к бою</p>
+      <button id="skip-reward" class="primary-button" hidden>К подготовке без награды →</button>
+    </dialog>
   </main>
   <script>/*__ENGINE__*/</script>
   <script>/*__GAME__*/</script>
