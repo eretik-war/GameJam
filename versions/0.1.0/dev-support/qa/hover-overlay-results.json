@@ -1,0 +1,54 @@
+[
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "mode": "http",
+    "enemyOpenAndClose": "unchanged",
+    "rewardModal": "unchanged",
+    "inventoryOpenAndClose": "unchanged",
+    "documentSize": "unchanged",
+    "scroll": "unchanged",
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "mode": "file",
+    "enemyOpenAndClose": "unchanged",
+    "rewardModal": "unchanged",
+    "inventoryOpenAndClose": "unchanged",
+    "documentSize": "unchanged",
+    "scroll": "unchanged",
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "mode": "http",
+    "enemyOpenAndClose": "unchanged",
+    "rewardModal": "unchanged",
+    "inventoryOpenAndClose": "unchanged",
+    "documentSize": "unchanged",
+    "scroll": "unchanged",
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "mode": "file",
+    "enemyOpenAndClose": "unchanged",
+    "rewardModal": "unchanged",
+    "inventoryOpenAndClose": "unchanged",
+    "documentSize": "unchanged",
+    "scroll": "unchanged",
+    "errors": []
+  }
+]
