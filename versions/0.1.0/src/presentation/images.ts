@@ -12,8 +12,16 @@ import leg from '../../../../assets/images/enemies/shooter-leg.png';
 import stand1 from '../../../../assets/images/hero/Stand1.png';
 import stand2 from '../../../../assets/images/hero/Stand2.png';
 import stand3 from '../../../../assets/images/hero/Stand3.png';
+import itemMagenta from '../../../../assets/images/items/item-magenta.png';
+import itemTeal from '../../../../assets/images/items/item-teal.png';
+import itemBlue from '../../../../assets/images/items/item-blue.png';
+import itemGold from '../../../../assets/images/items/item-gold.png';
 
 const images: Readonly<Record<string, string>> = Object.freeze({
+  'images/items/item-magenta.png': itemMagenta,
+  'images/items/item-teal.png': itemTeal,
+  'images/items/item-blue.png': itemBlue,
+  'images/items/item-gold.png': itemGold,
   'images/test1.jpg': hero,
   'images/fire.jpg': burning,
   'images/blindness.png': blindness,

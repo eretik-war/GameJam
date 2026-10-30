@@ -104,6 +104,7 @@ test('failed random draw is atomic; repeated types use shared immutable Info and
   assert.throws(() => createItemFromInfo('unknown', 'id'));
   assert.throws(() => createItemFromInfo('item.01', ''));
   assert.deepEqual(itemInfos.map(i => i.typeId).sort(), visualItemInfos.map(i => i.typeId).sort());
-  assert.equal(new Set(visualItemInfos.map(i => i.color)).size, 12);
+  assert.equal(itemInfos.length, 4);
+  assert.equal(new Set(visualItemInfos.map(i => i.image)).size, 4);
   for (const info of itemInfos) assert.equal(createItemView(info.typeId).title, info.Name);
 });

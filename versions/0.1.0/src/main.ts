@@ -181,6 +181,12 @@ try {
     });
   }
 
+  const debug = document.querySelector<HTMLElement>('.debug')!;
+  debug.hidden = true;
+  function onDebugKeyDown(event: KeyboardEvent): void {
+    if (event.code === 'KeyD' && !event.repeat && !(event.target instanceof HTMLInputElement)) debug.hidden = !debug.hidden;
+  }
+  document.addEventListener('keydown', onDebugKeyDown);
   action('end-turn', () => { session.EndTurn(); return 'Статусы сработали в начале хода.'; });
   action('restore', () => { session.selected.TakeDamage(12); return 'Применено 12 урона: сначала щит, затем здоровье.'; });
   action('burn', () => { const effect = effects[Math.floor(Math.random() * effects.length)]!; const turns = effect.typeId === 'stun' ? 1 : 3; session.selected.AddStatus(effect.typeId, turns); return effect.name + ' · +' + turns + ' ход.'; });
@@ -204,6 +210,7 @@ try {
     hoverCards.hide();
     if (event.persisted) { app.stop(); return; }
     disposed = true;
+    document.removeEventListener('keydown', onDebugKeyDown);
     document.removeEventListener('visibilitychange', onVisibilityChange);
     window.removeEventListener('pageshow', onPageShow);
     window.removeEventListener('pagehide', onPageHide);

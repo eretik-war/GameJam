@@ -113,3 +113,9 @@ summary: Проверки объединённой сцены, JSON-ассето
 
 file: `dev-support/qa/MODULAR_ENEMIES.md`
 summary: Четыре камеры, прозрачные PNG, модуль ножек, точки спавна земля/воздух; проверки desktop HTTP/file и совместимости сохранений.
+
+file: `dev-support/qa/ITEM_ICONS.md`
+summary: Четыре PNG предметов, прозрачный фон/непрозрачное тело, размеры по слотам; desktop HTTP/file, переносы и карточки.
+
+file: `dev-support/art/items/README.md`
+summary: Источник пользователя, встроенный image_gen, финальный prompt и воспроизводимое разделение на четыре иконки.

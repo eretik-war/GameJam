@@ -34,3 +34,5 @@
 | Герой: три кадра/idle/положение | src/presentation/hero-animation.ts; createHeroAnimation, placeHero | main.ts renderer/тикер; HERO_ANIMATION.md; qa/HERO_ANIMATION.md |
 
 Контракт противников: [ENEMIES](ENEMIES.md). Проверки объединённой сцены: [SCENE_ASSETS](../qa/SCENE_ASSETS.md).
+
+| Четыре иконки предметов | assets/images/items; src/presentation/item-view.ts, images.ts | tools/extract-item-icons.ps1; tools/verify-item-icons.mjs; qa/ITEM_ICONS.md |

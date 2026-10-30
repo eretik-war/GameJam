@@ -40,7 +40,7 @@ button:focus-visible { outline: 3px solid #8feac9; outline-offset: 3px; }
 .storage-panel { margin-top: 16px; border: 1px solid #506988; border-radius: 6px; padding: 8px; background: #17263af5; pointer-events: auto; }
 .storage-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
 .storage-grid .inventory-slot { border: 1px solid #506988; background: #121f30; }
-.item-icon { display: grid; place-items: center; width: 76%; max-width: 78px; aspect-ratio: 1; border-radius: 50%; background: var(--item-color); color: #15212a; font-size: 20px; font-weight: 700; }
+.item-icon { display: block; width: 100%; max-width: 78px; aspect-ratio: 1; object-fit: contain; pointer-events: none; }
 .inventory-slot.occupied { cursor: grab; }
 .inventory-slot[aria-pressed=true], .inventory-slot.drop-target { outline: 2px solid #e4c991; outline-offset: 2px; background: #354451; }
 .drag-source .item-icon { opacity: .2; }
