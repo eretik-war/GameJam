@@ -52,6 +52,9 @@ summary: Базовый набор; критерии передачи и про�
 file: `dev-support/project-docs/MOBILE_UI_ASSETS.md`
 summary: Базовый набор; UI/ресурсы/звук: до правки размеров, атласов/лицензий.
 
+file: `dev-support/qa/HOVER_CARDS.md`
+summary: UI: общие карточки реальных противников, наград и предметов; задержка, drag/lifecycle и браузерные проверки.
+
 file: `dev-support/standards/UI_SIZE_CONTRACT.json`
 summary: UI: числовая принятая геометрия Forest Alchemy; выбирать нужный компонент.
 

@@ -66,3 +66,14 @@ footer { font-size: 16px; color: #b4c2d5; line-height: 1.5; margin: 24px 0 8px; 
   .reward-option { padding: 12px 3px; min-height: 140px; font-size: 16px; }
   .reward-option .item-icon { width: 60px; }
 }
+
+.hover-card { text-align: left; font-size: 18px; position: fixed; z-index: 1000; width: 310px; max-width: calc(100vw - 24px); max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); overflow-y: auto; overscroll-behavior: contain; padding: 20px; border: 1px solid #b49b56; border-radius: 16px; background: #17263a; color: #eaf2ff; box-shadow: 0 16px 48px #0008; overflow-wrap: anywhere; }
+.hover-card[hidden] { display: none; }
+.hover-card-category { margin: 0 0 8px; color: #f6d879; font-size: 16px; }
+.hover-card h3 { margin: 0 0 10px; font-size: 22px; line-height: 1.25; }
+.hover-card-description { margin: 0 0 18px; color: #c0ccdc; font-size: 16px; line-height: 1.5; }
+.hover-card dl { display: grid; gap: 10px; margin: 0; }
+.hover-card dl > div { display: flex; justify-content: space-between; gap: 16px; }
+.hover-card dt { color: #b4c2d5; }
+.hover-card dd { margin: 0; font-weight: 600; text-align: right; }
+.hover-card-note { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid #344760; color: #b4c2d5; font-size: 16px; line-height: 1.45; }

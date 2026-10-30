@@ -2,6 +2,8 @@ import * as PIXI from 'pixi.js';
 import { createSession, loadSession } from './enemies/session';
 import { createNPCView } from './enemies/view';
 import { InventoryController } from './inventory-controller';
+import { HoverCardController, type HoverCardAnchor } from './presentation/hover-card';
+import { createEnemyHoverCard, createItemHoverCard } from './presentation/entity-hover-cards';
 
 function requireElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -21,6 +23,13 @@ try {
     resolution: Math.min(window.devicePixelRatio || 1, 2), resizeTo: canvasHost,
   });
   canvasHost.appendChild(app.view);
+  const hoverCards = new HoverCardController();
+  const enemyAnchors = new Map<string, HoverCardAnchor>();
+  const enemyCard = (id: string) => createEnemyHoverCard(session.npcs.find(npc => npc.id === id)!);
+  hoverCards.bindDelegated(requireElement('app'), '[data-enemy-id]', target => enemyCard(target.dataset.enemyId!));
+  hoverCards.bindDelegated(requireElement('app'), '.inventory-slot[data-item-id], .reward-option[data-type-id]', target => {
+    return createItemHoverCard(target.dataset.typeId!);
+  });
   let disposed = false;
   const observer = new ResizeObserver(() => {
     if (disposed) return;
@@ -48,12 +57,30 @@ try {
       label.y = 56;
       container.addChild(label);
       container.eventMode = 'static';
+      container.interactiveChildren = false;
       container.cursor = 'pointer';
       container.hitArea = new PIXI.Rectangle(-48, -52, 96, 160);
-      container.on('pointertap', () => { session.Select(view.id); render(); });
+      const anchor = enemyAnchors.get(view.id) ?? { getBoundingClientRect: () => new DOMRect() };
+      anchor.getBoundingClientRect = () => {
+        const bounds = container.getBounds();
+        const canvas = app.view.getBoundingClientRect();
+        const scaleX = canvas.width / app.screen.width;
+        const scaleY = canvas.height / app.screen.height;
+        return new DOMRect(canvas.left + bounds.x * scaleX, canvas.top + bounds.y * scaleY, bounds.width * scaleX, bounds.height * scaleY);
+      };
+      enemyAnchors.set(view.id, anchor);
+      container.on('pointerover', event => {
+        if (event.pointerType !== 'touch' && !event.buttons) hoverCards.request(anchor, () => enemyCard(view.id));
+      });
+      container.on('pointerout', () => hoverCards.leave(anchor));
+      container.on('pointertap', () => {
+        session.Select(view.id); render();
+        hoverCards.open(anchor, () => enemyCard(view.id));
+      });
       app.stage.addChild(container);
     });
     const view = createNPCView(session.selected);
+    hoverCards.refresh(true);
     turn.textContent = `Ход ${session.turn}`;
     panel.replaceChildren();
     const title = document.createElement('h2');
@@ -77,6 +104,7 @@ try {
     for (const npc of session.npcs) {
       const button = document.createElement('button');
       button.textContent = npc.id;
+      button.dataset.enemyId = npc.id;
       button.setAttribute('aria-pressed', String(session.selectedId === npc.id));
       button.addEventListener('click', () => { session.Select(npc.id); render(); });
       buttons.append(button);
@@ -99,7 +127,9 @@ try {
   action('load', () => {
     const text = localStorage.getItem('gamejam.enemies.v2');
     if (!text) throw new Error('Сохранение ещё не создано.');
-    session = loadSession(text);
+    const restored = loadSession(text);
+    hoverCards.hide();
+    session = restored;
     return 'Прогресс восстановлен.';
   });
   function onVisibilityChange(): void {
@@ -110,6 +140,7 @@ try {
     if (!disposed && !document.hidden) app.start();
   }
   function onPageHide(event: PageTransitionEvent): void {
+    hoverCards.hide();
     if (event.persisted) { app.stop(); return; }
     disposed = true;
     document.removeEventListener('visibilitychange', onVisibilityChange);
@@ -117,6 +148,7 @@ try {
     window.removeEventListener('pagehide', onPageHide);
     observer.disconnect();
     inventory.dispose();
+    hoverCards.destroy();
     app.destroy(true, { children: true, texture: false, baseTexture: false });
   }
   document.addEventListener('visibilitychange', onVisibilityChange);
