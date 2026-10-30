@@ -37,8 +37,14 @@ if ($Action -eq 'remove') {
 if ($Action -eq 'status') {
     $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
     if (-not $task) { Write-Output 'Automatic sync is not installed for this folder.'; exit }
-    $task | Select-Object TaskName, State
-    Get-ScheduledTaskInfo -TaskName $taskName | Select-Object LastRunTime, LastTaskResult, NextRunTime
+    $info = Get-ScheduledTaskInfo -TaskName $taskName
+    [pscustomobject]@{
+        taskName = $task.TaskName
+        state = [string]$task.State
+        lastRunTime = $info.LastRunTime.ToString('o')
+        lastTaskResult = $info.LastTaskResult
+        nextRunTime = $info.NextRunTime.ToString('o')
+    } | ConvertTo-Json | Write-Output
     exit
 }
 
