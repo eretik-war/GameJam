@@ -1,11 +1,17 @@
 import hero from '../../../../assets/images/test1.jpg';
 import enemy from '../../../../assets/images/tes2.jpg';
-import burning from '../../../../assets/images/testeffect.jpg';
+import burning from '../../../../assets/images/fire.jpg';
+import blindness from '../../../../assets/images/blindness.png';
+import stun from '../../../../assets/images/stun.jpg';
+import regeneration from '../../../../assets/images/regeneration.png';
 
 const images: Readonly<Record<string, string>> = Object.freeze({
   'images/test1.jpg': hero,
   'images/tes2.jpg': enemy,
-  'images/testeffect.jpg': burning,
+  'images/fire.jpg': burning,
+  'images/blindness.png': blindness,
+  'images/stun.jpg': stun,
+  'images/regeneration.png': regeneration,
 });
 export function resolveImage(path: string): string {
   const image = images[path];

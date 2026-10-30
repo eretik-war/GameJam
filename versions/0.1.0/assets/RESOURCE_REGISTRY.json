@@ -36,6 +36,42 @@
       "license": "Not supplied; test placeholder",
       "runtimeFile": "../../../assets/images/testeffect.jpg",
       "sha256": "6f8cd4181b1eb6a2fca6283bf41d103068a18dc8d0dcd98b7e6bab4e3442ca46"
+    },
+    {
+      "id": "fire",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/fire.jpg",
+      "sha256": "a632a3bc1a2eedd78cbe9df2b031447d1e71a42888b12c8e7bed545be29d7450"
+    },
+    {
+      "id": "blindness",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/blindness.png",
+      "sha256": "7499515b291058c6e97fc0412eb67e8c00305f1696b6a4208c1aeaab4597a560"
+    },
+    {
+      "id": "stun",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/stun.jpg",
+      "sha256": "6f8cd4181b1eb6a2fca6283bf41d103068a18dc8d0dcd98b7e6bab4e3442ca46"
+    },
+    {
+      "id": "regeneration",
+      "kind": "image",
+      "source": "Provided by user in project assets",
+      "author": "Not supplied",
+      "license": "Not supplied; test placeholder",
+      "runtimeFile": "../../../assets/images/regeneration.png",
+      "sha256": "d28898777e8c3973f9ebec29bc7f24fea3820953dec37ae0775dbc8397368f60"
     }
   ],
   "art": "User-provided test images in root assets/images; used as temporary debug assets. Authorship and redistribution license not supplied.",

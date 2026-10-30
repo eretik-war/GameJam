@@ -4,7 +4,7 @@ import type { IStatusEffect } from './status-effect';
 export class Burning implements IStatusEffect {
   readonly typeId = 'burning';
   readonly name = 'Горение';
-  readonly imageUrl = 'images/testeffect.jpg';
+  readonly imageUrl = 'images/fire.jpg';
   readonly damage = 3;
   constructor() { Object.freeze(this); }
   Tick(target: Enemy): void { target.TakeDamage(this.damage); }

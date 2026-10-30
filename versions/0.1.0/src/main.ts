@@ -1,3 +1,4 @@
+import { effects } from './enemies/status-effects/catalog';
 import * as PIXI from 'pixi.js';
 import { resolveImage } from './presentation/images';
 import { createSession, loadSession } from './enemies/session';
@@ -161,7 +162,7 @@ try {
 
   action('end-turn', () => { session.EndTurn(); return 'Статусы сработали в начале хода.'; });
   action('restore', () => { session.selected.TakeDamage(12); return 'Применено 12 урона: сначала щит, затем здоровье.'; });
-  action('burn', () => { session.selected.AddStatus('burning', 3); return 'Горение продлено на 3 хода.'; });
+  action('burn', () => { const effect = effects[Math.floor(Math.random() * effects.length)]!; const turns = effect.typeId === 'stun' ? 1 : 3; session.selected.AddStatus(effect.typeId, turns); return effect.name + ' · +' + turns + ' ход.'; });
   action('save', () => { localStorage.setItem('gamejam.enemies.v2', session.Save()); return 'Прогресс сохранён в этом браузере.'; });
   action('load', () => {
     const text = localStorage.getItem('gamejam.enemies.v2');

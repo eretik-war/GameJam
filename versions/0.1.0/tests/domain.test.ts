@@ -120,9 +120,25 @@ test('enemy asset resolves immutable attacks and visual metadata; rejects invali
   const view = createEnemyView(session.selected);
   assert.equal(view.shield, 8);
   assert.equal(view.maxShield, 8);
-  assert.equal(view.statuses[0]!.imageUrl, 'images/testeffect.jpg');
+  assert.equal(view.statuses[0]!.imageUrl, 'images/fire.jpg');
   assert.equal(createEnemyView(loadEnemySession(session.Save()).selected).statuses[0]!.imageUrl, view.statuses[0]!.imageUrl);
   session.EndTurn();
   assert.equal(createEnemyView(session.selected).statuses.length, 0);
   assert.equal(createEnemyView(session.npcs[1]!).shield, 8);
+});
+
+test('combined effects heal, block attacks, miss at fifty percent and survive saving', () => {
+  const session = createEnemySession(); const enemy = session.selected;
+  enemy.TakeDamage(20);
+  enemy.AddStatus('blindness', 3); enemy.AddStatus('stun', 1); enemy.AddStatus('regeneration', 3);
+  assert.equal(enemy.CanAttack(() => 0.9), false);
+  assert.equal(loadEnemySession(session.Save()).Save(), session.Save());
+  const health = enemy.GetParameter(TypeEnemyParameter.Health);
+  session.EndTurn();
+  assert.equal(enemy.GetParameter(TypeEnemyParameter.Health), health + 3);
+  assert.equal(enemy.CanAttack(() => 0.49), false);
+  assert.equal(enemy.CanAttack(() => 0.5), true);
+  session.EndTurn(); session.EndTurn();
+  assert.equal(enemy.statuses.length, 0);
+  assert.equal(enemy.CanAttack(() => 0), true);
 });
