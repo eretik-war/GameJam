@@ -13,7 +13,7 @@
 | Общее представление предмета | src/presentation/item-view.ts; createItemView, createItemIcon | слоты, карманы, награды и drag ghost |
 | Ввод инвентаря/диалог/lifecycle | src/inventory-controller.ts; InventoryController | main.ts; qa/INVENTORY.md |
 | Всплывающие карточки персонажей/предметов | src/presentation/hover-card.ts; HoverCardView, HoverCardController | main.ts Pixi anchors / bindDelegated / refresh / destroy; qa/HOVER_CARDS.md |
-| Данные карточек реальных сущностей | src/presentation/entity-hover-cards.ts; createEnemyHoverCard, createItemHoverCard | enemies/view.ts и item-view.ts → единый HoverCardView |
+| Данные карточек реальных сущностей | src/presentation/entity-hover-cards.ts; createEnemyHoverCard, createHeroHoverCard, createItemHoverCard | enemies/view.ts, InventorySession и item-view.ts → единый HoverCardView |
 | Упаковка/HTTP/валидация | корень tools/*.mjs | package.json; dev-support/build-manifest.json |
 | GitHub/синхронизация | tools/sync.mjs, tools/sync-auto.ps1; .github/workflows/check.yml | package.json; tools/sync.test.mjs; GITHUB_WORKFLOW.md |
 | Движок | корень vendor/pixi-js/7.4.3 | ENGINE_LOCK; immutable, не редактировать |
@@ -29,3 +29,5 @@
 | Герой: три кадра/idle/положение | src/presentation/hero-animation.ts; createHeroAnimation, placeHero | main.ts renderer/тикер; HERO_ANIMATION.md; qa/HERO_ANIMATION.md |
 
 Контракт противников: [ENEMIES](ENEMIES.md). Проверки объединённой сцены: [SCENE_ASSETS](../qa/SCENE_ASSETS.md).
+
+| Карточка героя | src/presentation/entity-hover-cards.ts; createHeroHoverCard; main.ts heroAnchor | Hero через createNPCView и InventorySession; qa/HERO_HOVER.md |

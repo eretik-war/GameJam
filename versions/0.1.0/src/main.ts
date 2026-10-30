@@ -7,7 +7,7 @@ import { createSession, loadSession } from './enemies/session';
 import { createNPCView } from './enemies/view';
 import { InventoryController } from './inventory-controller';
 import { HoverCardController, type HoverCardAnchor } from './presentation/hover-card';
-import { createEnemyHoverCard, createItemHoverCard } from './presentation/entity-hover-cards';
+import { createEnemyHoverCard, createHeroHoverCard, createItemHoverCard } from './presentation/entity-hover-cards';
 import { createHeroAnimation, HERO_FRAME_PATHS, placeHero } from './presentation/hero-animation';
 import { createCombatIndicators } from './presentation/combat-indicators';
 
@@ -83,9 +83,10 @@ try {
       hero.eventMode = 'static';
       hero.cursor = 'help';
       hero.on('pointerover', event => {
-        if (event.pointerType !== 'touch' && !event.buttons) hoverCards.request(heroAnchor, () => createEnemyHoverCard(session.hero, 'Герой'));
+        if (event.pointerType !== 'touch' && !event.buttons) hoverCards.request(heroAnchor, () => createHeroHoverCard(inventory.model, session.hero));
       });
       hero.on('pointerout', () => hoverCards.leave(heroAnchor));
+      hero.on('pointertap', () => hoverCards.open(heroAnchor, () => createHeroHoverCard(inventory.model, session.hero)));
     }
     if (hero) {
       placeHero(hero, width, height);
