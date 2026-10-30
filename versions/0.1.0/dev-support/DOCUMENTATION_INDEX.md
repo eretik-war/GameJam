@@ -43,6 +43,12 @@ summary: Проверка инвентаря: модель, mouse/touch/keyboard
 file: `dev-support/qa/INVENTORY_OVERLAY.md`
 summary: Инвентарь поверх боевой сцены без сдвига: desktop HTTP/file, неизменная геометрия/пиксели противников, фон на всю высоту зоны.
 
+file: `dev-support/project-docs/HERO_ANIMATION.md`
+summary: Три прозрачных кадра героя, цикл 0,5 секунды, владелец визуального размещения и lifecycle.
+
+file: `dev-support/qa/HERO_ANIMATION.md`
+summary: Проверка длительности цикла, устойчивого экземпляра и положения героя в desktop HTTP/file.
+
 file: `dev-support/standards/INFO_OBJECT_RULES.md`
 summary: Базовый набор; до изменения сущностей/каталогов/связей/сохранений.
 

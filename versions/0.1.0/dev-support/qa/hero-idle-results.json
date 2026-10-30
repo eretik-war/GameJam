@@ -1,0 +1,116 @@
+[
+  {
+    "name": "1440x900-http",
+    "passed": true,
+    "deterministic": {
+      "cycleMs": 500,
+      "totalFrames": 3,
+      "autoUpdate": false,
+      "samples": [
+        {
+          "delta": 150,
+          "expected": 0,
+          "actual": 0
+        },
+        {
+          "delta": 20,
+          "expected": 1,
+          "actual": 1
+        },
+        {
+          "delta": 170,
+          "expected": 2,
+          "actual": 2
+        },
+        {
+          "delta": 159,
+          "expected": 2,
+          "actual": 2
+        },
+        {
+          "delta": 2,
+          "expected": 0,
+          "actual": 0
+        }
+      ]
+    },
+    "bounds": {
+      "hero": [
+        405.7404479980469,
+        135.86399841308594,
+        104.359130859375,
+        424.7279815673828
+      ],
+      "scene": [
+        0,
+        0,
+        1440,
+        612
+      ]
+    },
+    "realCycleMs": [
+      507.59999999962747,
+      515.6999999992549,
+      490.5
+    ],
+    "retainedInstance": true,
+    "errors": []
+  },
+  {
+    "name": "1280x720-file",
+    "passed": true,
+    "deterministic": {
+      "cycleMs": 500,
+      "totalFrames": 3,
+      "autoUpdate": false,
+      "samples": [
+        {
+          "delta": 150,
+          "expected": 0,
+          "actual": 0
+        },
+        {
+          "delta": 20,
+          "expected": 1,
+          "actual": 1
+        },
+        {
+          "delta": 170,
+          "expected": 2,
+          "actual": 2
+        },
+        {
+          "delta": 159,
+          "expected": 2,
+          "actual": 2
+        },
+        {
+          "delta": 2,
+          "expected": 0,
+          "actual": 0
+        }
+      ]
+    },
+    "bounds": {
+      "hero": [
+        365.2622375488281,
+        108.77999877929688,
+        83.55551147460938,
+        340.05999755859375
+      ],
+      "scene": [
+        0,
+        0,
+        1280,
+        490
+      ]
+    },
+    "realCycleMs": [
+      490.40000000037253,
+      525.9000000003725,
+      485.30000000074506
+    ],
+    "retainedInstance": true,
+    "errors": []
+  }
+]

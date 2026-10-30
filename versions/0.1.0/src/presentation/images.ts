@@ -9,6 +9,9 @@ import teal from '../../../../assets/images/enemies/camera-teal.png';
 import blue from '../../../../assets/images/enemies/camera-blue.png';
 import gold from '../../../../assets/images/enemies/camera-gold.png';
 import leg from '../../../../assets/images/enemies/shooter-leg.png';
+import stand1 from '../../../../assets/images/hero/Stand1.png';
+import stand2 from '../../../../assets/images/hero/Stand2.png';
+import stand3 from '../../../../assets/images/hero/Stand3.png';
 
 const images: Readonly<Record<string, string>> = Object.freeze({
   'images/test1.jpg': hero,
@@ -22,6 +25,9 @@ const images: Readonly<Record<string, string>> = Object.freeze({
   'images/enemies/camera-blue.png': blue,
   'images/enemies/camera-gold.png': gold,
   'images/enemies/shooter-leg.png': leg,
+  'images/hero/Stand1.png': stand1,
+  'images/hero/Stand2.png': stand2,
+  'images/hero/Stand3.png': stand3,
 });
 export function resolveImage(path: string): string {
   const image = images[path];

@@ -7,6 +7,7 @@ import { InventoryController } from './inventory-controller';
 import { HoverCardController, type HoverCardAnchor } from './presentation/hover-card';
 import { createEnemyHoverCard, createItemHoverCard } from './presentation/entity-hover-cards';
 import { createEnemyIcon, createEnemySprite } from './presentation/enemy-visual';
+import { createHeroAnimation, HERO_FRAME_PATHS, placeHero } from './presentation/hero-animation';
 
 function requireElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -43,7 +44,9 @@ try {
     texture.baseTexture.once('loaded', () => { if (!disposed) render(); });
     return texture;
   }
-  const heroTexture = getTexture('images/test1.jpg');
+  const heroTextures = HERO_FRAME_PATHS.map(getTexture);
+  let hero: PIXI.AnimatedSprite | undefined;
+  app.ticker.add(delta => { if (hero?.playing) hero.update(delta); });
   const locationTexture = getTexture('images/battle-location.png');
   const observer = new ResizeObserver(() => {
     if (disposed) return;
@@ -53,7 +56,9 @@ try {
 
   function render(): void {
     if (disposed) return;
-    for (const child of app.stage.removeChildren()) child.destroy({ children: true });
+    for (const child of app.stage.removeChildren()) {
+      if (child !== hero) child.destroy({ children: true });
+    }
     const enemies = session.deployed;
     const views = enemies.map(createNPCView);
     const width = app.screen.width;
@@ -64,12 +69,11 @@ try {
     background.position.set(width / 2, height / 2);
     background.eventMode = 'none';
     app.stage.addChild(background);
-    const hero = new PIXI.Sprite(heroTexture);
-    hero.anchor.set(0.5);
-    const heroScale = Math.min(width * 0.29 / heroTexture.width, height * 0.8 / heroTexture.height);
-    hero.scale.set(heroScale);
-    hero.position.set(width * 0.19, height * 0.5);
-    app.stage.addChild(hero);
+    if (!hero && heroTextures.every(texture => texture.valid)) hero = createHeroAnimation(heroTextures);
+    if (hero) {
+      placeHero(hero, width, height);
+      app.stage.addChild(hero);
+    }
     views.forEach((view, index) => {
       const container = new PIXI.Container();
       const point = session.GetSpawnPoint(view.id)!;

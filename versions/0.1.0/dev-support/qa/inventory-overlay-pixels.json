@@ -38,7 +38,8 @@
         ]
       }
     ],
-    "backgroundCoversTopAndBottom": true
+    "backgroundCoversTopAndBottom": true,
+    "heroRevisionChecked": true
   },
   {
     "enemyPixelsIdentical": true,
@@ -79,6 +80,7 @@
         ]
       }
     ],
-    "backgroundCoversTopAndBottom": true
+    "backgroundCoversTopAndBottom": true,
+    "heroRevisionChecked": true
   }
 ]
