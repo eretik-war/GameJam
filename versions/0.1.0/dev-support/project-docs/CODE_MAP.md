@@ -16,7 +16,7 @@
 | Данные карточек реальных сущностей | src/presentation/entity-hover-cards.ts; createEnemyHoverCard, createHeroHoverCard, createItemHoverCard | enemies/view.ts, InventorySession и item-view.ts → единый HoverCardView |
 | Привязка карточек к Pixi-целям | src/main.ts; sceneBounds, bindSceneCard | один механизм для противников и анимированного героя; qa/HERO_HOVER.md |
 | Упаковка/HTTP/валидация | корень tools/*.mjs | package.json; dev-support/build-manifest.json |
-| GitHub/синхронизация | tools/sync.mjs — CLI; sync-engine.mjs — порции/merge/check/push/resolve/журнал; sync-support.mjs — Git/файлы/lock; sync-auto.ps1 — консервативный фон | package.json; tools/sync.test.mjs; корневой SYNC_TOOL.md обязателен перед любой задачей; GITHUB_WORKFLOW.md; qa/SYNC_TOOL.md |
+| GitHub/синхронизация | tools/sync.mjs — CLI и компактный вывод; sync-engine.mjs — шаги операции, продолжение, проверки, журнал; sync-support.mjs — Git/файлы/lock/профиль/среда; sync-tasks.mjs — реестр задач и планы; sync-auto.ps1 — консервативный фон | package.json; tools/sync.test.mjs — регрессии; tools/sync-testkit.mjs — шаблонный тестовый репозиторий; tools/sync-bench.mjs — замеры; корневой SYNC_TOOL.md обязателен перед любой задачей; qa/SYNC_CLI_REFERENCE.md — полные параметры; GITHUB_WORKFLOW.md; qa/SYNC_TOOL.md |
 | Движок | корень vendor/pixi-js/7.4.3 | ENGINE_LOCK; immutable, не редактировать |
 
 Пути src/tests относительно активной versions/0.1.0. Зависимости — node_modules/package-lock в корне; vendor нужен без npm в готовом HTML. Generated: builds/preview.html и versions/gamejam_0.1.0-offline.html. Исходники не редактируются через эти артефакты.

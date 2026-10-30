@@ -15,14 +15,20 @@
 | node tools/preview-enemies.mjs | Каталог четырёх модульных камер в versions/0.1.0/builds/camera-catalog.html |
 | node tools/verify-camera-enemies.mjs | После offline build и preview: Chrome desktop HTTP/file, выбор/статусы/сохранения, PNG в builds; CHROME_PATH переопределяет путь Chrome |
 | node tools/verify-camera-enemies.mjs --with-item-icons | Общая сборка: NPC/статусы/наложение и новые предметные PNG 128×128 в награде и экипировке |
-| npm run test:sync | Временные локальные Git-копии: порции/авторство, merge/конфликт, гонки push, checkpoints, проверки, пауза и lock |
+| npm run test:sync | Временные локальные Git-копии: порции/авторство, merge/конфликт, гонки push, продолжения, реестр задач, проверки, пауза и lock |
 | npm run sync:status | Только локально: ветка/правки, SHA последнего fetch, пауза, lock и последняя операция |
 | npm run sync:history -- --limit 10 | Только локально: кто/задача/commits/итог последних операций |
-| npm run sync:save -- --request work/packet.json | Только локальный адресный checkpoint; без сети и утверждения о тестах |
+| npm run sync:save -- --task T --message M --file PATH | Только локальный адресный checkpoint; без сети и утверждения о тестах |
+| npm run sync:task -- register --task T --file PATH | Локально: заявить владение точными файлами задачи |
+| npm run sync:task -- ready --task T | Локально: явно подтвердить готовность порции |
+| npm run sync:plan -- --task T | Локально: заморозить план с SHA, fingerprints и своими commits |
+| npm run sync:publish -- --plan PLAN_ID | По запросу: сохранить/объединить/проверить/опубликовать порцию плана |
+| npm run sync:publish -- --continue OPERATION_ID | По запросу: оформить разобранный конфликт, проверить один раз и отправить |
 | npm run sync:compare | По запросу получить remote и записать всю порцию с авторами и blob-хешами в report |
 | npm run sync:pull | По запросу интегрировать всю входящую порцию без конфликтов, проверить в worktree и применить локально |
-| npm run sync:push -- --request work/packet.json | По запросу сохранить/объединить/проверить/опубликовать только согласованную порцию; без неявного add --all |
+| npm run sync:push -- --request work/packet.json | Совместимый способ: явный request JSON вместо реестра задач |
 | npm run sync -- resolve --operation ID | Локально оформить и проверить подготовленное разрешение конфликта; не отправляет |
+| npm run bench:sync -- --repeats 3 | Локальный замер сценариев публикации/конфликта без реального remote |
 | npm run sync:pause | Заблокировать сеть скрипту во всей копии/worktree |
 | npm run sync:resume | Только по прямому поручению снять блокировку; не запускает сеть и расписание |
 | npm run sync:auto:install | Windows: получать изменения каждые 5 минут при входе пользователя |
@@ -32,7 +38,7 @@
 
 В PowerShell использовать npm.cmd вместо npm при запрете npm.ps1. Не требуется ослаблять execution policy. Для другого порта: $env:GAMEJAM_PORT='4174', затем npm.cmd run dev. В других оболочках задать эту переменную их обычным способом.
 
-**Перед любой задачей читать [SYNC_TOOL.md](../../../../SYNC_TOOL.md). Режим: только локально.** compare/pull/push/resume и sync:auto:install без нового прямого поручения не запускать. Задача Windows отключена; общий paused.json блокирует сеть. status/history/save доступны локально. test:sync использует временные локальные репозитории, к GitHub не обращается. Разрешения — [GITHUB_WORKFLOW](GITHUB_WORKFLOW.md#auto-push).
+**Перед любой задачей читать [SYNC_TOOL.md](../../../../SYNC_TOOL.md). Режим: только локально.** compare/pull/push/publish/resume и sync:auto:install без нового прямого поручения не запускать. Задача Windows отключена; общий paused.json блокирует сеть. status/history/save/task/plan доступны локально. test:sync и bench:sync используют временные локальные репозитории, к GitHub не обращаются. Полные параметры — [справочник скрипта](../qa/SYNC_CLI_REFERENCE.md); разрешения — [GITHUB_WORKFLOW](GITHUB_WORKFLOW.md#auto-push).
 
 ## Если что-то не работает
 

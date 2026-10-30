@@ -1,11 +1,19 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import os from 'node:os';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 
 const environment = { ...process.env, GIT_TERMINAL_PROMPT: '0', GCM_INTERACTIVE: 'never', GIT_LITERAL_PATHSPECS: '1' };
+
+/** Deterministic counters used by measurements; they never influence behaviour. */
+const counters = { gitProcesses: 0 };
+export const resetMetrics = () => { counters.gitProcesses = 0; };
+export const readMetrics = () => ({ gitProcesses: counters.gitProcesses });
+
 export function git(root, args, { trim = true } = {}) {
+  counters.gitProcesses++;
   const output = execFileSync('git', ['-C', root, ...args], {
     encoding: 'utf8', env: environment, timeout: 90_000, windowsHide: true,
     stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 32 * 1024 * 1024,
@@ -13,6 +21,7 @@ export function git(root, args, { trim = true } = {}) {
   return trim ? output.trim() : output;
 }
 export function ancestor(root, older, newer) {
+  counters.gitProcesses++;
   const result = spawnSync('git', ['-C', root, 'merge-base', '--is-ancestor', older, newer], {
     encoding: 'utf8', env: environment, timeout: 90_000, windowsHide: true,
   });
@@ -100,6 +109,7 @@ export async function snapshotFiles(root, files, allowMissing = false) {
     } else {
       // Refuse ignored/untracked secrets and generated files rather than forcing add.
       const ignoreEnvironment = { ...environment }; delete ignoreEnvironment.GIT_LITERAL_PATHSPECS;
+      counters.gitProcesses++;
       const ignored = spawnSync('git', ['-C', root, 'check-ignore', '-q', '--', name], { env: ignoreEnvironment, windowsHide: true, encoding: 'utf8' });
       if (ignored.error || ![0, 1].includes(ignored.status)) throw ignored.error || new Error(`check-ignore failed: ${ignored.stderr}`);
       if (ignored.status === 0) throw new Error(`Ignored file is outside the packet: ${name}`);
@@ -109,13 +119,62 @@ export async function snapshotFiles(root, files, allowMissing = false) {
   }
   return hash(JSON.stringify(result));
 }
-export async function runChecks(root, logFile, changedFiles) {
+/** Which check profile a packet needs, and the ordered scripts that profile runs. */
+export async function resolveProfile(root, changedFiles) {
+  const pkg = await readJSON(path.join(root, 'package.json'), {});
+  const affectsSync = !changedFiles || changedFiles.some(file => /^(?:tools\/sync|tools\/validate\.|package(?:-lock)?\.json$|\.github\/|SYNC_TOOL\.md$)/.test(file));
+  const name = !affectsSync && pkg.scripts?.['check:game'] ? 'check:game' : 'check';
+  return { name, composition: expandScript(pkg, name) };
+}
+function expandScript(pkg, name, depth = 0, out = []) {
+  const body = pkg.scripts?.[name];
+  if (typeof body !== 'string' || depth > 4) { if (!out.includes(name)) out.push(name); return out; }
+  out.push(name);
+  for (const part of body.split('&&')) {
+    const match = /npm(?:\.cmd)?\s+(?:run\s+([\w:.-]+)|test\b)/.exec(part.trim());
+    const next = match?.[1] ?? (match ? 'test' : null);
+    if (next && !out.includes(next)) expandScript(pkg, next, depth + 1, out);
+  }
+  return out;
+}
+
+let cachedGitVersion = null;
+function gitVersion() {
+  if (cachedGitVersion === null) {
+    counters.gitProcesses++;
+    const probe = spawnSync('git', ['--version'], { encoding: 'utf8', windowsHide: true });
+    cachedGitVersion = probe.status === 0 ? probe.stdout.trim() : 'unknown';
+  }
+  return cachedGitVersion;
+}
+async function fileHash(root, name) {
+  try { return hash(await fs.readFile(path.join(root, name))); }
+  catch (error) { if (error.code === 'ENOENT') return null; throw error; }
+}
+/** Identity of the tool, dependency installation and machine a verification belongs to. */
+export async function environmentFingerprint(root) {
+  const engineLock = await fileHash(root, 'ENGINE_LOCK.json');
+  const lockfile = await fileHash(root, 'package-lock.json');
+  const pkg = await readJSON(path.join(root, 'package.json'), {});
+  const toolFiles = (await fs.readdir(path.join(root, 'tools')).catch(() => []))
+    .filter(name => /^sync.*\.mjs$/.test(name)).sort();
+  const toolDigest = createHash('sha256');
+  for (const name of toolFiles) toolDigest.update(name).update(await fs.readFile(path.join(root, 'tools', name)));
+  const node = process.version, { platform, arch } = process;
+  return {
+    node, git: gitVersion(), platform, arch, release: os.release(),
+    engineLock, lockfile,
+    // The installation ID is the local dependency set a check actually executed against.
+    installId: hash(`${lockfile}|${node}|${platform}|${arch}|${engineLock}`).slice(0, 16),
+    toolVersion: pkg.version ?? null,
+    toolFingerprint: toolDigest.digest('hex').slice(0, 16),
+  };
+}
+export async function runChecks(root, logFile, changedFiles, resolvedProfile = null) {
   const bundledNpm = path.join(path.dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js');
   const npmCli = process.env.npm_execpath || (existsSync(bundledNpm) ? bundledNpm : null);
   if (!npmCli) throw new Error('npm CLI not found; install the locked Node/npm environment.');
-  const pkg = await readJSON(path.join(root, 'package.json'), {});
-  const affectsSync = !changedFiles || changedFiles.some(file => /^(?:tools\/sync|tools\/validate\.|package(?:-lock)?\.json$|\.github\/|SYNC_TOOL\.md$)/.test(file));
-  const profile = !affectsSync && pkg.scripts?.['check:game'] ? 'check:game' : 'check';
+  const profile = (resolvedProfile ?? await resolveProfile(root, changedFiles)).name;
   const result = spawnSync(process.execPath, [npmCli, 'run', profile], {
     cwd: root, encoding: 'utf8', windowsHide: true, timeout: 600_000, maxBuffer: 32 * 1024 * 1024,
     env: { ...process.env, GAMEJAM_SYNC_CHECK_COMMON: git(root, ['rev-parse', '--path-format=absolute', '--git-common-dir']) },
@@ -123,4 +182,5 @@ export async function runChecks(root, logFile, changedFiles) {
   await fs.writeFile(logFile, `npm run ${profile}\n` + (result.stdout || '') + (result.stderr || ''));
   if (result.error || result.status !== 0) throw new Error(`Project checks failed: ${result.error?.message || result.status}; log: ${logFile}`);
   return { profile };
+
 }

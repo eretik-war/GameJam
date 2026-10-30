@@ -10,9 +10,17 @@ const manifest = JSON.parse(await fs.readFile(path.join(root, 'PROJECT_MANIFEST.
 const versionRoot = path.join(root, manifest.activeVersionPath);
 check(manifest.gitWorkflow === true, 'gitWorkflow must be true');
 check(manifest.repository === 'https://github.com/eretik-war/GameJam', 'Unexpected source repository');
-for (const file of ['.gitignore', '.gitattributes', '.github/workflows/check.yml', 'tools/sync.mjs', 'tools/sync-engine.mjs', 'tools/sync-support.mjs', 'tools/sync-auto.ps1', 'SYNC_TOOL.md']) {
+for (const file of ['.gitignore', '.gitattributes', '.github/workflows/check.yml', 'tools/sync.mjs', 'tools/sync-engine.mjs',
+  'tools/sync-support.mjs', 'tools/sync-tasks.mjs', 'tools/sync-testkit.mjs', 'tools/sync-bench.mjs', 'tools/sync-auto.ps1', 'SYNC_TOOL.md']) {
   check(await exists(path.join(root, file)), `Missing Git workflow file: ${file}`);
 }
+check(await exists(path.join(versionRoot, 'dev-support/qa/SYNC_CLI_REFERENCE.md')), 'Missing full sync CLI reference');
+// The mandatory entry point must stay short; details belong to the reference.
+const syncInstruction = await fs.readFile(path.join(root, 'SYNC_TOOL.md'), 'utf8');
+const syncLines = syncInstruction.split('\n').filter(line => line.trim()).length;
+check(syncLines <= 45, `SYNC_TOOL.md must stay a short entry point (currently ${syncLines} non-empty lines)`);
+check(Buffer.byteLength(syncInstruction, 'utf8') <= 6144, 'SYNC_TOOL.md grew past its compact budget');
+check(syncInstruction.includes('SYNC_CLI_REFERENCE.md'), 'SYNC_TOOL.md must link the full reference');
 check(path.resolve(versionRoot) === path.join(root, 'versions', manifest.activeVersion), 'Active version pointer mismatch');
 check(manifest.foundationLock === null, 'Portable starter must not require an external Foundation lock');
 const index = await fs.readFile(path.join(versionRoot, 'dev-support/DOCUMENTATION_INDEX.md'), 'utf8');
