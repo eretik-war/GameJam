@@ -1,4 +1,4 @@
-import { Enemy, enemyCatalog, createEnemyFromInfo, TypeEnemyParameter } from './enemy';
+import { Enemy, enemyCatalog, createEnemyFromInfo, TypeEnemyParameter, TypeEnemyRole, TypeSupportParameter } from './enemy';
 import { canSpawn, getSpawnPoint, spawnEnemy, spawnPoints } from './spawn';
 import { Hero, enemyDamage } from '../domain/hero';
 import type { Item } from '../domain/items';
@@ -19,6 +19,7 @@ export class EnemySession {
       return [{ enemyId: enemy.id, spawnPointId: point.id }];
     });
     occupied.clear();
+    this.npcs.forEach(enemy => enemy.SetIncomingDamageScale(() => this.IncomingDamageScale));
     for (const deployment of resolved) {
       const enemy = npcs.find(e => e.id === deployment.enemyId);
       const point = getSpawnPoint(deployment.spawnPointId);
@@ -34,7 +35,8 @@ export class EnemySession {
     const enemy = this.npcs.find(e => e.id === id);
     const point = this.GetSpawnPoint(id);
     const closest = Math.min(...this.deployed.filter(e => e.alive).map(e => this.GetSpawnPoint(e.id)!.x));
-    return this.hero.alive && !!enemy?.alive && !!point && point.x === closest;
+    const eligibleGuards = this.deployed.filter(e => e.alive && e.guardActive && this.GetSpawnPoint(e.id)!.x === closest);
+    return this.hero.alive && !!enemy?.alive && !!point && point.x === closest && (!eligibleGuards.length || eligibleGuards.some(e => e.id === id));
   }
   Attack(id: string, items: readonly (Item | null)[] = [], random: () => number = Math.random): boolean {
     if (!this.CanTarget(id)) return false;
@@ -43,9 +45,32 @@ export class EnemySession {
     if (this.hero.CanAttack(random)) this.selected.TakeDamage(this.hero.AttackDamage(items));
     for (const enemy of this.deployed) {
       if (!this.hero.alive) break;
-      if (enemy.CanAttack(random)) this.hero.TakeDamage(enemyDamage);
+      if (enemy.EnemyInfo.role === TypeEnemyRole.Healer) {
+        if (enemy.CanAttack(random)) this.TryHeal(enemy);
+        continue;
+      }
+      if (enemy.CanAttack(random)) this.hero.TakeDamage(enemyDamage * this.OutgoingDamageScale);
     }
     this.hero.BeginTurn(); this.EndTurn(); return true;
+  }
+  private Aura(type: TypeSupportParameter): number {
+    return Math.max(1, ...this.deployed.filter(e => e.alive).map(e => e.EnemyInfo.SupportParameters.find(p => p.Type === type)?.Value ?? 1));
+  }
+  get IncomingDamageScale(): number { return 1 / this.Aura(TypeSupportParameter.DefenseAura); }
+  get OutgoingDamageScale(): number { return this.Aura(TypeSupportParameter.DamageAura); }
+  /** Resolve immediately before each support action; stable position order breaks ties. */
+  TryHeal(healer: Enemy): boolean {
+    if (!healer.alive || healer.stunned || healer.EnemyInfo.role !== TypeEnemyRole.Healer || !this.GetSpawnPoint(healer.id)) return false;
+    const support = healer.EnemyInfo.SupportParameters[0]!;
+    const type = support.Type === TypeSupportParameter.Healing ? TypeEnemyParameter.Health : support.Type === TypeSupportParameter.ShieldRestore ? TypeEnemyParameter.Shield : undefined;
+    if (!type) return false;
+    const max = (enemy: Enemy) => enemy.EnemyInfo.Parameters.find(p => p.Type === type)!.Value;
+    const order = (enemy: Enemy) => spawnPoints.findIndex(p => p.id === this.GetSpawnPoint(enemy.id)?.id);
+    const target = this.deployed.filter(e => e.id !== healer.id && e.alive && e.GetParameter(type) < max(e))
+      .sort((a,b) => a.GetParameter(type) - b.GetParameter(type) || order(a) - order(b))[0];
+    if (!target) return false;
+    target.ChangeParameter(type, Math.min(support.Value, max(target) - target.GetParameter(type)));
+    return true;
   }
   Select(id: string): void { if (!this.npcs.some(e => e.id === id)) throw new Error('Unknown enemy'); this.selectedId = id; }
   EndTurn(): void { if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow'); this.npcs.forEach(e => e.BeginTurn()); this.turn++; }
@@ -57,7 +82,7 @@ export function createSession(): EnemySession {
   const deployments: EnemyDeployment[] = [];
   let variant = 0;
   const enemies = spawnPoints.flatMap(point => {
-    const eligible = enemyCatalog.filter(info => canSpawn(info, point));
+    const eligible = enemyCatalog.filter(info => info.role === TypeEnemyRole.Shooter && canSpawn(info, point));
     if (!eligible.length) return []; // No airborne types yet: air points remain vacant.
     const enemy = spawnEnemy(eligible[variant++ % eligible.length]!, `enemy-${point.id.slice('spawn-'.length)}`, point, occupied);
     occupied.add(point.id); deployments.push({ enemyId: enemy.id, spawnPointId: point.id });
@@ -76,6 +101,7 @@ function restoreCombatant(enemy: Enemy, entry: any): void {
       (p.Type === TypeEnemyParameter.Health && p.Value > info.Parameters.find(parameter => parameter.Type === TypeEnemyParameter.Health)!.Value)) throw new Error('Invalid parameter');
     seen.add(p.Type); enemy.ChangeParameter(p.Type, p.Value - enemy.GetParameter(p.Type));
   }
+  if (info.role === TypeEnemyRole.Guard) enemy.RestoreGuardRecovery(entry.guardRecoveryTurns ?? (enemy.GetParameter(TypeEnemyParameter.Shield) > 0 ? 0 : -1));
   if (!Array.isArray(entry.statuses) || entry.statuses.length > 100) throw new Error('Invalid statuses');
   const statusIds = new Set();
   for (const s of entry.statuses) {

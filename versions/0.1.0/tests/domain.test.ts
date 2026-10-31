@@ -147,3 +147,7 @@ test('combined effects heal, block attacks, miss at fifty percent and survive sa
 });
 
 import './campaign.test';
+
+import './healers.test';
+
+import './guards.test';

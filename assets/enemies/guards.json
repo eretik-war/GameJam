@@ -1,0 +1,46 @@
+[
+  {
+    "typeId": "enemy.guard.chair",
+    "name": "Щитовик на стульчике",
+    "role": "guard",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "ground"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 20
+      },
+      {
+        "type": "shield",
+        "value": 50
+      }
+    ],
+    "attackIds": [
+      "attack.test"
+    ]
+  },
+  {
+    "typeId": "enemy.guard.tracks",
+    "name": "Щитовик на гусеницах",
+    "role": "guard",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "ground"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 50
+      },
+      {
+        "type": "shield",
+        "value": 50
+      }
+    ],
+    "attackIds": [
+      "attack.test"
+    ]
+  }
+]

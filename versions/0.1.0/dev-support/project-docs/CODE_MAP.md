@@ -45,3 +45,7 @@
 
 | Цепочка сцен/наполнения/герой | src/domain/campaign.ts; assets/campaigns, assets/encounters, assets/cutscenes в корне | main.ts, CutsceneController; tests/campaign.test.ts; SCENE_SEQUENCE.md |
 | Затемнение и блокировка ввода | src/presentation/scene-transition.ts | main.ts; tools/verify-campaign.mjs |
+
+| Воздушные лекари/приоритет лечения | assets/enemies/healers.json; EnemyInfo.SupportParameters; EnemySession.TryHeal | enemies/view.ts; camera-visuals.json; tests/healers.test.ts; tools/verify-healers.mjs |
+
+| Щитовики/разрушение и задержка/провокация | assets/enemies/guards.json; Enemy.guardActive/ChangeParameter/BeginTurn; EnemySession.CanTarget | visual-info.ts/view.ts/enemy-visual.ts; tests/guards.test.ts; tools/verify-guards.mjs |

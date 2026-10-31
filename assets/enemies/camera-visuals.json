@@ -1,19 +1,286 @@
 {
-  "cameraSize": { "width": 232, "height": 164 },
+  "cameraSize": {
+    "width": 232,
+    "height": 164
+  },
   "displayScale": 0.46,
   "sockets": [
-    { "id": "underside", "x": 144, "y": 161 },
-    { "id": "top", "x": 142, "y": 45 },
-    { "id": "rear", "x": 216, "y": 98 },
-    { "id": "lens", "x": 54, "y": 108 }
+    {
+      "id": "underside",
+      "x": 144,
+      "y": 161
+    },
+    {
+      "id": "top",
+      "x": 142,
+      "y": 45
+    },
+    {
+      "id": "rear",
+      "x": 216,
+      "y": 98
+    },
+    {
+      "id": "lens",
+      "x": 54,
+      "y": 108
+    },
+    {
+      "id": "guard-base",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "guard-front",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "guard-tracks",
+      "x": 310,
+      "y": 370
+    }
   ],
   "modules": [
-    { "id": "shooter-leg", "image": "images/enemies/shooter-leg.png", "width": 211, "height": 480, "pivot": { "x": 77, "y": 25 }, "scale": 0.725, "requiredRole": "shooter", "requiredLayer": "ground" }
+    {
+      "id": "shooter-leg",
+      "image": "images/enemies/shooter-leg.png",
+      "width": 211,
+      "height": 480,
+      "pivot": {
+        "x": 77,
+        "y": 25
+      },
+      "scale": 0.725,
+      "requiredRole": "shooter",
+      "requiredLayer": "ground"
+    },
+    {
+      "id": "rotor-magenta",
+      "image": "images/enemies/rotor-magenta.png",
+      "width": 384,
+      "height": 166,
+      "pivot": {
+        "x": 192,
+        "y": 95
+      },
+      "scale": 1,
+      "requiredRole": "healer",
+      "requiredLayer": "air"
+    },
+    {
+      "id": "rotor-teal",
+      "image": "images/enemies/rotor-teal.png",
+      "width": 384,
+      "height": 166,
+      "pivot": {
+        "x": 192,
+        "y": 95
+      },
+      "scale": 1,
+      "requiredRole": "healer",
+      "requiredLayer": "air"
+    },
+    {
+      "id": "rotor-blue",
+      "image": "images/enemies/rotor-blue.png",
+      "width": 384,
+      "height": 166,
+      "pivot": {
+        "x": 192,
+        "y": 95
+      },
+      "scale": 1,
+      "requiredRole": "healer",
+      "requiredLayer": "air"
+    },
+    {
+      "id": "rotor-gold",
+      "image": "images/enemies/rotor-gold.png",
+      "width": 384,
+      "height": 166,
+      "pivot": {
+        "x": 192,
+        "y": 95
+      },
+      "scale": 1,
+      "requiredRole": "healer",
+      "requiredLayer": "air"
+    },
+    {
+      "id": "guard-chair",
+      "image": "images/enemies/guard-chair.png",
+      "width": 650,
+      "height": 600,
+      "pivot": {
+        "x": 0,
+        "y": 0
+      },
+      "scale": 1,
+      "requiredRole": "guard",
+      "requiredLayer": "ground"
+    },
+    {
+      "id": "guard-tracks",
+      "image": "images/enemies/guard-tracks.png",
+      "width": 300,
+      "height": 260,
+      "pivot": {
+        "x": 0,
+        "y": 0
+      },
+      "scale": 1,
+      "requiredRole": "guard",
+      "requiredLayer": "ground"
+    },
+    {
+      "id": "guard-shield",
+      "image": "images/enemies/guard-shield.png",
+      "width": 800,
+      "height": 600,
+      "pivot": {
+        "x": 0,
+        "y": 0
+      },
+      "scale": 1,
+      "requiredRole": "guard",
+      "requiredLayer": "ground"
+    }
   ],
   "variants": [
-    { "typeId": "enemy.trainee", "image": "images/enemies/camera-magenta.png", "attachments": [{ "moduleId": "shooter-leg", "socketId": "underside" }] },
-    { "typeId": "enemy.camera.teal", "image": "images/enemies/camera-teal.png", "attachments": [{ "moduleId": "shooter-leg", "socketId": "underside" }] },
-    { "typeId": "enemy.camera.blue", "image": "images/enemies/camera-blue.png", "attachments": [{ "moduleId": "shooter-leg", "socketId": "underside" }] },
-    { "typeId": "enemy.camera.gold", "image": "images/enemies/camera-gold.png", "attachments": [{ "moduleId": "shooter-leg", "socketId": "underside" }] }
+    {
+      "typeId": "enemy.trainee",
+      "image": "images/enemies/camera-magenta.png",
+      "attachments": [
+        {
+          "moduleId": "shooter-leg",
+          "socketId": "underside"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.camera.teal",
+      "image": "images/enemies/camera-teal.png",
+      "attachments": [
+        {
+          "moduleId": "shooter-leg",
+          "socketId": "underside"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.camera.blue",
+      "image": "images/enemies/camera-blue.png",
+      "attachments": [
+        {
+          "moduleId": "shooter-leg",
+          "socketId": "underside"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.camera.gold",
+      "image": "images/enemies/camera-gold.png",
+      "attachments": [
+        {
+          "moduleId": "shooter-leg",
+          "socketId": "underside"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.healer.magenta",
+      "image": "images/enemies/healer-magenta.png",
+      "attachments": [
+        {
+          "moduleId": "rotor-magenta",
+          "socketId": "top"
+        }
+      ],
+      "cameraSize": {
+        "width": 232,
+        "height": 204
+      }
+    },
+    {
+      "typeId": "enemy.healer.teal",
+      "image": "images/enemies/healer-teal.png",
+      "attachments": [
+        {
+          "moduleId": "rotor-teal",
+          "socketId": "top"
+        }
+      ],
+      "cameraSize": {
+        "width": 232,
+        "height": 204
+      }
+    },
+    {
+      "typeId": "enemy.healer.blue",
+      "image": "images/enemies/healer-blue.png",
+      "attachments": [
+        {
+          "moduleId": "rotor-blue",
+          "socketId": "top"
+        }
+      ],
+      "cameraSize": {
+        "width": 232,
+        "height": 204
+      }
+    },
+    {
+      "typeId": "enemy.healer.gold",
+      "image": "images/enemies/healer-gold.png",
+      "attachments": [
+        {
+          "moduleId": "rotor-gold",
+          "socketId": "top"
+        }
+      ],
+      "cameraSize": {
+        "width": 232,
+        "height": 204
+      }
+    },
+    {
+      "typeId": "enemy.guard.chair",
+      "image": "images/enemies/guard-body.png",
+      "cameraSize": {
+        "width": 650,
+        "height": 600
+      },
+      "displayScale": 0.32,
+      "attachments": [
+        {
+          "moduleId": "guard-chair",
+          "socketId": "guard-base"
+        },
+        {
+          "moduleId": "guard-shield",
+          "socketId": "guard-front"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.guard.tracks",
+      "image": "images/enemies/guard-body.png",
+      "cameraSize": {
+        "width": 650,
+        "height": 600
+      },
+      "displayScale": 0.32,
+      "attachments": [
+        {
+          "moduleId": "guard-tracks",
+          "socketId": "guard-tracks"
+        },
+        {
+          "moduleId": "guard-shield",
+          "socketId": "guard-front"
+        }
+      ]
+    }
   ]
 }

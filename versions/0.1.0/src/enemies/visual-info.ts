@@ -27,7 +27,7 @@ export function createEnemyVisualCatalog(data: typeof asset) {
       const module = data.modules.find(m => m.id === a.moduleId)!;
       if (module.requiredRole !== info.role || module.requiredLayer !== info.Placement.Value) throw new Error('Module incompatible with enemy');
     });
-    return freezeDeep({ typeId: variant.typeId, image: variant.image, cameraSize: { ...data.cameraSize }, displayScale: data.displayScale,
+    return freezeDeep({ typeId: variant.typeId, image: variant.image, cameraSize: { ...((variant as typeof variant & { cameraSize?: { width: number; height: number } }).cameraSize ?? data.cameraSize) }, displayScale: (variant as typeof variant & { displayScale?: number }).displayScale ?? data.displayScale,
       sockets: structuredClone(data.sockets), modules: structuredClone(data.modules), attachments: structuredClone(variant.attachments) });
   });
   return Object.freeze(result);
@@ -39,16 +39,17 @@ export function getEnemyVisualInfo(typeId: string) {
   return visual;
 }
 /** One composition resolver for canvas, DOM, previews and bounds; coordinates use source pixels. */
-export function createEnemyVisualLayout(info: EnemyInfo) {
+export function createEnemyVisualLayout(info: EnemyInfo, guardActive = true) {
   const visual = getEnemyVisualInfo(info.typeId);
   const parts = visual.attachments.map(attachment => {
     const module = visual.modules.find(m => m.id === attachment.moduleId)!;
     if (module.requiredRole !== info.role || module.requiredLayer !== info.Placement.Value) throw new Error('Module incompatible with enemy');
     const socket = visual.sockets.find(s => s.id === attachment.socketId)!;
-    return { id: module.id, image: module.image, x: socket.x - module.pivot.x * module.scale, y: socket.y - module.pivot.y * module.scale,
+    return { visible: module.id !== 'guard-shield' || guardActive, id: module.id, image: module.image, x: socket.x - module.pivot.x * module.scale, y: socket.y - module.pivot.y * module.scale,
       width: module.width * module.scale, height: module.height * module.scale };
   });
-  parts.push({ id: 'camera', image: visual.image, x: 0, y: 0, width: visual.cameraSize.width, height: visual.cameraSize.height });
+  parts.push({ visible: true, id: 'camera', image: visual.image, x: 0, y: 0, width: visual.cameraSize.width, height: visual.cameraSize.height });
+  parts.sort((a,b) => Number(a.id === 'guard-shield') - Number(b.id === 'guard-shield'));
   const left = Math.min(...parts.map(p => p.x)), top = Math.min(...parts.map(p => p.y));
   const right = Math.max(...parts.map(p => p.x + p.width)), bottom = Math.max(...parts.map(p => p.y + p.height));
   return { typeId: info.typeId, displayScale: visual.displayScale, parts, bounds: { x: left, y: top, width: right - left, height: bottom - top } };

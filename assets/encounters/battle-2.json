@@ -4,13 +4,23 @@
   "enemies": [
     {
       "id": "blue",
-      "typeId": "enemy.camera.blue",
+      "typeId": "enemy.guard.tracks",
       "spawnPointId": "spawn-4"
     },
     {
       "id": "gold",
       "typeId": "enemy.camera.gold",
       "spawnPointId": "spawn-5"
+    },
+    {
+      "id": "healer-blue",
+      "typeId": "enemy.healer.blue",
+      "spawnPointId": "spawn-1"
+    },
+    {
+      "id": "healer-gold",
+      "typeId": "enemy.healer.gold",
+      "spawnPointId": "spawn-2"
     }
   ]
 }
