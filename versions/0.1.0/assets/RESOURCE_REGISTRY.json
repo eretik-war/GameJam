@@ -1,6 +1,134 @@
 {
   "schemaVersion": 1,
   "resources": [
+{
+  "id": "item-combat-blue",
+  "typeId": "item.09",
+  "kind": "image",
+  "source": "User attachment; transparent crop and proportional resize only, no generated or substituted art",
+  "author": "Not supplied",
+  "license": "Not supplied; user-provided project asset",
+  "sourceFile": "../dev-support/art/items/combat/combat-blue.png",
+  "sourceSha256": "21442cc06fff9523118729f34df3f76c59c685b18fd80c4f2ae773aac588d063",
+  "runtimeFile": "../../../assets/images/items/item-combat-blue.png",
+  "sha256": "393e32761c6b0b1142d4721a80dcc43e2cdd01264374b254b8612b1a1d2d76c2",
+  "dimensions": {
+    "width": 128,
+    "height": 128
+  },
+  "bytes": 10769,
+  "modifications": {
+    "crop": [
+      61,
+      84,
+      607,
+      582
+    ],
+    "contentSize": [
+      120,
+      109
+    ],
+    "margin": 4,
+    "alpha": "Preserved with premultiplied resampling",
+    "tool": "tools/prepare-combat-item-icons.py"
+  }
+},
+{
+  "id": "item-combat-magenta",
+  "typeId": "item.10",
+  "kind": "image",
+  "source": "User attachment; transparent crop and proportional resize only, no generated or substituted art",
+  "author": "Not supplied",
+  "license": "Not supplied; user-provided project asset",
+  "sourceFile": "../dev-support/art/items/combat/combat-magenta.png",
+  "sourceSha256": "5e068a3373521f8c170c8adec0108e91d8de04e1cbee2516bd09e066002d6f1b",
+  "runtimeFile": "../../../assets/images/items/item-combat-magenta.png",
+  "sha256": "ad1cc3d7a13d0c2ba43b014e800a112501400590d2f7aa346af19c0046527849",
+  "dimensions": {
+    "width": 128,
+    "height": 128
+  },
+  "bytes": 10275,
+  "modifications": {
+    "crop": [
+      61,
+      84,
+      607,
+      582
+    ],
+    "contentSize": [
+      120,
+      109
+    ],
+    "margin": 4,
+    "alpha": "Preserved with premultiplied resampling",
+    "tool": "tools/prepare-combat-item-icons.py"
+  }
+},
+{
+  "id": "item-combat-gold",
+  "typeId": "item.11",
+  "kind": "image",
+  "source": "User attachment; transparent crop and proportional resize only, no generated or substituted art",
+  "author": "Not supplied",
+  "license": "Not supplied; user-provided project asset",
+  "sourceFile": "../dev-support/art/items/combat/combat-gold.png",
+  "sourceSha256": "e71c9bbd42dc14e21ffbce2d549c94b82dda5e6d738c0524d5a9ea656cef7f11",
+  "runtimeFile": "../../../assets/images/items/item-combat-gold.png",
+  "sha256": "1040c018ed0cc18aa521456a00cda9f6c3f672037b9b08846f299a5299dd0dd3",
+  "dimensions": {
+    "width": 128,
+    "height": 128
+  },
+  "bytes": 10308,
+  "modifications": {
+    "crop": [
+      61,
+      84,
+      607,
+      582
+    ],
+    "contentSize": [
+      120,
+      109
+    ],
+    "margin": 4,
+    "alpha": "Preserved with premultiplied resampling",
+    "tool": "tools/prepare-combat-item-icons.py"
+  }
+},
+{
+  "id": "item-combat-teal",
+  "typeId": "item.12",
+  "kind": "image",
+  "source": "User attachment; transparent crop and proportional resize only, no generated or substituted art",
+  "author": "Not supplied",
+  "license": "Not supplied; user-provided project asset",
+  "sourceFile": "../dev-support/art/items/combat/combat-teal.png",
+  "sourceSha256": "c116880c15ed344371a8f27d9dc117bfb866214290d4e63aa230be1c9a62882b",
+  "runtimeFile": "../../../assets/images/items/item-combat-teal.png",
+  "sha256": "b62ada67ef594eec72353b79adb5e4e6b0cb9e63860cacbe2e4d5ebeb92f9a9e",
+  "dimensions": {
+    "width": 128,
+    "height": 128
+  },
+  "bytes": 9819,
+  "modifications": {
+    "crop": [
+      61,
+      84,
+      607,
+      582
+    ],
+    "contentSize": [
+      120,
+      109
+    ],
+    "margin": 4,
+    "alpha": "Preserved with premultiplied resampling",
+    "tool": "tools/prepare-combat-item-icons.py"
+  }
+},
     {
       "id": "pixi-js",
       "kind": "engine",
@@ -197,29 +325,53 @@
     {
       "id": "fire",
       "kind": "image",
-      "source": "Provided by user in project assets",
+      "source": "User attachment, 2026-10-31; extracted crop from 3-status sheet, transparent background",
       "author": "Not supplied",
-      "license": "Not supplied; test placeholder",
-      "runtimeFile": "../../../assets/images/fire.jpg",
-      "sha256": "a632a3bc1a2eedd78cbe9df2b031447d1e71a42888b12c8e7bed545be29d7450"
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/effects/effects-source.png",
+      "runtimeFile": "../../../assets/images/fire.png",
+      "sha256": "f90bd423587bb56a8dce4bcd99cba1d36d173869f1b92e0da5b3228825c3315c",
+      "width": 210,
+      "height": 261,
+      "bytes": 24136,
+      "replaces": {
+        "runtimeFile": "../../../assets/images/fire.jpg",
+        "sha256": "a632a3bc1a2eedd78cbe9df2b031447d1e71a42888b12c8e7bed545be29d7450"
+      }
     },
     {
       "id": "blindness",
       "kind": "image",
-      "source": "Provided by user in project assets",
+      "source": "User attachment, 2026-10-31; extracted crop from 3-status sheet, transparent background",
       "author": "Not supplied",
-      "license": "Not supplied; test placeholder",
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/effects/effects-source.png",
       "runtimeFile": "../../../assets/images/blindness.png",
-      "sha256": "7499515b291058c6e97fc0412eb67e8c00305f1696b6a4208c1aeaab4597a560"
+      "sha256": "98f43c2c23a8232bfb7c4966811e2e9710b1416fffbb1f88a56349d4bc92e36c",
+      "width": 270,
+      "height": 175,
+      "bytes": 17573,
+      "replaces": {
+        "runtimeFile": "../../../assets/images/blindness.png",
+        "sha256": "7499515b291058c6e97fc0412eb67e8c00305f1696b6a4208c1aeaab4597a560"
+      }
     },
     {
       "id": "stun",
       "kind": "image",
-      "source": "Provided by user in project assets",
+      "source": "User attachment, 2026-10-31; extracted crop from 3-status sheet, transparent background",
       "author": "Not supplied",
-      "license": "Not supplied; test placeholder",
-      "runtimeFile": "../../../assets/images/stun.jpg",
-      "sha256": "6f8cd4181b1eb6a2fca6283bf41d103068a18dc8d0dcd98b7e6bab4e3442ca46"
+      "license": "Not supplied; user-provided project asset",
+      "sourceFile": "../dev-support/art/effects/effects-source.png",
+      "runtimeFile": "../../../assets/images/stun.png",
+      "sha256": "1a1fcf84aeacca677d3a682734b9f8505e30eb486415baddac11a13a64ce054b",
+      "width": 220,
+      "height": 196,
+      "bytes": 32840,
+      "replaces": {
+        "runtimeFile": "../../../assets/images/stun.jpg",
+        "sha256": "6f8cd4181b1eb6a2fca6283bf41d103068a18dc8d0dcd98b7e6bab4e3442ca46"
+      }
     },
     {
       "id": "regeneration",
@@ -377,6 +529,15 @@
       "sha256": "643d56003d18cac647450eb3303f72bd3ddff67c1654402f5f7f2feb0b10b17e"
     },
     {
+      "id": "effects-source",
+      "kind": "art-source",
+      "source": "User attachment, 2026-10-31",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided local test reference",
+      "sourceFile": "../dev-support/art/effects/effects-source.png",
+      "sha256": "a231726559efa22481243aafbc18d17b92e69bc6e8247d44cccefeb2a83de958"
+    },
+    {
       "id": "healer-magenta",
       "kind": "image",
       "source": "User supplied separated healer body and rotor sheets; lossless crop via tools/extract-healer-parts.ps1",
@@ -521,6 +682,6 @@
       "sha256": "152a5a6aab903b45ce9b3efce5c9f722b34727d35332024d1ea662990f5d005f"
     }
   ],
-  "art": "User-provided local test images; camera PNGs retain original pixels/alpha. Authorship and redistribution license not supplied. Source art is outside runtime in dev-support/art/enemies. Includes user-provided battle-location background and status images from origin/main. Four opaque-body item PNGs with transparent background: AI-assisted edit of user art, full prompt and sources in dev-support/art/items.",
+  "art": "User-provided local test images; camera PNGs retain original pixels/alpha. Authorship and redistribution license not supplied. Source art is outside runtime in dev-support/art/enemies. Includes user-provided battle-location background and status images from origin/main. Four opaque-body item PNGs with transparent background: AI-assisted edit of user art, full prompt and sources in dev-support/art/items. Three status effect icons (fire, blindness, stun) extracted from user sheet with transparent background; provenance in dev-support/art/effects.",
   "music": null
 }

@@ -1,0 +1,130 @@
+[
+  {
+    "id": "item-combat-blue",
+    "typeId": "item.09",
+    "kind": "image",
+    "source": "User attachment; transparent crop and proportional resize only, no generated or substituted art",
+    "author": "Not supplied",
+    "license": "Not supplied; user-provided project asset",
+    "sourceFile": "../dev-support/art/items/combat/combat-blue.png",
+    "sourceSha256": "21442cc06fff9523118729f34df3f76c59c685b18fd80c4f2ae773aac588d063",
+    "runtimeFile": "../../../assets/images/items/item-combat-blue.png",
+    "sha256": "393e32761c6b0b1142d4721a80dcc43e2cdd01264374b254b8612b1a1d2d76c2",
+    "dimensions": {
+      "width": 128,
+      "height": 128
+    },
+    "bytes": 10769,
+    "modifications": {
+      "crop": [
+        61,
+        84,
+        607,
+        582
+      ],
+      "contentSize": [
+        120,
+        109
+      ],
+      "margin": 4,
+      "alpha": "Preserved with premultiplied resampling",
+      "tool": "tools/prepare-combat-item-icons.py"
+    }
+  },
+  {
+    "id": "item-combat-magenta",
+    "typeId": "item.10",
+    "kind": "image",
+    "source": "User attachment; transparent crop and proportional resize only, no generated or substituted art",
+    "author": "Not supplied",
+    "license": "Not supplied; user-provided project asset",
+    "sourceFile": "../dev-support/art/items/combat/combat-magenta.png",
+    "sourceSha256": "5e068a3373521f8c170c8adec0108e91d8de04e1cbee2516bd09e066002d6f1b",
+    "runtimeFile": "../../../assets/images/items/item-combat-magenta.png",
+    "sha256": "ad1cc3d7a13d0c2ba43b014e800a112501400590d2f7aa346af19c0046527849",
+    "dimensions": {
+      "width": 128,
+      "height": 128
+    },
+    "bytes": 10275,
+    "modifications": {
+      "crop": [
+        61,
+        84,
+        607,
+        582
+      ],
+      "contentSize": [
+        120,
+        109
+      ],
+      "margin": 4,
+      "alpha": "Preserved with premultiplied resampling",
+      "tool": "tools/prepare-combat-item-icons.py"
+    }
+  },
+  {
+    "id": "item-combat-gold",
+    "typeId": "item.11",
+    "kind": "image",
+    "source": "User attachment; transparent crop and proportional resize only, no generated or substituted art",
+    "author": "Not supplied",
+    "license": "Not supplied; user-provided project asset",
+    "sourceFile": "../dev-support/art/items/combat/combat-gold.png",
+    "sourceSha256": "e71c9bbd42dc14e21ffbce2d549c94b82dda5e6d738c0524d5a9ea656cef7f11",
+    "runtimeFile": "../../../assets/images/items/item-combat-gold.png",
+    "sha256": "1040c018ed0cc18aa521456a00cda9f6c3f672037b9b08846f299a5299dd0dd3",
+    "dimensions": {
+      "width": 128,
+      "height": 128
+    },
+    "bytes": 10308,
+    "modifications": {
+      "crop": [
+        61,
+        84,
+        607,
+        582
+      ],
+      "contentSize": [
+        120,
+        109
+      ],
+      "margin": 4,
+      "alpha": "Preserved with premultiplied resampling",
+      "tool": "tools/prepare-combat-item-icons.py"
+    }
+  },
+  {
+    "id": "item-combat-teal",
+    "typeId": "item.12",
+    "kind": "image",
+    "source": "User attachment; transparent crop and proportional resize only, no generated or substituted art",
+    "author": "Not supplied",
+    "license": "Not supplied; user-provided project asset",
+    "sourceFile": "../dev-support/art/items/combat/combat-teal.png",
+    "sourceSha256": "c116880c15ed344371a8f27d9dc117bfb866214290d4e63aa230be1c9a62882b",
+    "runtimeFile": "../../../assets/images/items/item-combat-teal.png",
+    "sha256": "b62ada67ef594eec72353b79adb5e4e6b0cb9e63860cacbe2e4d5ebeb92f9a9e",
+    "dimensions": {
+      "width": 128,
+      "height": 128
+    },
+    "bytes": 9819,
+    "modifications": {
+      "crop": [
+        61,
+        84,
+        607,
+        582
+      ],
+      "contentSize": [
+        120,
+        109
+      ],
+      "margin": 4,
+      "alpha": "Preserved with premultiplied resampling",
+      "tool": "tools/prepare-combat-item-icons.py"
+    }
+  }
+]

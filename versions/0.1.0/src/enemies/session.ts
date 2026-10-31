@@ -1,7 +1,9 @@
 import { Enemy, enemyCatalog, createEnemyFromInfo, TypeEnemyParameter, TypeEnemyRole, TypeSupportParameter } from './enemy';
 import { canSpawn, getSpawnPoint, spawnEnemy, spawnPoints } from './spawn';
-import { Hero, enemyDamage } from '../domain/hero';
+import { getStatusEffect } from './status-effects/catalog';
+import { Hero } from '../domain/hero';
 import type { Item } from '../domain/items';
+import { avoidsEquippedAttack, transferEquippedStatus, equippedAttackDamage } from '../domain/combat-item-rules';
 
 export type EnemyDeployment = Readonly<{ enemyId: string; spawnPointId: string }>;
 export class EnemySession {
@@ -48,22 +50,40 @@ export class EnemySession {
     if (!this.CanTarget(id)) return;
     if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow');
     this.Select(id);
+    // Equipment passives must be current before anything resolves; the renderer syncs the same way.
+    this.SyncHeroEquipment(items);
     if (this.hero.CanAttack(random)) {
-      this.selected.TakeDamage(this.hero.AttackDamage(items));
+      this.selected.TakeDamage(equippedAttackDamage(this.selected, this.hero.AttackDamage(items), items));
+      transferEquippedStatus(this.hero, this.selected, items, random);
+      // Lenses add their effect to the hero's attack; a slain target keeps no statuses.
+      for (const effect of this.hero.AttackEffects(items)) {
+        if (!this.selected.alive) break;
+        this.selected.AddStatus(effect.typeId, effect.turns);
+      }
       yield this.hero.id;
     }
+    const resist = this.hero.effectResistChance;
     for (const enemy of this.deployed) {
       if (!this.hero.alive) break;
       if (!enemy.CanAttack(random)) continue;
       if (enemy.EnemyInfo.role === TypeEnemyRole.Healer) {
         if (this.TryHeal(enemy)) yield enemy.id;
-      } else {
-        this.hero.TakeDamage(enemyDamage * enemy.damageMultiplier * this.OutgoingDamageScale);
-        yield enemy.id;
+        continue;
       }
+      if (avoidsEquippedAttack(this.hero, items, random)) continue;
+      const attack = enemy.attack;
+      this.hero.TakeDamage((attack?.damage ?? 0) * enemy.damageMultiplier * this.OutgoingDamageScale);
+      const effect = attack?.effect;
+      if (effect && this.hero.alive && !(effect.typeId === 'stun' && this.hero.stunned)
+        && random() < getStatusEffect(effect.typeId).applyChance && !(resist > 0 && random() < resist)) {
+        this.hero.AddStatus(effect.typeId, effect.turns);
+      }
+      yield enemy.id;
     }
-    this.hero.BeginTurn(); this.EndTurn();
+    this.hero.BeginTurn(random); this.EndTurn();
   }
+  /** The active slots own the hero's equipment: syncing them updates passives and the shield ceiling. */
+  SyncHeroEquipment(items: readonly (Item | null)[]): void { this.hero.SyncEquipment(items); }
   private Aura(type: TypeSupportParameter): number {
     return Math.max(1, ...this.deployed.filter(e => e.alive).map(e => e.EnemyInfo.SupportParameters.find(p => p.Type === type)?.Value ?? 1));
   }

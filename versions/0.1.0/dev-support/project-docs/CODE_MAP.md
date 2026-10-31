@@ -7,8 +7,9 @@
 | Выбор/ход/сохранение | src/domain/session.ts; GameSession/loadSession | main; round-trip/невалидные saves |
 | VisualInfo и общая карточка данных | src/presentation/npc-view.ts; createNPCView | canvas и DOM main.ts |
 | Ввод, Pixi-сцена, подписки/lifecycle | src/main.ts | UI и resize; браузерные проверки |
+| Диалоги перед боем и реплики при уроне | src/domain/battle-dialogue.ts; src/battle-dialogue-controller.ts | main.ts: атаки, anchors, ticker, load и смена сцены; tests/battle-messages.test.ts; tools/verify-battle-dialogue.mjs; BATTLE_DIALOGUE.md |
 | Разметка и адаптация | src/index.html, src/style.css | build; визуальная матрица |
-| Типы и экземпляры предметов | src/domain/items.ts; ItemInfo, Item, createItemFromInfo | InventorySession; tests/inventory.test.ts |
+| Типы/общий каталог и экземпляры предметов | src/domain/items.ts; ItemInfo, Item, createItemFromInfo; семейство item.09–12 отдельно в src/domain/combat-items.ts | InventorySession; tests/inventory.test.ts; COMBAT_ITEMS.md |
 | Инвентарь, стадии, награды и переносы | src/domain/inventory.ts; InventorySession | src/inventory-controller.ts; tests/inventory.test.ts |
 | Общее представление предмета | src/presentation/item-view.ts; createItemView, createItemIcon | слоты, карманы, награды и drag ghost |
 | Ввод инвентаря/диалог/lifecycle | src/inventory-controller.ts; InventoryController | main.ts; qa/INVENTORY.md |
@@ -21,7 +22,7 @@
 
 Пути src/tests относительно активной versions/0.1.0. Зависимости — node_modules/package-lock в корне; vendor нужен без npm в готовом HTML. Generated: builds/preview.html и versions/gamejam_0.1.0-offline.html. Исходники не редактируются через эти артефакты.
 
-Области будущей игры: полноценный бой, бонусы предметов, ресурсы/звук, платформа. При добавлении указать владельца, потребителей и проверки здесь. Контракт реализованного инвентаря — [INVENTORY.md](INVENTORY.md).
+Области будущей игры: полноценный бой, бонусы предметов, ресурсы/звук, платформа. При добавлении указать владельца, потребителей и проверки здесь. Контракт реализованного инвентаря — [INVENTORY.md](INVENTORY.md); определения нескольких семейств, общий пул наград и боевые свойства — [COMBAT_ITEMS.md](COMBAT_ITEMS.md).
 
 | Противники/щит/статусы | src/enemies/enemy.ts; status-effects/*.ts | enemies/session.ts, enemies/view.ts, main.ts, tests/domain.test.ts |
 | JSON-ассеты Enemy/Attack | корень assets/enemies, assets/attacks; src/enemies/enemy.ts, attack.ts | EnemySession, loadSession, tests/domain.test.ts |
@@ -29,7 +30,7 @@
 | Слои противников и точки спавна | src/enemies/placement.ts, spawn.ts; assets/enemies/spawn-points.json | EnemyInfo, EnemySession; tests/enemies.test.ts |
 | Каталог четырёх камер | assets/enemies/test-enemy.json, camera-enemies.json; src/enemies/enemy.ts | единая фабрика createEnemyFromInfo, EnemySession/loadSession |
 | Модульный VisualInfo и точки крепления | assets/enemies/camera-visuals.json; src/enemies/visual-info.ts | createEnemyVisualLayout → presentation/enemy-visual.ts → Pixi, DOM и preview |
-| Извлечение и проверка камер | tools/extract-enemy-parts.ps1, preview-enemies.mjs, verify-camera-enemies.mjs | исходники dev-support/art/enemies; qa/MODULAR_ENEMIES.md |
+| Извлечение и проверка камер | tools/extract-enemy-parts.ps1, extract-robot-legs.ps1, preview-enemies.mjs, verify-camera-enemies.mjs, verify-robot-legs.mjs | исходники dev-support/art/enemies; qa/MODULAR_ENEMIES.md |
 | Фон боевой зоны и наложение инвентаря | assets/images/battle-location.jpg; main.ts первый спрайт; style.css absolute-слои | qa/INVENTORY_OVERLAY.md; сцену и юнитов не смещают |
 | Герой: три кадра/idle/положение | src/presentation/hero-animation.ts; createHeroAnimation, placeHero | main.ts renderer/тикер; HERO_ANIMATION.md; qa/HERO_ANIMATION.md |
 
@@ -37,6 +38,7 @@
 
 | Четыре иконки предметов | assets/images/items; src/presentation/item-view.ts, images.ts | tools/extract-item-icons.ps1; tools/verify-item-icons.mjs; qa/ITEM_ICONS.md |
 
+| Боевые свойства нового семейства | src/domain/combat-items.ts; combat-item-rules.ts; Enemy.TransferNegativeStatus | EnemySession.Attack; presentation/combat-item-visuals.ts; tests/combat-extension-regression.test.ts; tools/verify-combat-item-extension.mjs |
 | Герой/урон/бонусы экипировки | assets/heroes/player.json; src/domain/hero.ts, items.ts | heroInfo/heroCombatInfo, Hero.AttackDamage; tests/combat.test.ts |
 | Атака/доступная колонка/ответные удары | src/enemies/session.ts; CanTarget/Attack | main.ts; реальные spawn-point, резерв исключён; tests/combat.test.ts |
 | Единые боевые параметры/полоски | src/enemies/view.ts createCombatantView; presentation/combat-indicators.ts | герой, камеры, hover, debug; NPC-layout отдельно createNPCView |
@@ -46,10 +48,12 @@
 | Цепочка сцен/наполнения/герой | src/domain/campaign.ts; assets/campaigns, assets/encounters, assets/cutscenes в корне | main.ts, CutsceneController; tests/campaign.test.ts; SCENE_SEQUENCE.md |
 | Затемнение и блокировка ввода | src/presentation/scene-transition.ts | main.ts; tools/verify-campaign.mjs |
 
-| Воздушные лекари/приоритет лечения | assets/enemies/healers.json; EnemyInfo.SupportParameters; EnemySession.TryHeal | enemies/view.ts; camera-visuals.json; tests/healers.test.ts; tools/verify-healers.mjs |
+| Воздушные лекари/приоритет лечения | assets/enemies/healers.json; EnemyInfo.SupportParameters; EnemySession.TryHeal | enemies/view.ts; camera-visuals.json; tests/healers.test.ts; актуальный маршрут tools/verify-campaign.mjs; qa/SYNC_INTEGRATION.md |
 
 | Щитовики/разрушение и задержка/провокация | assets/enemies/guards.json; Enemy.guardActive/ChangeParameter/BeginTurn; EnemySession.CanTarget | visual-info.ts/view.ts/enemy-visual.ts; tests/guards.test.ts; tools/verify-guards.mjs |
 
 | Последовательность атак/движение | enemies/session.ts AttackSequence; main.ts attack/app.ticker | tests/combat.test.ts; tools/verify-combat-animation.mjs; HERO_ANIMATION.md |
 
 | Четыре робота-босса/множитель урона | assets/enemies/bosses.json; EnemyInfo.CombatParameters; Enemy.damageMultiplier | EnemySession.AttackSteps; enemies/view.ts; camera-visuals; tests/bosses.test.ts; tools/verify-bosses.mjs |
+
+| Щитовики/разрушение и задержка/провокация | assets/enemies/guards.json; Enemy.guardActive/ChangeParameter/BeginTurn; EnemySession.CanTarget | visual-info.ts/view.ts/enemy-visual.ts; tests/guards.test.ts; актуальный маршрут tools/verify-campaign.mjs; qa/SYNC_INTEGRATION.md |

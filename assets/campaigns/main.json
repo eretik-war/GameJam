@@ -22,9 +22,39 @@
       "contentId": "battle-2"
     },
     {
+      "id": "fight-3",
+      "type": "battle",
+      "contentId": "battle-2"
+    },
+    {
+      "id": "fight-4",
+      "type": "battle",
+      "contentId": "battle-2"
+    },
+    {
       "id": "interlude",
       "type": "cutscene",
       "contentId": "cutscene-memory-3"
+    },
+    {
+      "id": "fight-5",
+      "type": "battle",
+      "contentId": "battle-2"
+    },
+    {
+      "id": "fight-6",
+      "type": "battle",
+      "contentId": "battle-2"
+    },
+    {
+      "id": "fight-7",
+      "type": "battle",
+      "contentId": "battle-2"
+    },
+    {
+      "id": "fight-8",
+      "type": "battle",
+      "contentId": "battle-2"
     },
     {
       "id": "fight-2-repeat",

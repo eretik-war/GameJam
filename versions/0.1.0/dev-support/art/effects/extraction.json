@@ -1,0 +1,32 @@
+{
+  "burning": {
+    "sourceBbox": [
+      36,
+      2,
+      246,
+      263
+    ],
+    "width": 210,
+    "height": 261
+  },
+  "blindness": {
+    "sourceBbox": [
+      24,
+      414,
+      294,
+      589
+    ],
+    "width": 270,
+    "height": 175
+  },
+  "stun": {
+    "sourceBbox": [
+      44,
+      747,
+      264,
+      943
+    ],
+    "width": 220,
+    "height": 196
+  }
+}

@@ -5,6 +5,7 @@ import { Parameter, RestoreParameter, TypeNPCParameter } from '../src/domain/par
 import { GameSession, createSession, loadSession } from '../src/domain/session';
 import { createNPCView } from '../src/presentation/npc-view';
 import './inventory.test';
+import './combat-item-icons.test';
 
 test('instances own independent parameter objects; Info and snapshots stay frozen', () => {
   const a = createNPCFromInfo('npc.trainee', 'a');
@@ -101,7 +102,7 @@ import { createNPCView as createEnemyView } from '../src/enemies/view';
 
 test('enemy asset resolves immutable attacks and visual metadata; rejects invalid references', () => {
   assert.equal(demoEnemyInfo.attackIds.length, 1);
-  assert.equal(getAttackInfo(demoEnemyInfo.attackIds[0]!).name, 'Тестовая атака');
+  assert.equal(getAttackInfo(demoEnemyInfo.attackIds[0]!).name, 'Поджигающий выстрел');
   assert.ok(Object.isFrozen(demoEnemyInfo.Placement));
   assert.ok(Object.isFrozen(demoEnemyInfo.attackIds));
   assert.ok(Object.isFrozen(demoEnemyInfo.Parameters[0]));
@@ -121,7 +122,7 @@ test('enemy asset resolves immutable attacks and visual metadata; rejects invali
   const view = createEnemyView(session.selected);
   assert.equal(view.shield, 8);
   assert.equal(view.maxShield, 8);
-  assert.equal(view.statuses[0]!.imageUrl, 'images/fire.jpg');
+  assert.equal(view.statuses[0]!.imageUrl, 'images/fire.png');
   assert.equal(createEnemyView(loadEnemySession(session.Save()).selected).statuses[0]!.imageUrl, view.statuses[0]!.imageUrl);
   session.EndTurn();
   assert.equal(createEnemyView(session.selected).statuses.length, 0);
@@ -147,6 +148,8 @@ test('combined effects heal, block attacks, miss at fifty percent and survive sa
 });
 
 import './campaign.test';
+import './battle-messages.test';
+import './combat-extension-regression.test';
 
 import './healers.test';
 

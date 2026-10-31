@@ -1,4 +1,5 @@
 import { Parameter, assertFinite } from '../domain/parameters';
+import { TypeEnemyParameter } from './enemy-parameters';
 import { getStatusEffect } from './status-effects/catalog';
 import type { ActiveStatus } from './status-effects/status-effect';
 import bosses from '../../../../assets/enemies/bosses.json';
@@ -6,9 +7,9 @@ import guards from '../../../../assets/enemies/guards.json';
 import healers from '../../../../assets/enemies/healers.json';
 import testEnemy from '../../../../assets/enemies/test-enemy.json';
 import cameraEnemies from '../../../../assets/enemies/camera-enemies.json';
-import { getAttackInfo } from './attack';
+import { getAttackInfo, type AttackInfo } from './attack';
 import { createLayerParameter, TypeBattleLayer, TypeEnemyPlacementParameter, type LayerParameter } from './placement';
-export enum TypeEnemyParameter { Health = 'health', Shield = 'shield' }
+export { TypeEnemyParameter };
 export enum TypeEnemyRole { Shooter = 'shooter', Hero = 'hero', Healer = 'healer', Guard = 'guard', Boss = 'boss' }
 export enum TypeSupportParameter { Healing = 'healing', ShieldRestore = 'shield-restore', DamageAura = 'damage-aura', DefenseAura = 'defense-aura' }
 export enum TypeSupportKind { Health = 'health', Shield = 'shield', DamageAura = 'damage-aura', DefenseAura = 'defense-aura' }
@@ -19,6 +20,8 @@ export class EnemyInfo {
   readonly SupportParameters: readonly Readonly<Parameter<TypeSupportParameter>>[];
   readonly Parameters: readonly Readonly<Parameter<TypeEnemyParameter>>[];
   readonly attackIds: readonly string[];
+  /** The attack this type uses on its turn; damage and effect come from the attack asset. */
+  readonly attack: AttackInfo | undefined;
   readonly Placement: LayerParameter<TypeEnemyPlacementParameter>;
   constructor(readonly typeId: string, readonly Name: string, health: number, shield: number,
     layer = TypeBattleLayer.Ground, readonly role = TypeEnemyRole.Shooter, attackIds: readonly string[] = [], support?: SupportAsset, damageMultiplier = 1) {
@@ -33,6 +36,7 @@ export class EnemyInfo {
     attackIds.forEach(getAttackInfo);
     if (new Set(attackIds).size !== attackIds.length || !Object.values(TypeEnemyRole).includes(role)) throw new Error('Invalid enemy role or attacks');
     this.attackIds = Object.freeze([...attackIds]);
+    this.attack = attackIds.length ? getAttackInfo(attackIds[0]!) : undefined;
     this.Placement = createLayerParameter(TypeEnemyPlacementParameter.Layer, layer);
     Object.freeze(this);
   }
@@ -55,18 +59,22 @@ export class Enemy {
   }
   get damageMultiplier(): number { return this.EnemyInfo.CombatParameters.find(p => p.Type === TypeEnemyCombatParameter.DamageMultiplier)!.Value; }
   get typeId(): string { return this.EnemyInfo.typeId; }
+  get attack(): AttackInfo | undefined { return this.EnemyInfo.attack; }
   get layer(): TypeBattleLayer { return this.EnemyInfo.Placement.Value; }
   get Parameters() { return this.#parameters.map(p => Object.freeze(new Parameter(p.Type, p.Value))); }
   get statuses() { return this.#statuses.map(s => Object.freeze({ typeId: s.effect.typeId, name: s.effect.name, imageUrl: s.effect.imageUrl, remainingTurns: s.remainingTurns })); }
   GetParameter(type: TypeEnemyParameter): number { return this.#parameters.find(p => p.Type === type)!.Value; }
   get alive(): boolean { return this.GetParameter(TypeEnemyParameter.Health) > 0; }
+  /** Ceilings belong to the instance: equipment can raise a shield above the value stored in Info. */
+  get maxHealth(): number { return this.EnemyInfo.Parameters.find(p => p.Type === TypeEnemyParameter.Health)!.Value; }
+  get maxShield(): number { return this.EnemyInfo.Parameters.find(p => p.Type === TypeEnemyParameter.Shield)!.Value; }
   ChangeParameter(type: TypeEnemyParameter, delta: number): void {
     assertFinite(delta);
     const p = this.#parameters.find(p => p.Type === type);
     if (!p) throw new Error('Unknown enemy parameter');
     const next = p.Value + delta; assertFinite(next);
     const previous = p.Value;
-    p.Value = Math.max(0, type === TypeEnemyParameter.Health ? Math.min(next, this.EnemyInfo.Parameters.find(p => p.Type === type)!.Value) : next);
+    p.Value = Math.max(0, type === TypeEnemyParameter.Health ? Math.min(next, this.maxHealth) : next);
     if (this.EnemyInfo.role === TypeEnemyRole.Guard && type === TypeEnemyParameter.Shield) {
       if (p.Value === 0) this.#guardRecoveryTurns = -1;
       else if (previous === 0) this.#guardRecoveryTurns = 2;
@@ -91,10 +99,24 @@ export class Enemy {
       existing.remainingTurns += turns;
     } else this.#statuses.push({ effect, remainingTurns: turns });
   }
+  /** Move the oldest debuff atomically through the two entity owners, never through Info. */
+  TransferNegativeStatus(target: Enemy): boolean {
+    if (!this.alive || !target.alive || target === this) return false;
+    const index = this.#statuses.findIndex(status => status.effect.negative);
+    if (index < 0) return false;
+    const status = this.#statuses[index]!;
+    target.AddStatus(status.effect.typeId, status.remainingTurns);
+    this.#statuses.splice(index, 1);
+    return true;
+  }
   get stunned(): boolean { return this.#statuses.some(s => s.effect.typeId === 'stun'); }
   get missChance(): number { return this.#statuses.some(s => s.effect.typeId === 'blindness') ? 0.5 : 0; }
   CanAttack(random: () => number = Math.random): boolean { return this.alive && !this.stunned && random() >= this.missChance; }
-  BeginTurn(): void {
+  /** Cleansing removes exactly the debuffs: every effect declares whether it is one. */
+  RemoveNegativeStatuses(): void {
+    for (let i = this.#statuses.length - 1; i >= 0; i--) if (this.#statuses[i]!.effect.negative) this.#statuses.splice(i, 1);
+  }
+  BeginTurn(_random: () => number = Math.random): void {
     if (this.#guardRecoveryTurns > 0) this.#guardRecoveryTurns--;
     for (const status of [...this.#statuses]) {
       if (!this.alive) break;

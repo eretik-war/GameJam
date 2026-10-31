@@ -1,10 +1,15 @@
 /** Shared display data. Game values are resolved by the owning entity's view. */
 export interface HoverCardView {
-  readonly category: string;
   readonly title: string;
-  readonly description: string;
-  readonly parameters: readonly { readonly label: string; readonly value: string | number }[];
-  readonly note: string;
+  readonly parameters: readonly { readonly label: string; readonly value: string | number; readonly tone?: string }[];
+  /** Optional wide-card blocks; a compact card shows the title and rows only. */
+  readonly category?: string;
+  readonly description?: string;
+  readonly note?: string;
+  /** Dense character variant: minimal spacing, no scrolling, whole card visible at once. */
+  readonly compact?: boolean;
+  /** Coloured explanation lines under a divider at the bottom of the card. */
+  readonly effects?: readonly { readonly text: string; readonly tone?: string }[];
 }
 
 export const HOVER_CARD_DELAY_MS = 500;
@@ -19,6 +24,7 @@ export class HoverCardController {
   readonly #observer: MutationObserver;
   #target: HoverCardAnchor | undefined;
   #resolve: (() => HoverCardView) | undefined;
+  #compact = false;
   #showTimer: number | undefined;
   #hideTimer: number | undefined;
 
@@ -133,30 +139,60 @@ export class HoverCardController {
     if (!this.#target || !this.#resolve || (onlyIfVisible && this.#card.hidden)) return;
     if (this.#target instanceof HTMLElement && !this.#target.isConnected) { this.hide(); return; }
     const view = this.#resolve();
-    const category = document.createElement('p');
-    category.className = 'hover-card-category';
-    category.textContent = view.category;
+    this.#compact = view.compact === true;
+    const blocks: HTMLElement[] = [];
+    if (view.category) {
+      const category = document.createElement('p');
+      category.className = 'hover-card-category';
+      category.textContent = view.category;
+      blocks.push(category);
+    }
     const title = document.createElement('h3');
     title.textContent = view.title;
-    const description = document.createElement('p');
-    description.className = 'hover-card-description';
-    description.textContent = view.description;
-    const parameters = document.createElement('dl');
-    for (const parameter of view.parameters) {
-      const row = document.createElement('div');
-      const label = document.createElement('dt');
-      label.textContent = parameter.label;
-      const value = document.createElement('dd');
-      value.textContent = String(parameter.value);
-      row.append(label, value);
-      parameters.append(row);
+    blocks.push(title);
+    if (view.description) {
+      const description = document.createElement('p');
+      description.className = 'hover-card-description';
+      description.textContent = view.description;
+      blocks.push(description);
     }
-    const note = document.createElement('p');
-    note.className = 'hover-card-note';
-    note.textContent = view.note;
+    if (view.parameters.length) {
+      const parameters = document.createElement('dl');
+      for (const parameter of view.parameters) {
+        const row = document.createElement('div');
+        const label = document.createElement('dt');
+        label.textContent = parameter.label;
+        const value = document.createElement('dd');
+        value.textContent = String(parameter.value);
+        // The damage type colours the value the same way the lens items are coloured.
+        if (parameter.tone) value.dataset.tone = parameter.tone;
+        row.append(label, value);
+        parameters.append(row);
+      }
+      blocks.push(parameters);
+    }
+    if (view.note) {
+      const note = document.createElement('p');
+      note.className = 'hover-card-note';
+      note.textContent = view.note;
+      blocks.push(note);
+    }
+    if (view.effects?.length) {
+      // The divider and its explanation lines close every card that describes an attack.
+      const effects = document.createElement('div');
+      effects.className = 'hover-card-effects';
+      for (const effect of view.effects) {
+        const line = document.createElement('p');
+        line.textContent = effect.text;
+        if (effect.tone) line.dataset.tone = effect.tone;
+        effects.append(line);
+      }
+      blocks.push(effects);
+    }
     const host = this.#target instanceof HTMLElement ? this.#target.closest('dialog[open]') ?? document.body : document.body;
     if (this.#card.parentElement !== host) host.append(this.#card);
-    this.#card.replaceChildren(category, title, description, parameters, note);
+    this.#card.classList.toggle('hover-card-compact', this.#compact);
+    this.#card.replaceChildren(...blocks);
     this.#card.hidden = false;
     if (this.#target instanceof HTMLElement) {
       const descriptions = new Set((this.#target.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean));
@@ -170,10 +206,11 @@ export class HoverCardController {
     if (!this.#target) return;
     const anchor = this.#target.getBoundingClientRect();
     const margin = 12;
-    const gap = 14;
+    const gap = this.#compact ? 8 : 14;
     const width = document.documentElement.clientWidth;
     const height = window.innerHeight;
-    this.#card.style.maxHeight = `${height - margin * 2}px`;
+    // A compact card always fits its content, so it is never clamped into a scroll box.
+    this.#card.style.maxHeight = this.#compact ? '' : `${height - margin * 2}px`;
     let card = this.#card.getBoundingClientRect();
     // Prefer above/below so a card does not cover the next enemy in the row.
     let x = anchor.left + (anchor.width - card.width) / 2;
@@ -181,10 +218,12 @@ export class HoverCardController {
     const above = anchor.top - margin - gap;
     const placeBelow = below >= card.height || below >= above;
     let y: number;
-    if (Math.max(below, above) >= 96) {
-      // Long status lists scroll rather than covering the target or its neighbours.
-      this.#card.style.maxHeight = `${Math.min(height - margin * 2, placeBelow ? below : above)}px`;
-      card = this.#card.getBoundingClientRect();
+    if (this.#compact || Math.max(below, above) >= 96) {
+      if (!this.#compact) {
+        // Long status lists scroll rather than covering the target or its neighbours.
+        this.#card.style.maxHeight = `${Math.min(height - margin * 2, placeBelow ? below : above)}px`;
+        card = this.#card.getBoundingClientRect();
+      }
       y = placeBelow ? anchor.bottom + gap : anchor.top - card.height - gap;
     } else {
       if (anchor.right + gap + card.width <= width - margin) x = anchor.right + gap;

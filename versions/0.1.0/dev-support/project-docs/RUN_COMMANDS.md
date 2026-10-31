@@ -15,6 +15,10 @@
 | node tools/preview-enemies.mjs | Каталог четырёх модульных камер в versions/0.1.0/builds/camera-catalog.html |
 | node tools/verify-camera-enemies.mjs | После offline build и preview: Chrome desktop HTTP/file, выбор/статусы/сохранения, PNG в builds; CHROME_PATH переопределяет путь Chrome |
 | node tools/verify-camera-enemies.mjs --with-item-icons | Общая сборка: NPC/статусы/наложение и новые предметные PNG 128×128 в награде и экипировке |
+| node tools/verify-campaign.mjs | После offline build: девять боёв, пять ground/air-точек, награды, fade, preview и финальная ветка HTTP/file |
+| node tools/verify-campaign.mjs --restart | Тот же маршрут, плавный restart без reload, пустой инвентарь; --sustain-hero явно включает QA-восстановление HP между боями и не проверяет баланс |
+| node tools/verify-combat-item-extension.mjs --protocol=http --items=item.09,item.10 | Два предмета: настоящая награда/экипировка и направленная fixture-проверка эффектов; повторить для item.11,item.12 и protocol=file |
+| node tools/verify-robot-legs.mjs | После preview-enemies: четыре камеры с цветными ножками через общий compositor; это каталог, не полный бой |
 | npm run test:sync | Временные локальные Git-копии: порции/авторство, merge/конфликт, гонки push, продолжения, реестр задач, проверки, пауза и lock |
 | npm run sync:status | Только локально: ветка/правки, SHA последнего fetch, пауза, lock и последняя операция |
 | npm run sync:history -- --limit 10 | Только локально: кто/задача/commits/итог последних операций |
@@ -38,7 +42,7 @@
 
 В PowerShell использовать npm.cmd вместо npm при запрете npm.ps1. Не требуется ослаблять execution policy. Для другого порта: $env:GAMEJAM_PORT='4174', затем npm.cmd run dev. В других оболочках задать эту переменную их обычным способом.
 
-**Перед любой задачей читать [SYNC_TOOL.md](../../../../SYNC_TOOL.md). Режим: только локально.** compare/pull/push/publish/resume и sync:auto:install без нового прямого поручения не запускать. Задача Windows отключена; общий paused.json блокирует сеть. status/history/save/task/plan доступны локально. test:sync и bench:sync используют временные локальные репозитории, к GitHub не обращаются. Полные параметры — [справочник скрипта](../qa/SYNC_CLI_REFERENCE.md); разрешения — [GITHUB_WORKFLOW](GITHUB_WORKFLOW.md#auto-push).
+**Перед любой задачей читать [SYNC_TOOL.md](../../../../SYNC_TOOL.md). По умолчанию режим локальный; разовая синхронизация 2026-10-31 разрешена отдельно.** compare/pull/push/publish/resume и sync:auto:install без нового прямого поручения не запускать. Задача Windows отключена; общий paused.json блокирует сеть. status/history/save/task/plan доступны локально. test:sync и bench:sync используют временные локальные репозитории, к GitHub не обращаются. Полные параметры — [справочник скрипта](../qa/SYNC_CLI_REFERENCE.md); разрешения — [GITHUB_WORKFLOW](GITHUB_WORKFLOW.md#auto-push).
 
 ## Если что-то не работает
 

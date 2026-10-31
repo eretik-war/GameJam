@@ -1,8 +1,9 @@
 import { CampaignSession, battles, cutscenes, createBattle } from './domain/campaign';
 import { SceneTransition } from './presentation/scene-transition';
 import { CutsceneController } from './cutscene-controller';
+import { BattleDialogueController } from './battle-dialogue-controller';
 import { effects } from './enemies/status-effects/catalog';
-import { Enemy, TypeEnemyParameter } from './enemies/enemy';
+import { TypeEnemyParameter } from './enemies/enemy';
 import { TypeInventoryArea, TypeGameStage } from './domain/inventory';
 import * as PIXI from 'pixi.js';
 import { resolveImage } from './presentation/images';
@@ -32,6 +33,7 @@ try {
   const transition = new SceneTransition();
   let rewardTimer: ReturnType<typeof setTimeout> | undefined;
   let battleFinished = false;
+  let battleIntroShown = false;
   let preview = false;
   const attackMotionMs = 120;
   let combatBusy = false;
@@ -65,7 +67,9 @@ try {
       const items = inventory.model.slots(TypeInventoryArea.Equipment).map((_, index) => inventory.model.itemAt({ area: TypeInventoryArea.Equipment, index }));
       const sequence = session.AttackSequence(id, items);
       while (!disposed) {
-        const step = sequence.next();
+        let step: IteratorResult<string> | undefined;
+        battleDialogue.perform(() => { step = sequence.next(); });
+        if (!step) break;
         if (step.done) break;
         motion = { id: step.value, elapsed: 0 };
         requireElement('app').dataset.combatActor = step.value;
@@ -115,6 +119,9 @@ try {
   requireElement('app').append(cutscene.element);
   const heroTextures = HERO_FRAME_PATHS.map(getTexture);
   let hero: PIXI.AnimatedSprite | undefined;
+  const battleDialogue = new BattleDialogueController(canvasHost, id => id === session.hero.id
+    ? (hero ? sceneBounds(hero) : undefined) : enemyAnchors.get(id)?.getBoundingClientRect(),
+    () => disposed || transition.busy || cutscene.active || campaign.complete, () => hoverCards.hide());
   function sceneBounds(target: PIXI.Container): DOMRect {
     const bounds = target.getBounds();
     const canvas = app.view.getBoundingClientRect();
@@ -122,15 +129,20 @@ try {
     const scaleY = canvas.height / app.screen.height;
     return new DOMRect(canvas.left + bounds.x * scaleX, canvas.top + bounds.y * scaleY, bounds.width * scaleX, bounds.height * scaleY);
   }
+  const heroCard = () => createHeroHoverCard(session.hero, inventory.model.slots(TypeInventoryArea.Equipment)
+    .map((_, index) => inventory.model.itemAt({ area: TypeInventoryArea.Equipment, index })));
   function bindSceneCard(target: PIXI.Container, anchor: HoverCardAnchor, resolve: () => HoverCardView, onTap?: () => void): void {
     target.eventMode = 'static';
     target.interactiveChildren = false;
     target.cursor = 'pointer';
     target.on('pointerover', event => {
-      if (event.pointerType !== 'touch' && !event.buttons) hoverCards.request(anchor, resolve);
+      if (!battleDialogue.active && event.pointerType !== 'touch' && !event.buttons) hoverCards.request(anchor, resolve);
     });
     target.on('pointerout', () => hoverCards.leave(anchor));
-    target.on('pointertap', () => { onTap?.(); hoverCards.open(anchor, resolve); });
+    target.on('pointertap', event => {
+      if (battleDialogue.active || transition.busy || cutscene.active || campaign.complete || event.button !== 0) return;
+      onTap?.(); hoverCards.open(anchor, resolve);
+    });
   }
   app.ticker.add(delta => {
     if (!cutscene.active && hero?.playing) hero.update(delta);
@@ -142,6 +154,7 @@ try {
       waitRemaining -= ms;
       if (waitRemaining <= 0) { const resolve = finishWait; finishWait = undefined; resolve(); }
     }
+    battleDialogue.update(app.ticker.elapsedMS);
   });
   let locationTexture = getTexture('images/battle-location.jpg');
   const observer = new ResizeObserver(() => {
@@ -169,10 +182,7 @@ try {
     if (!hero && heroTextures.every(texture => texture.valid)) {
       hero = createHeroAnimation(heroTextures);
       const target = hero;
-      bindSceneCard(target, { getBoundingClientRect: () => sceneBounds(target) }, () => {
-        const combatant = 'hero' in session && session.hero instanceof Enemy ? session.hero : undefined;
-        return createHeroHoverCard(inventory.model, combatant);
-      });
+      bindSceneCard(target, { getBoundingClientRect: () => sceneBounds(target) }, heroCard);
     }
     if (hero) {
       placeHero(hero, width, height);
@@ -212,18 +222,13 @@ try {
       const indicators = createCombatIndicators(view, getTexture);
       indicators.y = barTop;
       container.addChild(indicators);
-      const label = new PIXI.Text(view.id, {
-        fontFamily: 'Arial', fontSize: 20, fill: 0xeef7ff, align: 'center',
-      });
-      label.anchor.set(0.5, 0);
-      label.y = 56;
-      container.addChild(label);
-      container.hitArea = new PIXI.Rectangle(-visualWidth / 2 - 8, barTop - 22, visualWidth + 16, 104 - barTop);
+      // The technical id label is gone; the clickable area now ends just below the feet.
+      container.hitArea = new PIXI.Rectangle(-visualWidth / 2 - 8, barTop - 22, visualWidth + 16, 52 - barTop);
       const anchor = enemyAnchors.get(view.id) ?? { getBoundingClientRect: () => new DOMRect() };
       anchor.getBoundingClientRect = () => sceneBounds(container);
       enemyAnchors.set(view.id, anchor);
       bindSceneCard(container, anchor, () => enemyCard(view.id), () => {
-        if (combatBusy || transition.busy || campaign.complete || cutscene.active || battleFinished || inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
+        if (combatBusy || battleDialogue.active || transition.busy || campaign.complete || cutscene.active || battleFinished || inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
         void attack(view.id);
       });
       app.stage.addChild(container);
@@ -247,12 +252,13 @@ try {
     // Refresh world transforms immediately so input after a DOM action uses the new scene.
     applyMotion();
     app.renderer.render(app.stage);
+    battleDialogue.render();
   }
 
   function action(id: string, handler: () => string): void {
     requireElement(id).addEventListener('click', () => {
-      if (combatBusy || transition.busy || campaign.complete) return;
-      try { status.textContent = handler(); checkVictory(); render(); }
+      if (combatBusy || battleDialogue.active || transition.busy || campaign.complete) return;
+      try { const message = battleDialogue.perform(handler); if (message !== undefined) status.textContent = message; checkVictory(); render(); }
       catch (error) { status.textContent = error instanceof Error ? error.message : String(error); }
     });
   }
@@ -281,6 +287,7 @@ try {
     if (restored.npcs.map(e => e.id).join() !== session.npcs.map(e => e.id).join()) return 'Это сохранение другого боя.';
     campaign.hero = restored.hero;
     session = restored;
+    battleDialogue.open(session, false);
     return 'Прогресс восстановлен.';
   });
   function onVisibilityChange(): void {
@@ -303,6 +310,7 @@ try {
     if (rewardTimer) clearTimeout(rewardTimer);
     transition.dispose();
     cutscene.dispose();
+    battleDialogue.dispose();
     inventory.dispose();
     hoverCards.destroy();
     app.destroy(true, { children: true, texture: false, baseTexture: false });
@@ -329,7 +337,7 @@ try {
     })));
   }
   async function showCurrent(): Promise<void> {
-    cutscene.hide(); debug.hidden = true; hoverCards.hide();
+    cutscene.hide(); battleDialogue.hide(); debug.hidden = true; hoverCards.hide();
     const isCutscene = campaign.current.type === 'cutscene';
     requireElement('app').dataset.step = campaign.current.id;
     if (campaign.complete) {
@@ -343,24 +351,25 @@ try {
       const info = battles.find(b => b.typeId === campaign.current.contentId)!;
       await prepareImages([info.background]);
       session = campaign.createBattle(); enemyAnchors.clear(); battleFinished = false;
-      locationTexture = getTexture(info.background); inventory.startCombat(); render();
+      locationTexture = getTexture(info.background); inventory.startCombat();
+      battleDialogue.open(session, !battleIntroShown); battleIntroShown = true; render();
       if (!document.hidden) app.start();
     }
   }
   async function switchScene(advance: boolean, showPreview = false, restart = false): Promise<void> {
     if (transition.busy || disposed) return;
-    requireElement('app').inert = true; cutscene.blocked = true; battleLayout.inert = true; debug.hidden = true; hoverCards.hide();
+    requireElement('app').inert = true; cutscene.blocked = true; battleLayout.inert = true; debug.hidden = true; hoverCards.hide(); battleDialogue.hide();
     try {
       await transition.run(async () => {
         if (restart) {
           if (rewardTimer) clearTimeout(rewardTimer); rewardTimer = undefined;
-          campaign.restart(); inventory.reset(); preview = false; battleFinished = false;
+          campaign.restart(); inventory.reset(); preview = false; battleFinished = false; battleIntroShown = false;
           session = createBattle(battles[0]!, "preview", campaign.hero); enemyAnchors.clear();
           await showCurrent(); return;
         }
         if (showPreview) { requireElement('app').classList.add('showing-cutscene'); app.stop(); cutscene.open(); return; }
         if (advance) { campaign.advance(campaign.current.id); await showCurrent(); }
-        else { cutscene.hide(); requireElement('app').classList.remove('showing-cutscene'); render(); if (!document.hidden) app.start(); }
+        else { cutscene.hide(); requireElement('app').classList.remove('showing-cutscene'); battleDialogue.resume(); render(); if (!document.hidden) app.start(); }
       });
     } catch (error) { status.textContent = String(error); console.error(error); }
     finally { requireElement('app').inert = false; cutscene.blocked = false; battleLayout.inert = cutscene.active || campaign.complete; if (cutscene.active) cutscene.element.querySelector('button')?.focus(); }

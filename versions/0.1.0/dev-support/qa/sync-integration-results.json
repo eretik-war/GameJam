@@ -1,0 +1,925 @@
+{
+  "schemaVersion": 1,
+  "gameCommit": "b132a4a",
+  "runtimeErrors": 0,
+  "routeFixture": "HP restored to 1000 through validated debug load between battles; combat and enemy data unmodified",
+  "campaign": {
+    "continue": {
+      "branch": "continue",
+      "sustainHero": true,
+      "runtimeErrors": 0,
+      "results": [
+        {
+          "mode": "HTTP",
+          "battles": [
+            {
+              "step": "fight-1",
+              "count": 1,
+              "types": [
+                "enemy.healer.magenta"
+              ],
+              "placements": [
+                "spawn-1"
+              ],
+              "rewardTiming": {
+                "chosen": 4697.89999999851,
+                "fade": 7703.300000000745,
+                "switched": 8215,
+                "finished": 8721.60000000149,
+                "rewardCount": 1
+              }
+            },
+            {
+              "step": "fight-2",
+              "count": 2,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.camera.blue"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4"
+              ],
+              "rewardTiming": {
+                "chosen": 10759.10000000149,
+                "fade": 13770.199999999255,
+                "switched": 14252.300000000745,
+                "finished": 14815.5,
+                "rewardCount": 2
+              }
+            },
+            {
+              "step": "fight-3",
+              "count": 3,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.camera.gold",
+                "enemy.healer.magenta"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2"
+              ],
+              "rewardTiming": {
+                "chosen": 16911,
+                "fade": 19922.199999999255,
+                "switched": 20396.199999999255,
+                "finished": 20910.199999999255,
+                "rewardCount": 3
+              }
+            },
+            {
+              "step": "fight-4",
+              "count": 4,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.camera.gold",
+                "enemy.healer.blue",
+                "enemy.trainee"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5"
+              ],
+              "rewardTiming": {
+                "chosen": 25082,
+                "fade": 28083.10000000149,
+                "switched": 28649.60000000149,
+                "finished": 29197.60000000149,
+                "rewardCount": 4
+              }
+            },
+            {
+              "step": "fight-5",
+              "count": 5,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.guard.chair",
+                "enemy.healer.gold",
+                "enemy.camera.teal",
+                "enemy.guard.chair"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 34029.199999999255,
+                "fade": 37044.300000000745,
+                "switched": 37645.10000000149,
+                "finished": 38239.199999999255,
+                "rewardCount": 5
+              }
+            },
+            {
+              "step": "fight-6",
+              "count": 5,
+              "types": [
+                "enemy.healer.magenta",
+                "enemy.guard.tracks",
+                "enemy.healer.gold",
+                "enemy.camera.gold",
+                "enemy.trainee"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 42670.199999999255,
+                "fade": 45671.5,
+                "switched": 46258.39999999851,
+                "finished": 46825.199999999255,
+                "rewardCount": 6
+              }
+            },
+            {
+              "step": "fight-7",
+              "count": 5,
+              "types": [
+                "enemy.healer.teal",
+                "enemy.camera.blue",
+                "enemy.healer.magenta",
+                "enemy.camera.teal",
+                "enemy.guard.tracks"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 51752.699999999255,
+                "fade": 54763.10000000149,
+                "switched": 55272.699999999255,
+                "finished": 55807.5,
+                "rewardCount": 7
+              }
+            },
+            {
+              "step": "fight-8",
+              "count": 5,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.camera.blue",
+                "enemy.healer.magenta",
+                "enemy.camera.blue",
+                "enemy.guard.tracks"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 60417.800000000745,
+                "fade": 63419.39999999851,
+                "switched": 63990.10000000149,
+                "finished": 64529.800000000745,
+                "rewardCount": 8
+              }
+            },
+            {
+              "step": "fight-9",
+              "count": 5,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.trainee",
+                "enemy.healer.blue",
+                "enemy.guard.chair",
+                "enemy.camera.gold"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 70679.89999999851,
+                "fade": 73693.10000000149,
+                "switched": 74187.69999999925,
+                "finished": 74704.39999999851,
+                "rewardCount": 9
+              }
+            }
+          ]
+        },
+        {
+          "mode": "file",
+          "battles": [
+            {
+              "step": "fight-1",
+              "count": 1,
+              "types": [
+                "enemy.healer.magenta"
+              ],
+              "placements": [
+                "spawn-1"
+              ],
+              "rewardTiming": {
+                "chosen": 3827.599999997765,
+                "fade": 6839,
+                "switched": 7352.29999999702,
+                "finished": 7853.89999999851,
+                "rewardCount": 1
+              }
+            },
+            {
+              "step": "fight-2",
+              "count": 2,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.camera.teal"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4"
+              ],
+              "rewardTiming": {
+                "chosen": 9559.599999997765,
+                "fade": 12573,
+                "switched": 13058.599999997765,
+                "finished": 13580.699999999255,
+                "rewardCount": 2
+              }
+            },
+            {
+              "step": "fight-3",
+              "count": 3,
+              "types": [
+                "enemy.healer.teal",
+                "enemy.camera.gold",
+                "enemy.healer.gold"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2"
+              ],
+              "rewardTiming": {
+                "chosen": 16467.5,
+                "fade": 19484.29999999702,
+                "switched": 19971,
+                "finished": 20469.099999997765,
+                "rewardCount": 3
+              }
+            },
+            {
+              "step": "fight-4",
+              "count": 4,
+              "types": [
+                "enemy.healer.magenta",
+                "enemy.camera.teal",
+                "enemy.healer.teal",
+                "enemy.camera.gold"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5"
+              ],
+              "rewardTiming": {
+                "chosen": 23818.39999999851,
+                "fade": 26820.29999999702,
+                "switched": 27307.199999999255,
+                "finished": 27823.699999999255,
+                "rewardCount": 4
+              }
+            },
+            {
+              "step": "fight-5",
+              "count": 5,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.camera.gold",
+                "enemy.healer.magenta",
+                "enemy.camera.teal",
+                "enemy.guard.chair"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 31258.199999999255,
+                "fade": 34269.5,
+                "switched": 34747.599999997765,
+                "finished": 35263.099999997765,
+                "rewardCount": 5
+              }
+            },
+            {
+              "step": "fight-6",
+              "count": 5,
+              "types": [
+                "enemy.healer.magenta",
+                "enemy.camera.teal",
+                "enemy.healer.magenta",
+                "enemy.trainee",
+                "enemy.camera.teal"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 37895,
+                "fade": 40904.599999997765,
+                "switched": 41425.79999999702,
+                "finished": 41935.699999999255,
+                "rewardCount": 6
+              }
+            },
+            {
+              "step": "fight-7",
+              "count": 5,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.guard.tracks",
+                "enemy.healer.magenta",
+                "enemy.guard.chair",
+                "enemy.guard.chair"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 48490.89999999851,
+                "fade": 51497.89999999851,
+                "switched": 52031.29999999702,
+                "finished": 52600.29999999702,
+                "rewardCount": 7
+              }
+            },
+            {
+              "step": "fight-8",
+              "count": 5,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.camera.blue",
+                "enemy.healer.magenta",
+                "enemy.camera.blue",
+                "enemy.camera.gold"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 56191.699999999255,
+                "fade": 59194.89999999851,
+                "switched": 59733.29999999702,
+                "finished": 60240.099999997765,
+                "rewardCount": 8
+              }
+            },
+            {
+              "step": "fight-9",
+              "count": 5,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.guard.tracks",
+                "enemy.healer.teal",
+                "enemy.guard.tracks",
+                "enemy.trainee"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 66207.79999999702,
+                "fade": 69212.09999999776,
+                "switched": 69729.09999999776,
+                "finished": 70215.69999999925,
+                "rewardCount": 9
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "restart": {
+      "branch": "restart",
+      "sustainHero": true,
+      "runtimeErrors": 0,
+      "results": [
+        {
+          "mode": "HTTP",
+          "battles": [
+            {
+              "step": "fight-1",
+              "count": 1,
+              "types": [
+                "enemy.healer.magenta"
+              ],
+              "placements": [
+                "spawn-1"
+              ],
+              "rewardTiming": {
+                "chosen": 5736.800000000745,
+                "fade": 8740.099999997765,
+                "switched": 9214.300000000745,
+                "finished": 9778.800000000745,
+                "rewardCount": 1
+              }
+            },
+            {
+              "step": "fight-2",
+              "count": 2,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.guard.chair"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4"
+              ],
+              "rewardTiming": {
+                "chosen": 11990.099999997765,
+                "fade": 14995.5,
+                "switched": 15511.099999997765,
+                "finished": 16058.39999999851,
+                "rewardCount": 2
+              }
+            },
+            {
+              "step": "fight-3",
+              "count": 3,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.camera.gold",
+                "enemy.healer.gold"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2"
+              ],
+              "rewardTiming": {
+                "chosen": 18571.300000000745,
+                "fade": 21576.099999997765,
+                "switched": 22087.099999997765,
+                "finished": 22604.199999999255,
+                "rewardCount": 3
+              }
+            },
+            {
+              "step": "fight-4",
+              "count": 4,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.guard.tracks",
+                "enemy.healer.magenta",
+                "enemy.guard.tracks"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5"
+              ],
+              "rewardTiming": {
+                "chosen": 29552.89999999851,
+                "fade": 32560.39999999851,
+                "switched": 33051.699999999255,
+                "finished": 33577.099999997765,
+                "rewardCount": 4
+              }
+            },
+            {
+              "step": "fight-5",
+              "count": 5,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.camera.blue",
+                "enemy.healer.teal",
+                "enemy.guard.tracks",
+                "enemy.camera.blue"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 39891.699999999255,
+                "fade": 42901.39999999851,
+                "switched": 43430.5,
+                "finished": 43986.800000000745,
+                "rewardCount": 5
+              }
+            },
+            {
+              "step": "fight-6",
+              "count": 5,
+              "types": [
+                "enemy.healer.magenta",
+                "enemy.guard.chair",
+                "enemy.healer.magenta",
+                "enemy.camera.teal",
+                "enemy.camera.teal"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 47542.89999999851,
+                "fade": 50547.199999999255,
+                "switched": 51060.699999999255,
+                "finished": 51581.199999999255,
+                "rewardCount": 6
+              }
+            },
+            {
+              "step": "fight-7",
+              "count": 5,
+              "types": [
+                "enemy.healer.magenta",
+                "enemy.guard.chair",
+                "enemy.healer.teal",
+                "enemy.camera.blue",
+                "enemy.camera.teal"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 57441,
+                "fade": 60445.300000000745,
+                "switched": 60945.300000000745,
+                "finished": 61522.599999997765,
+                "rewardCount": 7
+              }
+            },
+            {
+              "step": "fight-8",
+              "count": 5,
+              "types": [
+                "enemy.healer.teal",
+                "enemy.guard.chair",
+                "enemy.healer.blue",
+                "enemy.camera.gold",
+                "enemy.camera.teal"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 69315.30000000075,
+                "fade": 72322.80000000075,
+                "switched": 72810,
+                "finished": 73389.89999999851,
+                "rewardCount": 8
+              }
+            },
+            {
+              "step": "fight-9",
+              "count": 5,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.trainee",
+                "enemy.healer.gold",
+                "enemy.guard.chair",
+                "enemy.camera.blue"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 77467.09999999776,
+                "fade": 80483.59999999776,
+                "switched": 81008.89999999851,
+                "finished": 81525.5,
+                "rewardCount": 9
+              }
+            }
+          ]
+        },
+        {
+          "mode": "file",
+          "battles": [
+            {
+              "step": "fight-1",
+              "count": 1,
+              "types": [
+                "enemy.healer.magenta"
+              ],
+              "placements": [
+                "spawn-1"
+              ],
+              "rewardTiming": {
+                "chosen": 3650.900000002235,
+                "fade": 6663.400000002235,
+                "switched": 7223.800000000745,
+                "finished": 7781.800000000745,
+                "rewardCount": 1
+              }
+            },
+            {
+              "step": "fight-2",
+              "count": 2,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.camera.teal"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4"
+              ],
+              "rewardTiming": {
+                "chosen": 9881.900000002235,
+                "fade": 12890.900000002235,
+                "switched": 13407.800000000745,
+                "finished": 13944.5,
+                "rewardCount": 2
+              }
+            },
+            {
+              "step": "fight-3",
+              "count": 3,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.trainee",
+                "enemy.healer.magenta"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2"
+              ],
+              "rewardTiming": {
+                "chosen": 16218.20000000298,
+                "fade": 19237.5,
+                "switched": 19745.900000002235,
+                "finished": 20283.5,
+                "rewardCount": 3
+              }
+            },
+            {
+              "step": "fight-4",
+              "count": 4,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.camera.blue",
+                "enemy.healer.teal",
+                "enemy.camera.blue"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5"
+              ],
+              "rewardTiming": {
+                "chosen": 25511,
+                "fade": 28514.400000002235,
+                "switched": 29016.900000002235,
+                "finished": 29528.20000000298,
+                "rewardCount": 4
+              }
+            },
+            {
+              "step": "fight-5",
+              "count": 5,
+              "types": [
+                "enemy.healer.gold",
+                "enemy.trainee",
+                "enemy.healer.blue",
+                "enemy.camera.gold",
+                "enemy.camera.gold"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 39315.20000000298,
+                "fade": 42321.900000002235,
+                "switched": 42868.5,
+                "finished": 43429.900000002235,
+                "rewardCount": 5
+              }
+            },
+            {
+              "step": "fight-6",
+              "count": 5,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.guard.tracks",
+                "enemy.healer.blue",
+                "enemy.camera.gold",
+                "enemy.guard.tracks"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 51488.300000000745,
+                "fade": 54505.300000000745,
+                "switched": 55033.10000000149,
+                "finished": 55556.800000000745,
+                "rewardCount": 6
+              }
+            },
+            {
+              "step": "fight-7",
+              "count": 5,
+              "types": [
+                "enemy.healer.teal",
+                "enemy.camera.teal",
+                "enemy.healer.blue",
+                "enemy.camera.teal",
+                "enemy.camera.teal"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 60064,
+                "fade": 63066.20000000298,
+                "switched": 63546.800000000745,
+                "finished": 64113.10000000149,
+                "rewardCount": 7
+              }
+            },
+            {
+              "step": "fight-8",
+              "count": 5,
+              "types": [
+                "enemy.healer.blue",
+                "enemy.guard.tracks",
+                "enemy.healer.blue",
+                "enemy.trainee",
+                "enemy.camera.gold"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 71540.30000000075,
+                "fade": 74545.20000000298,
+                "switched": 75065.10000000149,
+                "finished": 75604.30000000075,
+                "rewardCount": 8
+              }
+            },
+            {
+              "step": "fight-9",
+              "count": 5,
+              "types": [
+                "enemy.healer.magenta",
+                "enemy.trainee",
+                "enemy.healer.gold",
+                "enemy.trainee",
+                "enemy.camera.gold"
+              ],
+              "placements": [
+                "spawn-1",
+                "spawn-4",
+                "spawn-2",
+                "spawn-5",
+                "spawn-3"
+              ],
+              "rewardTiming": {
+                "chosen": 78863.20000000298,
+                "fade": 81863.90000000224,
+                "switched": 82422.10000000149,
+                "finished": 82936.90000000224,
+                "rewardCount": 9
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "items": {
+    "cases": [
+      {
+        "protocol": "http",
+        "typeId": "item.09",
+        "unchangedCanvas": true,
+        "samePngEveryWindow": true,
+        "sameHoverCard": true
+      },
+      {
+        "protocol": "http",
+        "typeId": "item.10",
+        "unchangedCanvas": true,
+        "samePngEveryWindow": true,
+        "sameHoverCard": true
+      },
+      {
+        "protocol": "http",
+        "typeId": "item.11",
+        "unchangedCanvas": true,
+        "samePngEveryWindow": true,
+        "sameHoverCard": true
+      },
+      {
+        "protocol": "http",
+        "typeId": "item.12",
+        "unchangedCanvas": true,
+        "samePngEveryWindow": true,
+        "sameHoverCard": true
+      },
+      {
+        "protocol": "file",
+        "typeId": "item.09",
+        "unchangedCanvas": true,
+        "samePngEveryWindow": true,
+        "sameHoverCard": true
+      },
+      {
+        "protocol": "file",
+        "typeId": "item.10",
+        "unchangedCanvas": true,
+        "samePngEveryWindow": true,
+        "sameHoverCard": true
+      },
+      {
+        "protocol": "file",
+        "typeId": "item.11",
+        "unchangedCanvas": true,
+        "samePngEveryWindow": true,
+        "sameHoverCard": true
+      },
+      {
+        "protocol": "file",
+        "typeId": "item.12",
+        "unchangedCanvas": true,
+        "samePngEveryWindow": true,
+        "sameHoverCard": true
+      }
+    ],
+    "errors": [],
+    "externalRequests": []
+  },
+  "robotLegCatalog": "Four variants rendered by shared compositor; screenshot vision service unavailable (401)"
+}

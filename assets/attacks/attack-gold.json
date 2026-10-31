@@ -1,0 +1,6 @@
+{
+  "typeId": "attack.gold",
+  "name": "Ослепляющий выстрел",
+  "damage": 4,
+  "effect": { "typeId": "blindness", "turns": 2 }
+}

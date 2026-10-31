@@ -1,0 +1,6 @@
+{
+  "typeId": "attack.red",
+  "name": "Поджигающий выстрел",
+  "damage": 4,
+  "effect": { "typeId": "burning", "turns": 2 }
+}

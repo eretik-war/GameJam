@@ -1,11 +1,11 @@
 {
   "typeId": "enemy.trainee",
-  "name": "Розовая камера",
+  "name": "Розовый младший брат",
   "role": "shooter",
   "placement": { "type": "enemy-layer", "value": "ground" },
   "parameters": [
     { "type": "health", "value": 30 },
     { "type": "shield", "value": 8 }
   ],
-  "attackIds": ["attack.test"]
+  "attackIds": ["attack.red"]
 }

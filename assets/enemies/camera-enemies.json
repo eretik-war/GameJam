@@ -1,5 +1,5 @@
 [
-  { "typeId": "enemy.camera.teal", "name": "Бирюзовая камера", "role": "shooter", "placement": { "type": "enemy-layer", "value": "ground" }, "parameters": [{ "type": "health", "value": 30 }, { "type": "shield", "value": 8 }], "attackIds": ["attack.test"] },
-  { "typeId": "enemy.camera.blue", "name": "Голубая камера", "role": "shooter", "placement": { "type": "enemy-layer", "value": "ground" }, "parameters": [{ "type": "health", "value": 30 }, { "type": "shield", "value": 8 }], "attackIds": ["attack.test"] },
-  { "typeId": "enemy.camera.gold", "name": "Жёлтая камера", "role": "shooter", "placement": { "type": "enemy-layer", "value": "ground" }, "parameters": [{ "type": "health", "value": 30 }, { "type": "shield", "value": 8 }], "attackIds": ["attack.test"] }
+  { "typeId": "enemy.camera.teal", "name": "Бирюзовый младший брат", "role": "shooter", "placement": { "type": "enemy-layer", "value": "ground" }, "parameters": [{ "type": "health", "value": 30 }, { "type": "shield", "value": 8 }], "attackIds": ["attack.teal"] },
+  { "typeId": "enemy.camera.blue", "name": "Голубой младший брат", "role": "shooter", "placement": { "type": "enemy-layer", "value": "ground" }, "parameters": [{ "type": "health", "value": 30 }, { "type": "shield", "value": 8 }], "attackIds": ["attack.blue"] },
+  { "typeId": "enemy.camera.gold", "name": "Жёлтый младший брат", "role": "shooter", "placement": { "type": "enemy-layer", "value": "ground" }, "parameters": [{ "type": "health", "value": 30 }, { "type": "shield", "value": 8 }], "attackIds": ["attack.gold"] }
 ]
