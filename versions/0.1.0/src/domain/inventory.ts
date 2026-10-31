@@ -19,6 +19,12 @@ export class InventorySession {
   #nextItemId = 1;
   #battle = 1;
 
+  Reset(): void {
+    this.#equipment.fill(null); this.#storage.fill(null); this.#items.clear();
+    this.#stage = TypeGameStage.Combat; this.#offers = Object.freeze([]);
+    this.#nextItemId = 1; this.#battle = 1;
+  }
+
   get stage(): TypeGameStage { return this.#stage; }
   get battle(): number { return this.#battle; }
   get offers(): readonly string[] { return this.#offers; }

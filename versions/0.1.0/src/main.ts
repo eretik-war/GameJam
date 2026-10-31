@@ -1,4 +1,4 @@
-import { CampaignSession, battles, testCutscene, createBattle } from './domain/campaign';
+import { CampaignSession, battles, cutscenes, createBattle } from './domain/campaign';
 import { SceneTransition } from './presentation/scene-transition';
 import { CutsceneController } from './cutscene-controller';
 import { effects } from './enemies/status-effects/catalog';
@@ -56,8 +56,9 @@ try {
     return texture;
   }
   const battleLayout = document.querySelector<HTMLElement>('.inventory-layout')!;
-  const cutscene = new CutsceneController(() => {
+  const cutscene = new CutsceneController((choice) => {
     if (transition.busy) return;
+    if (choice === "restart") { void switchScene(false, false, true); return; }
     if (preview) { preview = false; void switchScene(false); }
     else void switchScene(true);
   });
@@ -274,7 +275,7 @@ try {
     }
     requireElement('app').classList.toggle('showing-cutscene', isCutscene);
     battleLayout.inert = isCutscene;
-    if (isCutscene) { app.stop(); await prepareImages([testCutscene.background]); cutscene.open(testCutscene); }
+    if (isCutscene) { app.stop(); const info = cutscenes.find(c => c.typeId === campaign.current.contentId)!; await prepareImages([info.background]); cutscene.open(info); }
     else {
       const info = battles.find(b => b.typeId === campaign.current.contentId)!;
       await prepareImages([info.background]);
@@ -283,11 +284,17 @@ try {
       if (!document.hidden) app.start();
     }
   }
-  async function switchScene(advance: boolean, showPreview = false): Promise<void> {
+  async function switchScene(advance: boolean, showPreview = false, restart = false): Promise<void> {
     if (transition.busy || disposed) return;
     requireElement('app').inert = true; cutscene.blocked = true; battleLayout.inert = true; debug.hidden = true; hoverCards.hide();
     try {
       await transition.run(async () => {
+        if (restart) {
+          if (rewardTimer) clearTimeout(rewardTimer); rewardTimer = undefined;
+          campaign.restart(); inventory.reset(); preview = false; battleFinished = false;
+          session = createBattle(battles[0]!, "preview", campaign.hero); enemyAnchors.clear();
+          await showCurrent(); return;
+        }
         if (showPreview) { requireElement('app').classList.add('showing-cutscene'); app.stop(); cutscene.open(); return; }
         if (advance) { campaign.advance(campaign.current.id); await showCurrent(); }
         else { cutscene.hide(); requireElement('app').classList.remove('showing-cutscene'); render(); if (!document.hidden) app.start(); }

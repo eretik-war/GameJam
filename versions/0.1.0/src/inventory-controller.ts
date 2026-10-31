@@ -97,6 +97,7 @@ export class InventoryController {
     }
   }
 
+  reset(): void { this.cancelInteraction(); this.model.Reset(); this.render(); }
   finishCombat(): void { this.cancelInteraction(); this.model.FinishCombat(); this.render(); }
   startCombat(): void { if (this.model.stage === TypeGameStage.Preparation) this.model.StartCombat(); this.render(); }
   dispose(): void { this.cancelInteraction(); this.#events.abort(); this.#dialog.close(); }

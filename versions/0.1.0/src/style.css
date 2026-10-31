@@ -89,3 +89,9 @@ button:focus-visible { outline: 3px solid #8feac9; outline-offset: 3px; }
 .scene-transition { position:fixed; inset:0; z-index:10000; background:#000; cursor:wait; }
 .scene-transition[hidden] { display:none; }
 .campaign-end { position:fixed; inset:0; z-index:300; display:grid; place-items:center; background:#0b1421; font-size:32px; }
+
+.cutscene-choices { position: absolute; bottom: 48px; right: 60px; display: flex; gap: 16px; z-index: 1; }
+.cutscene-dialog:disabled { opacity: 1; color: inherit; padding-bottom: 96px; cursor: default; }
+.cutscene-dialog[hidden] { display: none; }
+
+.cutscene-hint[hidden] { display: none; }

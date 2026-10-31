@@ -29,7 +29,12 @@
     {
       "id": "outro",
       "type": "cutscene",
-      "contentId": "cutscene-test"
+      "contentId": "cutscene-outro"
+    },
+    {
+      "id": "finale",
+      "type": "cutscene",
+      "contentId": "cutscene-finale"
     }
   ]
 }

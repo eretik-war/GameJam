@@ -366,6 +366,15 @@
       "license": "Not supplied; user-provided project asset",
       "sourceFile": "../dev-support/art/items/prepared-sheet.png",
       "sha256": "334bdb57d7457d436946333d88362b2fcd5785642d37165ba718ef4fc6e6a58e"
+    },
+    {
+      "id": "finale",
+      "kind": "image",
+      "source": "Provided by user in project assets, 2026-10-31",
+      "author": "Not supplied",
+      "license": "Not supplied",
+      "runtimeFile": "../../../assets/images/locations/finale.png",
+      "sha256": "643d56003d18cac647450eb3303f72bd3ddff67c1654402f5f7f2feb0b10b17e"
     }
   ],
   "art": "User-provided local test images; camera PNGs retain original pixels/alpha. Authorship and redistribution license not supplied. Source art is outside runtime in dev-support/art/enemies. Includes user-provided battle-location background and status images from origin/main. Four opaque-body item PNGs with transparent background: AI-assisted edit of user art, full prompt and sources in dev-support/art/items.",

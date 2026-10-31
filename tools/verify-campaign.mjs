@@ -70,7 +70,28 @@ try {
     await resize(1280,720); await navigate(url,"document.querySelector('#app')?.dataset.ready === 'true'");
     for (const step of ['intro','fight-1','fight-2','interlude','fight-2-repeat','outro']) {
       await stable(); assert.equal(await evaluate("document.querySelector('#app').dataset.step"),step);
-      if (['intro','interlude','outro'].includes(step)) {
+      if (step === 'outro') {
+        await key('Enter');
+        assert.equal(await evaluate("document.querySelector('.cutscene-text').textContent"),'Что же мне делать теперь');
+        await key('Enter');
+        assert.equal(await evaluate("document.querySelector('#app').dataset.step"),'outro');
+        await screenshot('campaign-choice.png');
+        if (process.argv.includes('--restart')) {
+          await evaluate("window.restartDocument = document; document.querySelector('[data-choice=restart]').click()");
+          assert.equal(await evaluate("document.querySelector('.scene-transition').hidden"),false);
+          await stable();
+          assert.equal(await evaluate("window.restartDocument === document"),true);
+          await until(()=>evaluate("document.querySelector('#app')?.dataset.ready === 'true' && document.querySelector('#app').dataset.step === 'intro'"));
+          assert.equal(await evaluate("document.querySelectorAll('.inventory-slot[data-item-id]').length"),0);
+          continue;
+        }
+        await evaluate("document.querySelector('[data-choice=continue]').click()"); await stable();
+        assert.equal(await evaluate("document.querySelector('#app').dataset.step"),'finale');
+        assert.equal(await evaluate("document.querySelector('.cutscene-dialog').hidden"),true);
+        await screenshot('campaign-finale.png');
+        continue;
+      }
+      if (['intro','interlude'].includes(step)) {
         assert.match(await evaluate("document.querySelector('.cutscene-hint').textContent"),/^1/);
         await key('Enter'); await key('Enter');
         assert.match(await evaluate("document.querySelector('.cutscene-hint').textContent"),/^3/);
@@ -97,7 +118,10 @@ try {
         await until(()=>evaluate("!document.querySelector('.scene-transition').hidden"));await stable();
       }
     }
-    assert.match(await evaluate("document.querySelector('.campaign-end').textContent"),/завершена/);
+    if (process.argv.includes('--restart')) continue;
+    assert.equal(await evaluate("document.querySelector('.cutscene').style.backgroundImage.includes('data:image/png')"),true);
+    await key('Enter'); await key('KeyD');
+    assert.equal(await evaluate("document.querySelector('#app').dataset.step"),'finale');
   }
-  assert.equal(errors.length,0);console.log('Campaign: all six steps, rewards, delay, fades and completion passed HTTP/file');
+  assert.equal(errors.length,0);console.log('Campaign: route, rewards, delay, fades and finale choice passed HTTP/file');
 } finally {ws?.close();chrome.kill();server.kill();}
