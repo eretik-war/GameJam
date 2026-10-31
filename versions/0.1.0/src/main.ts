@@ -1,6 +1,7 @@
 import { CampaignSession, battles, cutscenes, createBattle } from './domain/campaign';
 import { SceneTransition } from './presentation/scene-transition';
 import { CutsceneController } from './cutscene-controller';
+import { BattleDialogueController } from './battle-dialogue-controller';
 import { effects } from './enemies/status-effects/catalog';
 import { TypeEnemyParameter } from './enemies/enemy';
 import { TypeInventoryArea, TypeGameStage } from './domain/inventory';
@@ -32,6 +33,7 @@ try {
   const transition = new SceneTransition();
   let rewardTimer: ReturnType<typeof setTimeout> | undefined;
   let battleFinished = false;
+  let battleIntroShown = false;
   let preview = false;
   const app = new PIXI.Application<HTMLCanvasElement>({
     backgroundColor: 0x121f30, antialias: true, autoDensity: true,
@@ -65,6 +67,9 @@ try {
   requireElement('app').append(cutscene.element);
   const heroTextures = HERO_FRAME_PATHS.map(getTexture);
   let hero: PIXI.AnimatedSprite | undefined;
+  const battleDialogue = new BattleDialogueController(canvasHost, id => id === session.hero.id
+    ? (hero ? sceneBounds(hero) : undefined) : enemyAnchors.get(id)?.getBoundingClientRect(),
+    () => disposed || transition.busy || cutscene.active || campaign.complete, () => hoverCards.hide());
   function sceneBounds(target: PIXI.Container): DOMRect {
     const bounds = target.getBounds();
     const canvas = app.view.getBoundingClientRect();
@@ -79,12 +84,18 @@ try {
     target.interactiveChildren = false;
     target.cursor = 'pointer';
     target.on('pointerover', event => {
-      if (event.pointerType !== 'touch' && !event.buttons) hoverCards.request(anchor, resolve);
+      if (!battleDialogue.active && event.pointerType !== 'touch' && !event.buttons) hoverCards.request(anchor, resolve);
     });
     target.on('pointerout', () => hoverCards.leave(anchor));
-    target.on('pointertap', () => { onTap?.(); hoverCards.open(anchor, resolve); });
+    target.on('pointertap', event => {
+      if (battleDialogue.active || transition.busy || cutscene.active || campaign.complete || event.button !== 0) return;
+      onTap?.(); hoverCards.open(anchor, resolve);
+    });
   }
-  app.ticker.add(delta => { if (!cutscene.active && hero?.playing) hero.update(delta); });
+  app.ticker.add(delta => {
+    if (!cutscene.active && hero?.playing) hero.update(delta);
+    battleDialogue.update(app.ticker.elapsedMS);
+  });
   let locationTexture = getTexture('images/battle-location.jpg');
   const observer = new ResizeObserver(() => {
     if (disposed) return;
@@ -155,9 +166,9 @@ try {
       anchor.getBoundingClientRect = () => sceneBounds(container);
       enemyAnchors.set(view.id, anchor);
       bindSceneCard(container, anchor, () => enemyCard(view.id), () => {
-        if (transition.busy || campaign.complete || cutscene.active || battleFinished || inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
+        if (battleDialogue.active || transition.busy || campaign.complete || cutscene.active || battleFinished || inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
         const items = inventory.model.slots(TypeInventoryArea.Equipment).map((_, index) => inventory.model.itemAt({ area: TypeInventoryArea.Equipment, index }));
-        if (session.Attack(view.id, items)) { checkVictory(); render(); }
+        if (battleDialogue.perform(() => session.Attack(view.id, items))) { checkVictory(); render(); }
       });
       app.stage.addChild(container);
     });
@@ -179,12 +190,13 @@ try {
     }
     // Refresh world transforms immediately so input after a DOM action uses the new scene.
     app.renderer.render(app.stage);
+    battleDialogue.render();
   }
 
   function action(id: string, handler: () => string): void {
     requireElement(id).addEventListener('click', () => {
-      if (transition.busy || campaign.complete) return;
-      try { status.textContent = handler(); checkVictory(); render(); }
+      if (battleDialogue.active || transition.busy || campaign.complete) return;
+      try { const message = battleDialogue.perform(handler); if (message !== undefined) status.textContent = message; checkVictory(); render(); }
       catch (error) { status.textContent = error instanceof Error ? error.message : String(error); }
     });
   }
@@ -213,6 +225,7 @@ try {
     if (restored.npcs.map(e => e.id).join() !== session.npcs.map(e => e.id).join()) return 'Это сохранение другого боя.';
     campaign.hero = restored.hero;
     session = restored;
+    battleDialogue.open(session, false);
     return 'Прогресс восстановлен.';
   });
   function onVisibilityChange(): void {
@@ -234,6 +247,7 @@ try {
     if (rewardTimer) clearTimeout(rewardTimer);
     transition.dispose();
     cutscene.dispose();
+    battleDialogue.dispose();
     inventory.dispose();
     hoverCards.destroy();
     app.destroy(true, { children: true, texture: false, baseTexture: false });
@@ -260,7 +274,7 @@ try {
     })));
   }
   async function showCurrent(): Promise<void> {
-    cutscene.hide(); debug.hidden = true; hoverCards.hide();
+    cutscene.hide(); battleDialogue.hide(); debug.hidden = true; hoverCards.hide();
     const isCutscene = campaign.current.type === 'cutscene';
     requireElement('app').dataset.step = campaign.current.id;
     if (campaign.complete) {
@@ -274,24 +288,25 @@ try {
       const info = battles.find(b => b.typeId === campaign.current.contentId)!;
       await prepareImages([info.background]);
       session = campaign.createBattle(); enemyAnchors.clear(); battleFinished = false;
-      locationTexture = getTexture(info.background); inventory.startCombat(); render();
+      locationTexture = getTexture(info.background); inventory.startCombat();
+      battleDialogue.open(session, !battleIntroShown); battleIntroShown = true; render();
       if (!document.hidden) app.start();
     }
   }
   async function switchScene(advance: boolean, showPreview = false, restart = false): Promise<void> {
     if (transition.busy || disposed) return;
-    requireElement('app').inert = true; cutscene.blocked = true; battleLayout.inert = true; debug.hidden = true; hoverCards.hide();
+    requireElement('app').inert = true; cutscene.blocked = true; battleLayout.inert = true; debug.hidden = true; hoverCards.hide(); battleDialogue.hide();
     try {
       await transition.run(async () => {
         if (restart) {
           if (rewardTimer) clearTimeout(rewardTimer); rewardTimer = undefined;
-          campaign.restart(); inventory.reset(); preview = false; battleFinished = false;
+          campaign.restart(); inventory.reset(); preview = false; battleFinished = false; battleIntroShown = false;
           session = createBattle(battles[0]!, "preview", campaign.hero); enemyAnchors.clear();
           await showCurrent(); return;
         }
         if (showPreview) { requireElement('app').classList.add('showing-cutscene'); app.stop(); cutscene.open(); return; }
         if (advance) { campaign.advance(campaign.current.id); await showCurrent(); }
-        else { cutscene.hide(); requireElement('app').classList.remove('showing-cutscene'); render(); if (!document.hidden) app.start(); }
+        else { cutscene.hide(); requireElement('app').classList.remove('showing-cutscene'); battleDialogue.resume(); render(); if (!document.hidden) app.start(); }
       });
     } catch (error) { status.textContent = String(error); console.error(error); }
     finally { requireElement('app').inert = false; cutscene.blocked = false; battleLayout.inert = cutscene.active || campaign.complete; if (cutscene.active) cutscene.element.querySelector('button')?.focus(); }

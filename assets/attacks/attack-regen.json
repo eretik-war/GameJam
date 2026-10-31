@@ -1,0 +1,9 @@
+{
+  "typeId": "attack.regen",
+  "name": "Ускорение регенерации",
+  "damage": 4,
+  "effect": {
+    "typeId": "regen_boost",
+    "value": 25
+  }
+}

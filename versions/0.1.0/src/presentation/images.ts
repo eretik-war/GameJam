@@ -1,9 +1,9 @@
 import finale from '../../../../assets/images/locations/finale.png';
 import cutsceneTest from '../../../../assets/images/locations/CutsceneTest.jpg';
 import hero from '../../../../assets/images/test1.jpg';
-import burning from '../../../../assets/images/fire.jpg';
+import burning from '../../../../assets/images/fire.png';
 import blindness from '../../../../assets/images/blindness.png';
-import stun from '../../../../assets/images/stun.jpg';
+import stun from '../../../../assets/images/stun.png';
 import regeneration from '../../../../assets/images/regeneration.png';
 import battleLocation from '../../../../assets/images/battle-location.jpg';
 import magenta from '../../../../assets/images/enemies/camera-magenta.png';
@@ -18,6 +18,14 @@ import itemMagenta from '../../../../assets/images/items/item-magenta.png';
 import itemTeal from '../../../../assets/images/items/item-teal.png';
 import itemBlue from '../../../../assets/images/items/item-blue.png';
 import itemGold from '../../../../assets/images/items/item-gold.png';
+import moduleMagenta from '../../../../assets/images/items/item-module-magenta.png';
+import moduleGold from '../../../../assets/images/items/item-module-gold.png';
+import moduleBlue from '../../../../assets/images/items/item-module-blue.png';
+import moduleTeal from '../../../../assets/images/items/item-module-teal.png';
+import combatBlue from '../../../../assets/images/items/item-combat-blue.png';
+import combatMagenta from '../../../../assets/images/items/item-combat-magenta.png';
+import combatGold from '../../../../assets/images/items/item-combat-gold.png';
+import combatTeal from '../../../../assets/images/items/item-combat-teal.png';
 
 const images: Readonly<Record<string, string>> = Object.freeze({
   'images/locations/finale.png': finale,
@@ -27,8 +35,10 @@ const images: Readonly<Record<string, string>> = Object.freeze({
   'images/items/item-blue.png': itemBlue,
   'images/items/item-gold.png': itemGold,
   'images/test1.jpg': hero,
+  'images/fire.png': burning,
   'images/fire.jpg': burning,
   'images/blindness.png': blindness,
+  'images/stun.png': stun,
   'images/stun.jpg': stun,
   'images/regeneration.png': regeneration,
   'images/battle-location.jpg': battleLocation,
@@ -40,6 +50,14 @@ const images: Readonly<Record<string, string>> = Object.freeze({
   'images/hero/Stand1.png': stand1,
   'images/hero/Stand2.png': stand2,
   'images/hero/Stand3.png': stand3,
+  'images/items/item-module-magenta.png': moduleMagenta,
+  'images/items/item-module-gold.png': moduleGold,
+  'images/items/item-module-blue.png': moduleBlue,
+  'images/items/item-module-teal.png': moduleTeal,
+  'images/items/item-combat-blue.png': combatBlue,
+  'images/items/item-combat-magenta.png': combatMagenta,
+  'images/items/item-combat-gold.png': combatGold,
+  'images/items/item-combat-teal.png': combatTeal,
 });
 export function resolveImage(path: string): string {
   const image = images[path];

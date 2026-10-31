@@ -17,6 +17,9 @@ summary: Базовый набор; постоянные правила прое
 file: `dev-support/project-docs/CURRENT_STATE.md`
 summary: Базовый набор; только актуальные статус/разрешение/следующий шаг. Прошлые этапы вынесены в архив по ссылке внутри; архив не читать при обычном входе.
 
+file: `dev-support/project-docs/BATTLE_DIALOGUE.md`
+summary: Три реплики только в первом бою, имена младших братьев, неблокирующие реплики при уроне (2 секунды + 1 секунда fade), владельцы и HTTP/file-проверки.
+
 file: `dev-support/project-docs/CODE_MAP.md`
 summary: Базовый набор; карта владельцев и потребителей, предметный поиск.
 
@@ -51,7 +54,10 @@ file: `dev-support/project-docs/ARCHITECTURE_2D.md`
 summary: Базовый набор; слои, инвентарь, действия, save.
 
 file: `dev-support/project-docs/INVENTORY.md`
-summary: Реализованный инвентарь: владельцы, 3 активных слота/4×3 кармана, стадии, награды, переносы, границы сохранения.
+summary: Реализованный инвентарь: владельцы, 3 активных слота/4×3 кармана, стадии, награды, переносы, границы сохранения. Определения предметов разделены по семействам; актуальная карта — COMBAT_ITEMS.
+
+file: `dev-support/project-docs/COMBAT_ITEMS.md`
+summary: Отдельное семейство item.09–12, объединённый каталог/рандом наград, уклонение/перенос, усиление щита/здоровья, владельцы формул и desktop HTTP/file-проверка.
 
 file: `dev-support/qa/INVENTORY.md`
 summary: Проверка инвентаря: модель, mouse/touch/keyboard, полные карманы, HTTP/изолированный file и адаптация.
@@ -135,6 +141,9 @@ summary: Четыре PNG предметов, прозрачный фон/неп
 
 file: `dev-support/art/items/README.md`
 summary: Источник пользователя, встроенный image_gen, финальный prompt и воспроизводимое разделение на четыре иконки.
+
+file: `dev-support/art/effects/README.md`
+summary: Исходная лента из трёх эффектов, удаление шума, прозрачный фон и нарезка по границам в fire.png, blindness.png, stun.png.
 
 file: `dev-support/qa/COMBAT_INTEGRATION.md`
 summary: Перенос опубликованной атаки в модульную сцену: реальные колонки спавна, Hero/экипировка/ответы, save v2 и HTTP/file.

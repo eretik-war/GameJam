@@ -83,12 +83,15 @@ button:focus-visible { outline: 3px solid #8feac9; outline-offset: 3px; }
 .hover-card-compact dl { gap: 2px; margin-top: 2px; }
 .hover-card-compact dl > div { gap: 10px; }
 .hover-card-compact dt, .hover-card-compact dd { font-size: 13px; line-height: 1.2; }
+/* Bottom divider with the effect spelled out in words; each effect keeps its own colour. */
+.hover-card-effects { margin-top: 3px; padding-top: 3px; border-top: 1px solid #344760; display: grid; gap: 1px; color: #b4c2d5; }
+.hover-card-effects p { margin: 0; font-size: 12px; line-height: 1.25; }
 /* Damage types use the lens colours: red burning, blue stun, gold blindness, teal plain. */
-.hover-card dd[data-tone="burning"] { color: #ff7a63; }
-.hover-card dd[data-tone="stun"] { color: #74b4ff; }
-.hover-card dd[data-tone="blindness"] { color: #f6d879; }
-.hover-card dd[data-tone="regeneration"] { color: #68d99b; }
-.hover-card dd[data-tone="plain"] { color: #7ee0c2; }
+.hover-card [data-tone="burning"] { color: #ff7a63; }
+.hover-card [data-tone="stun"] { color: #74b4ff; }
+.hover-card [data-tone="blindness"] { color: #f6d879; }
+.hover-card [data-tone="regeneration"] { color: #68d99b; }
+.hover-card [data-tone="plain"] { color: #7ee0c2; }
 
 .cutscene { position: fixed; inset: 0; z-index: 200; background: #0b1421 center / cover no-repeat; }
 .cutscene[hidden] { display: none; }
@@ -107,3 +110,15 @@ button:focus-visible { outline: 3px solid #8feac9; outline-offset: 3px; }
 .cutscene-dialog[hidden] { display: none; }
 
 .cutscene-hint[hidden] { display: none; }
+
+/* Speech is an overlay: it never resizes the canvas or catches combat clicks. */
+#scene { position: relative; }
+.battle-dialogue-layer { position: absolute; inset: 0; z-index: 30; pointer-events: none; }
+.battle-dialogue-layer[hidden], .battle-message[hidden] { display: none; }
+.battle-message { position: absolute; width: 292px; max-width: calc(100% - 24px); padding: 12px 15px; border: 1px solid #7caaad; border-radius: 12px; background: #101b2ef5; color: #edf4ff; box-shadow: 0 8px 24px #0007; font-size: 17px; line-height: 1.4; overflow-wrap: anywhere; pointer-events: none; }
+.battle-message::after { content: ''; position: absolute; top: 100%; left: var(--speaker-tail); transform: translateX(-50%); border: 9px solid transparent; border-top-color: #7caaad; }
+.battle-message-name { display: block; margin-bottom: 5px; color: #9fe5d8; font-size: 14px; line-height: 1.25; }
+.battle-message-text { margin: 0; }
+.battle-message-hint { display: block; margin-top: 9px; color: #aebbd0; font-size: 12px; }
+.battle-message[data-kind="hit"] { width: 258px; border-color: #b59b64; }
+.battle-message[data-kind="hit"]::after { border-top-color: #b59b64; }

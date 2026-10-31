@@ -7,8 +7,9 @@
 | Выбор/ход/сохранение | src/domain/session.ts; GameSession/loadSession | main; round-trip/невалидные saves |
 | VisualInfo и общая карточка данных | src/presentation/npc-view.ts; createNPCView | canvas и DOM main.ts |
 | Ввод, Pixi-сцена, подписки/lifecycle | src/main.ts | UI и resize; браузерные проверки |
+| Диалоги перед боем и реплики при уроне | src/domain/battle-dialogue.ts; src/battle-dialogue-controller.ts | main.ts: атаки, anchors, ticker, load и смена сцены; tests/battle-messages.test.ts; tools/verify-battle-dialogue.mjs; BATTLE_DIALOGUE.md |
 | Разметка и адаптация | src/index.html, src/style.css | build; визуальная матрица |
-| Типы и экземпляры предметов | src/domain/items.ts; ItemInfo, Item, createItemFromInfo | InventorySession; tests/inventory.test.ts |
+| Типы/общий каталог и экземпляры предметов | src/domain/items.ts; ItemInfo, Item, createItemFromInfo; семейство item.09–12 отдельно в src/domain/combat-items.ts | InventorySession; tests/inventory.test.ts; COMBAT_ITEMS.md |
 | Инвентарь, стадии, награды и переносы | src/domain/inventory.ts; InventorySession | src/inventory-controller.ts; tests/inventory.test.ts |
 | Общее представление предмета | src/presentation/item-view.ts; createItemView, createItemIcon | слоты, карманы, награды и drag ghost |
 | Ввод инвентаря/диалог/lifecycle | src/inventory-controller.ts; InventoryController | main.ts; qa/INVENTORY.md |
@@ -21,7 +22,7 @@
 
 Пути src/tests относительно активной versions/0.1.0. Зависимости — node_modules/package-lock в корне; vendor нужен без npm в готовом HTML. Generated: builds/preview.html и versions/gamejam_0.1.0-offline.html. Исходники не редактируются через эти артефакты.
 
-Области будущей игры: полноценный бой, бонусы предметов, ресурсы/звук, платформа. При добавлении указать владельца, потребителей и проверки здесь. Контракт реализованного инвентаря — [INVENTORY.md](INVENTORY.md).
+Области будущей игры: полноценный бой, бонусы предметов, ресурсы/звук, платформа. При добавлении указать владельца, потребителей и проверки здесь. Контракт реализованного инвентаря — [INVENTORY.md](INVENTORY.md); определения нескольких семейств, общий пул наград и боевые свойства — [COMBAT_ITEMS.md](COMBAT_ITEMS.md).
 
 | Противники/щит/статусы | src/enemies/enemy.ts; status-effects/*.ts | enemies/session.ts, enemies/view.ts, main.ts, tests/domain.test.ts |
 | JSON-ассеты Enemy/Attack | корень assets/enemies, assets/attacks; src/enemies/enemy.ts, attack.ts | EnemySession, loadSession, tests/domain.test.ts |
@@ -37,6 +38,7 @@
 
 | Четыре иконки предметов | assets/images/items; src/presentation/item-view.ts, images.ts | tools/extract-item-icons.ps1; tools/verify-item-icons.mjs; qa/ITEM_ICONS.md |
 
+| Боевые свойства нового семейства | src/domain/combat-items.ts; combat-item-rules.ts; Enemy.TransferNegativeStatus | EnemySession.Attack; presentation/combat-item-visuals.ts; tests/combat-extension-regression.test.ts; tools/verify-combat-item-extension.mjs |
 | Герой/урон/бонусы экипировки | assets/heroes/player.json; src/domain/hero.ts, items.ts | heroInfo/heroCombatInfo, Hero.AttackDamage; tests/combat.test.ts |
 | Атака/доступная колонка/ответные удары | src/enemies/session.ts; CanTarget/Attack | main.ts; реальные spawn-point, резерв исключён; tests/combat.test.ts |
 | Единые боевые параметры/полоски | src/enemies/view.ts createCombatantView; presentation/combat-indicators.ts | герой, камеры, hover, debug; NPC-layout отдельно createNPCView |

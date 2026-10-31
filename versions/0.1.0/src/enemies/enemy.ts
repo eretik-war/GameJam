@@ -41,12 +41,15 @@ export class Enemy {
   get statuses() { return this.#statuses.map(s => Object.freeze({ typeId: s.effect.typeId, name: s.effect.name, imageUrl: s.effect.imageUrl, remainingTurns: s.remainingTurns })); }
   GetParameter(type: TypeEnemyParameter): number { return this.#parameters.find(p => p.Type === type)!.Value; }
   get alive(): boolean { return this.GetParameter(TypeEnemyParameter.Health) > 0; }
+  /** Ceilings belong to the instance: equipment can raise a shield above the value stored in Info. */
+  get maxHealth(): number { return this.EnemyInfo.Parameters.find(p => p.Type === TypeEnemyParameter.Health)!.Value; }
+  get maxShield(): number { return this.EnemyInfo.Parameters.find(p => p.Type === TypeEnemyParameter.Shield)!.Value; }
   ChangeParameter(type: TypeEnemyParameter, delta: number): void {
     assertFinite(delta);
     const p = this.#parameters.find(p => p.Type === type);
     if (!p) throw new Error('Unknown enemy parameter');
     const next = p.Value + delta; assertFinite(next);
-    p.Value = Math.max(0, type === TypeEnemyParameter.Health ? Math.min(next, this.EnemyInfo.Parameters.find(p => p.Type === type)!.Value) : next);
+    p.Value = Math.max(0, type === TypeEnemyParameter.Health ? Math.min(next, this.maxHealth) : next);
   }
   TakeDamage(damage: number): void {
     assertFinite(damage); if (damage < 0) throw new Error('Negative damage');
@@ -66,10 +69,24 @@ export class Enemy {
       existing.remainingTurns += turns;
     } else this.#statuses.push({ effect, remainingTurns: turns });
   }
+  /** Move the oldest debuff atomically through the two entity owners, never through Info. */
+  TransferNegativeStatus(target: Enemy): boolean {
+    if (!this.alive || !target.alive || target === this) return false;
+    const index = this.#statuses.findIndex(status => status.effect.negative);
+    if (index < 0) return false;
+    const status = this.#statuses[index]!;
+    target.AddStatus(status.effect.typeId, status.remainingTurns);
+    this.#statuses.splice(index, 1);
+    return true;
+  }
   get stunned(): boolean { return this.#statuses.some(s => s.effect.typeId === 'stun'); }
   get missChance(): number { return this.#statuses.some(s => s.effect.typeId === 'blindness') ? 0.5 : 0; }
   CanAttack(random: () => number = Math.random): boolean { return this.alive && !this.stunned && random() >= this.missChance; }
-  BeginTurn(): void {
+  /** Cleansing removes exactly the debuffs: every effect declares whether it is one. */
+  RemoveNegativeStatuses(): void {
+    for (let i = this.#statuses.length - 1; i >= 0; i--) if (this.#statuses[i]!.effect.negative) this.#statuses.splice(i, 1);
+  }
+  BeginTurn(_random: () => number = Math.random): void {
     for (const status of [...this.#statuses]) {
       if (!this.alive) break;
       status.effect.Tick(this); status.remainingTurns--;

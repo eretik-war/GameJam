@@ -1,0 +1,9 @@
+{
+  "typeId": "attack.transfer",
+  "name": "Передача эффекта",
+  "damage": 5,
+  "effect": {
+    "typeId": "transfer",
+    "turns": 1
+  }
+}

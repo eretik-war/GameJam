@@ -6,8 +6,8 @@ import finale from '../../../../assets/cutscenes/finale.json';
 import campaign from '../../../../assets/campaigns/main.json';
 import { Hero } from './hero';
 import { EnemySession } from '../enemies/session';
-import { createEnemyFromInfo } from '../enemies/enemy';
-import { canSpawn, getSpawnPoint } from '../enemies/spawn';
+import { createEnemyFromInfo, enemyCatalog } from '../enemies/enemy';
+import { canSpawn, getSpawnPoint, spawnPoints } from '../enemies/spawn';
 export interface BattleInfo { readonly typeId: string; readonly background: string; readonly enemies: readonly Readonly<{id:string;typeId:string;spawnPointId:string}>[] }
 export interface CutsceneInfo { readonly typeId:string; readonly background:string; readonly lines:readonly Readonly<{id:string;text:string;choices?:readonly Readonly<{id:string;text:string}>[]}>[] }
 function freeze<T>(v:T):T { if(v && typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}return v; }
@@ -32,9 +32,23 @@ export function validateCampaign(data:typeof campaign):void {
 validateCampaign(campaign);freeze(campaign);
 export class CampaignSession {
  hero=new Hero(); #index=0; #complete=false;
+ constructor(private readonly random: () => number = Math.random) {}
  restart():void { this.hero = new Hero(); this.#index = 0; this.#complete = false; }
  get current(){return campaign.steps[this.#index]!;} get complete(){return this.#complete;}
  advance(expectedId:string):boolean {if(this.#complete || expectedId!==this.current.id)return false;if(this.#index===campaign.steps.length-1)this.#complete=true;else this.#index++;return true;}
- createBattle():EnemySession {const info=battles.find(b=>b.typeId===this.current.contentId);if(this.current.type!=='battle'||!info)throw new Error('Not battle');return createBattle(info,this.current.id,this.hero);}
+ createBattle(): EnemySession {
+  const info = battles.find(b => b.typeId === this.current.contentId);
+  if (this.current.type !== 'battle' || !info) throw new Error('Not battle');
+  const battleNumber = campaign.steps.slice(0, this.#index + 1).filter(s => s.type === 'battle').length;
+  // Only places supported by the existing catalog contribute to the capacity.
+  // Fill from the closest column so the initial selected enemy is attackable.
+  const slots = spawnPoints.map(point => ({ point, eligible: enemyCatalog.filter(enemy => canSpawn(enemy, point)) }))
+   .filter(slot => slot.eligible.length > 0)
+   .sort((a, b) => a.point.x - b.point.x || a.point.y - b.point.y);
+  const enemies = slots.slice(0, battleNumber).map(({ point, eligible }) => ({
+   id: point.id, typeId: eligible[Math.floor(this.random() * eligible.length)]!.typeId, spawnPointId: point.id,
+  }));
+  return createBattle({ ...info, enemies }, this.current.id, this.hero);
+ }
 }
 

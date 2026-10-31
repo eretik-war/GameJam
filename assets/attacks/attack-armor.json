@@ -1,0 +1,9 @@
+{
+  "typeId": "attack.armor",
+  "name": "Урон по броне",
+  "damage": 6,
+  "effect": {
+    "typeId": "armor_damage",
+    "value": 25
+  }
+}

@@ -1,7 +1,9 @@
 import { Enemy, enemyCatalog, createEnemyFromInfo, TypeEnemyParameter } from './enemy';
 import { canSpawn, getSpawnPoint, spawnEnemy, spawnPoints } from './spawn';
+import { getStatusEffect } from './status-effects/catalog';
 import { Hero } from '../domain/hero';
 import type { Item } from '../domain/items';
+import { avoidsEquippedAttack, transferEquippedStatus, equippedAttackDamage } from '../domain/combat-item-rules';
 
 export type EnemyDeployment = Readonly<{ enemyId: string; spawnPointId: string }>;
 export class EnemySession {
@@ -40,25 +42,37 @@ export class EnemySession {
     if (!this.CanTarget(id)) return false;
     if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow');
     this.Select(id);
+    // Equipment passives must be current before anything resolves; the renderer syncs the same way.
+    this.SyncHeroEquipment(items);
     if (this.hero.CanAttack(random)) {
-      this.selected.TakeDamage(this.hero.AttackDamage(items));
+      this.selected.TakeDamage(equippedAttackDamage(this.selected, this.hero.AttackDamage(items), items));
+      transferEquippedStatus(this.hero, this.selected, items, random);
       // Lenses add their effect to the hero's attack; a slain target keeps no statuses.
       for (const effect of this.hero.AttackEffects(items)) {
         if (!this.selected.alive) break;
         this.selected.AddStatus(effect.typeId, effect.turns);
       }
     }
+    const resist = this.hero.effectResistChance;
     for (const enemy of this.deployed) {
       if (!this.hero.alive) break;
       if (!enemy.CanAttack(random)) continue;
+      if (avoidsEquippedAttack(this.hero, items, random)) continue;
       const attack = enemy.attack;
       this.hero.TakeDamage(attack?.damage ?? 0);
       const effect = attack?.effect;
+      if (!effect || !this.hero.alive) continue;
       // Stacking stun would lock the hero out of every turn, so an already stunned hero is not stunned again.
-      if (effect && this.hero.alive && !(effect.typeId === 'stun' && this.hero.stunned)) this.hero.AddStatus(effect.typeId, effect.turns);
+      if (effect.typeId === 'stun' && this.hero.stunned) continue;
+      // An enemy effect lands on its own chance; the hero's resist roll then cancels a landed effect.
+      if (random() >= getStatusEffect(effect.typeId).applyChance) continue;
+      if (resist > 0 && random() < resist) continue;
+      this.hero.AddStatus(effect.typeId, effect.turns);
     }
-    this.hero.BeginTurn(); this.EndTurn(); return true;
+    this.hero.BeginTurn(random); this.EndTurn(); return true;
   }
+  /** The active slots own the hero's equipment: syncing them updates passives and the shield ceiling. */
+  SyncHeroEquipment(items: readonly (Item | null)[]): void { this.hero.SyncEquipment(items); }
   Select(id: string): void { if (!this.npcs.some(e => e.id === id)) throw new Error('Unknown enemy'); this.selectedId = id; }
   EndTurn(): void { if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow'); this.npcs.forEach(e => e.BeginTurn()); this.turn++; }
   Save(): string { return JSON.stringify({ schemaVersion: 2, turn: this.turn, selectedId: this.selectedId,

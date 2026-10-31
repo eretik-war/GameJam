@@ -8,6 +8,8 @@ export interface HoverCardView {
   readonly note?: string;
   /** Dense character variant: minimal spacing, no scrolling, whole card visible at once. */
   readonly compact?: boolean;
+  /** Coloured explanation lines under a divider at the bottom of the card. */
+  readonly effects?: readonly { readonly text: string; readonly tone?: string }[];
 }
 
 export const HOVER_CARD_DELAY_MS = 500;
@@ -174,6 +176,18 @@ export class HoverCardController {
       note.className = 'hover-card-note';
       note.textContent = view.note;
       blocks.push(note);
+    }
+    if (view.effects?.length) {
+      // The divider and its explanation lines close every card that describes an attack.
+      const effects = document.createElement('div');
+      effects.className = 'hover-card-effects';
+      for (const effect of view.effects) {
+        const line = document.createElement('p');
+        line.textContent = effect.text;
+        if (effect.tone) line.dataset.tone = effect.tone;
+        effects.append(line);
+      }
+      blocks.push(effects);
     }
     const host = this.#target instanceof HTMLElement ? this.#target.closest('dialog[open]') ?? document.body : document.body;
     if (this.#card.parentElement !== host) host.append(this.#card);

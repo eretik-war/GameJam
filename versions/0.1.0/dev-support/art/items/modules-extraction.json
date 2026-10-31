@@ -1,0 +1,114 @@
+[
+  {
+    "name": "magenta",
+    "source": "versions/0.1.0/dev-support/art/items/modules/module-magenta.png",
+    "output": "assets/images/items/item-module-magenta.png",
+    "sourceSize": {
+      "width": 638,
+      "height": 612
+    },
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "width": 638,
+      "height": 610
+    },
+    "icon": {
+      "width": 128,
+      "height": 128,
+      "margin": 4,
+      "content": {
+        "width": 120,
+        "height": 115,
+        "left": 4,
+        "top": 6
+      }
+    },
+    "bytes": 10772,
+    "sha256": "06c65571796a9eda7115b48e426396264ad23539ef36cf22f28c70c53f49d678"
+  },
+  {
+    "name": "gold",
+    "source": "versions/0.1.0/dev-support/art/items/modules/module-gold.png",
+    "output": "assets/images/items/item-module-gold.png",
+    "sourceSize": {
+      "width": 635,
+      "height": 655
+    },
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "width": 635,
+      "height": 610
+    },
+    "icon": {
+      "width": 128,
+      "height": 128,
+      "margin": 4,
+      "content": {
+        "width": 120,
+        "height": 115,
+        "left": 4,
+        "top": 6
+      }
+    },
+    "bytes": 11055,
+    "sha256": "c9957889fbca608f893a36ecdc46f3513112ca2ba2c73429a11864526bc56df0"
+  },
+  {
+    "name": "blue",
+    "source": "versions/0.1.0/dev-support/art/items/modules/module-blue.png",
+    "output": "assets/images/items/item-module-blue.png",
+    "sourceSize": {
+      "width": 646,
+      "height": 625
+    },
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "width": 646,
+      "height": 610
+    },
+    "icon": {
+      "width": 128,
+      "height": 128,
+      "margin": 4,
+      "content": {
+        "width": 120,
+        "height": 113,
+        "left": 4,
+        "top": 7
+      }
+    },
+    "bytes": 12208,
+    "sha256": "0f08b689f22f3aa4fd85dc1be55d6f74ba9dd0327a043f0a6a3166d8c0e5b91c"
+  },
+  {
+    "name": "teal",
+    "source": "versions/0.1.0/dev-support/art/items/modules/module-teal.png",
+    "output": "assets/images/items/item-module-teal.png",
+    "sourceSize": {
+      "width": 667,
+      "height": 637
+    },
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "width": 667,
+      "height": 610
+    },
+    "icon": {
+      "width": 128,
+      "height": 128,
+      "margin": 4,
+      "content": {
+        "width": 120,
+        "height": 110,
+        "left": 4,
+        "top": 9
+      }
+    },
+    "bytes": 11636,
+    "sha256": "4ba0b3d3635ed147a9e67c0cbc2ddbdd386fffc37fd14d59fda5ec5989905763"
+  }
+]

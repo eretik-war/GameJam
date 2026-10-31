@@ -1,0 +1,9 @@
+{
+  "typeId": "attack.dodge",
+  "name": "Уклонение",
+  "damage": 5,
+  "effect": {
+    "typeId": "dodge",
+    "turns": 1
+  }
+}
