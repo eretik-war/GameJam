@@ -108,7 +108,9 @@ try {
           assert.equal(await evaluate("document.querySelector('#app').dataset.step"),step);
         }
         if(step==='fight-2')await screenshot('campaign-battle-2.png');
-        combat: for(const x of [678,960]) for(let i=0;i<5;i++){await click(x,490);if(await evaluate("document.querySelector('#reward-dialog').open"))break combat;}
+        // Stun and blindness stretch a fight past a fixed handful of swings, so each enemy
+        // keeps being hit until the reward opens instead of counting attacks.
+        combat: for(const x of [678,960]) for(let i=0;i<25;i++){await click(x,490);if(await evaluate("document.querySelector('#reward-dialog').open"))break combat;}
         await screenshot('campaign-combat-check.png'); console.log(step,await evaluate("document.querySelector('#turn').textContent")); await until(()=>evaluate("document.querySelector('#reward-dialog').open"));
         const count=await evaluate("document.querySelectorAll('.inventory-slot[data-item-id]').length");
         await evaluate("document.querySelector('.reward-option').click()");
