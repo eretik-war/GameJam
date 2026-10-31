@@ -1,5 +1,5 @@
 import { effects } from './enemies/status-effects/catalog';
-import { Enemy, TypeEnemyParameter } from './enemies/enemy';
+import { TypeEnemyParameter } from './enemies/enemy';
 import { TypeInventoryArea, TypeGameStage } from './domain/inventory';
 import * as PIXI from 'pixi.js';
 import { resolveImage } from './presentation/images';
@@ -56,6 +56,8 @@ try {
     const scaleY = canvas.height / app.screen.height;
     return new DOMRect(canvas.left + bounds.x * scaleX, canvas.top + bounds.y * scaleY, bounds.width * scaleX, bounds.height * scaleY);
   }
+  const heroCard = () => createHeroHoverCard(session.hero, inventory.model.slots(TypeInventoryArea.Equipment)
+    .map((_, index) => inventory.model.itemAt({ area: TypeInventoryArea.Equipment, index })));
   function bindSceneCard(target: PIXI.Container, anchor: HoverCardAnchor, resolve: () => HoverCardView, onTap?: () => void): void {
     target.eventMode = 'static';
     target.interactiveChildren = false;
@@ -92,10 +94,7 @@ try {
     if (!hero && heroTextures.every(texture => texture.valid)) {
       hero = createHeroAnimation(heroTextures);
       const target = hero;
-      bindSceneCard(target, { getBoundingClientRect: () => sceneBounds(target) }, () => {
-        const combatant = 'hero' in session && session.hero instanceof Enemy ? session.hero : undefined;
-        return createHeroHoverCard(inventory.model, combatant);
-      });
+      bindSceneCard(target, { getBoundingClientRect: () => sceneBounds(target) }, heroCard);
     }
     if (hero) {
       placeHero(hero, width, height);
@@ -134,13 +133,8 @@ try {
       const indicators = createCombatIndicators(view, getTexture);
       indicators.y = barTop;
       container.addChild(indicators);
-      const label = new PIXI.Text(view.id, {
-        fontFamily: 'Arial', fontSize: 20, fill: 0xeef7ff, align: 'center',
-      });
-      label.anchor.set(0.5, 0);
-      label.y = 56;
-      container.addChild(label);
-      container.hitArea = new PIXI.Rectangle(-visualWidth / 2 - 8, barTop - 22, visualWidth + 16, 104 - barTop);
+      // The technical id label is gone; the clickable area now ends just below the feet.
+      container.hitArea = new PIXI.Rectangle(-visualWidth / 2 - 8, barTop - 22, visualWidth + 16, 52 - barTop);
       const anchor = enemyAnchors.get(view.id) ?? { getBoundingClientRect: () => new DOMRect() };
       anchor.getBoundingClientRect = () => sceneBounds(container);
       enemyAnchors.set(view.id, anchor);

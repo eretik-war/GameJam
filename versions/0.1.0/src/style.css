@@ -77,3 +77,15 @@ button:focus-visible { outline: 3px solid #8feac9; outline-offset: 3px; }
 .hover-card dt { color: #b4c2d5; }
 .hover-card dd { margin: 0; font-weight: 600; text-align: right; }
 .hover-card-note { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid #344760; color: #b4c2d5; font-size: 16px; line-height: 1.45; }
+/* Character card: short name plus combat rows, dense and fully visible without scrolling. */
+.hover-card-compact { width: max-content; max-width: min(280px, calc(100vw - 24px)); padding: 4px 7px; border-radius: 10px; font-size: 14px; line-height: 1.2; overflow: hidden; box-shadow: 0 6px 18px #0007; }
+.hover-card-compact h3 { margin: 0; font-size: 15px; line-height: 1.2; }
+.hover-card-compact dl { gap: 2px; margin-top: 2px; }
+.hover-card-compact dl > div { gap: 10px; }
+.hover-card-compact dt, .hover-card-compact dd { font-size: 13px; line-height: 1.2; }
+/* Damage types use the lens colours: red burning, blue stun, gold blindness, teal plain. */
+.hover-card dd[data-tone="burning"] { color: #ff7a63; }
+.hover-card dd[data-tone="stun"] { color: #74b4ff; }
+.hover-card dd[data-tone="blindness"] { color: #f6d879; }
+.hover-card dd[data-tone="regeneration"] { color: #68d99b; }
+.hover-card dd[data-tone="plain"] { color: #7ee0c2; }
