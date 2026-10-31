@@ -77,3 +77,15 @@ button:focus-visible { outline: 3px solid #8feac9; outline-offset: 3px; }
 .hover-card dt { color: #b4c2d5; }
 .hover-card dd { margin: 0; font-weight: 600; text-align: right; }
 .hover-card-note { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid #344760; color: #b4c2d5; font-size: 16px; line-height: 1.45; }
+
+.cutscene { position: fixed; inset: 0; z-index: 200; background: #0b1421 center / cover no-repeat; }
+.cutscene[hidden] { display: none; }
+.showing-cutscene > .inventory-layout { visibility: hidden; }
+.cutscene-dialog { position: absolute; left: 32px; right: 32px; bottom: 28px; width: calc(100% - 64px); padding: 24px 28px; border-color: #b59b64; background: #101b2eed; text-align: left; box-shadow: 0 8px 32px #0008; }
+.cutscene-dialog:hover { background: #17263af5; }
+.cutscene-text { display: block; font-size: 22px; line-height: 1.6; overflow-wrap: anywhere; max-height: 45vh; overflow-y: auto; }
+.cutscene-hint { display: block; margin-top: 18px; color: #c5d0de; font-size: 15px; }
+
+.scene-transition { position:fixed; inset:0; z-index:10000; background:#000; cursor:wait; }
+.scene-transition[hidden] { display:none; }
+.campaign-end { position:fixed; inset:0; z-index:300; display:grid; place-items:center; background:#0b1421; font-size:32px; }

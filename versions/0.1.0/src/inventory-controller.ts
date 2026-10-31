@@ -18,6 +18,8 @@ export class InventoryController {
   readonly #storage: HTMLElement;
   readonly #dialog: HTMLDialogElement;
   readonly #phaseButton: HTMLButtonElement;
+  onRewardChosen: (() => void) | undefined;
+  campaignMode = false;
   #selected: SlotAddress | null = null;
   #drag: Drag | null = null;
   #drop: HTMLElement | null = null;
@@ -52,7 +54,7 @@ export class InventoryController {
     }), options);
     this.element('skip-reward').addEventListener('click', () => this.command(() => {
       this.model.ContinueWithoutReward();
-      this.announce('Подготовка к бою. Освободите карманы, переместив предмет в активный слот.');
+      this.announce('Следующая сцена через 3 секунды.'); this.onRewardChosen?.();
     }), options);
     this.render();
   }
@@ -64,6 +66,7 @@ export class InventoryController {
     this.element('storage-panel').hidden = this.model.awaitingReward;
     this.element('storage-count').textContent = `${this.model.storedCount} / ${this.model.slots(TypeInventoryArea.Storage).length}`;
     this.#phaseButton.textContent = preparation ? 'Начать бой →' : 'Завершить бой →';
+    this.#phaseButton.hidden = this.campaignMode;
     this.#phaseButton.disabled = this.model.awaitingReward;
     this.renderSlots(this.#equipment, TypeInventoryArea.Equipment);
     this.renderSlots(this.#storage, TypeInventoryArea.Storage);
@@ -79,7 +82,7 @@ export class InventoryController {
         button.append(createItemIcon(typeId), title);
         button.addEventListener('click', () => this.command(() => {
           this.model.ChooseReward(typeId);
-          this.announce('Предмет добавлен в карманы. Теперь можно менять экипировку.');
+          this.announce('Предмет получен. Следующая сцена через 3 секунды.'); this.onRewardChosen?.();
         }));
         rewards.append(button);
       }
@@ -94,6 +97,8 @@ export class InventoryController {
     }
   }
 
+  finishCombat(): void { this.cancelInteraction(); this.model.FinishCombat(); this.render(); }
+  startCombat(): void { if (this.model.stage === TypeGameStage.Preparation) this.model.StartCombat(); this.render(); }
   dispose(): void { this.cancelInteraction(); this.#events.abort(); this.#dialog.close(); }
 
   private renderSlots(host: HTMLElement, area: TypeInventoryArea): void {

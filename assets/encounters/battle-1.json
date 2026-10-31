@@ -1,0 +1,11 @@
+{
+  "typeId": "battle-1",
+  "background": "images/battle-location.jpg",
+  "enemies": [
+    {
+      "id": "teal",
+      "typeId": "enemy.camera.teal",
+      "spawnPointId": "spawn-4"
+    }
+  ]
+}

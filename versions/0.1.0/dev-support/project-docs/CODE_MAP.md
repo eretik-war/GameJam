@@ -40,3 +40,8 @@
 | Герой/урон/бонусы экипировки | assets/heroes/player.json; src/domain/hero.ts, items.ts | heroInfo/heroCombatInfo, Hero.AttackDamage; tests/combat.test.ts |
 | Атака/доступная колонка/ответные удары | src/enemies/session.ts; CanTarget/Attack | main.ts; реальные spawn-point, резерв исключён; tests/combat.test.ts |
 | Единые боевые параметры/полоски | src/enemies/view.ts createCombatantView; presentation/combat-indicators.ts | герой, камеры, hover, debug; NPC-layout отдельно createNPCView |
+
+| Тестовая катсцена и debug-переход | src/cutscene-controller.ts; main.ts | index.html/style.css, presentation/images.ts; tools/verify-cutscene.mjs |
+
+| Цепочка сцен/наполнения/герой | src/domain/campaign.ts; assets/campaigns, assets/encounters, assets/cutscenes в корне | main.ts, CutsceneController; tests/campaign.test.ts; SCENE_SEQUENCE.md |
+| Затемнение и блокировка ввода | src/presentation/scene-transition.ts | main.ts; tools/verify-campaign.mjs |
