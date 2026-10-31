@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CampaignSession, battles, createBattle, validateCampaign } from '../src/domain/campaign';
 import { TypeEnemyParameter, enemyCatalog } from '../src/enemies/enemy';
-import { canSpawn } from '../src/enemies/spawn';
+import { canSpawn, spawnPoints } from '../src/enemies/spawn';
 test('campaign starts in combat and runs three blocks of three battles before the final choice', () => {
  const c = new CampaignSession();
  const expected = ['fight-1','fight-2','fight-3','intro','fight-4','fight-5','fight-6','interlude','fight-7','fight-8','fight-9','outro','finale'];
@@ -32,7 +32,7 @@ test('campaign starts in combat and runs three blocks of three battles before th
  assert.ok(Object.isFrozen(battles[1]!.enemies[0]));
 });
 test('enemy count grows across cutscenes and stays at the usable spawn capacity', () => {
- const c = new CampaignSession();
+ const c = new CampaignSession(() => 0.99);
  const counts: number[] = [];
  while (!c.complete) {
   if (c.current.type === 'battle') {
@@ -44,7 +44,8 @@ test('enemy count grows across cutscenes and stays at the usable spawn capacity'
   }
   c.advance(c.current.id);
  }
- assert.deepEqual(counts, [1,2,3,3,3,3,3,3,3]);
+ const capacity = spawnPoints.filter(point => enemyCatalog.some(info => canSpawn(info, point))).length;
+ assert.deepEqual(counts, Array.from({ length: 9 }, (_, i) => Math.min(i + 1, capacity)));
 });
 
 test('every enemy is rolled from the existing compatible catalog, including battles after the cap', () => {
@@ -57,7 +58,9 @@ test('every enemy is rolled from the existing compatible catalog, including batt
   if (c.current.type === 'battle') {
    const battle = c.createBattle();
    for (const enemy of battle.npcs) {
-    assert.equal(enemy.typeId, enemyCatalog[index++ % enemyCatalog.length]!.typeId);
+    const eligible = enemyCatalog.filter(info => canSpawn(info, battle.GetSpawnPoint(enemy.id)!));
+    const roll = ((index++ % enemyCatalog.length) + 0.5) / enemyCatalog.length;
+    assert.equal(enemy.typeId, eligible[Math.floor(roll * eligible.length)]!.typeId);
     assert.equal(enemy.EnemyInfo, enemyCatalog.find(info => info.typeId === enemy.typeId));
     assert.ok(canSpawn(enemy.EnemyInfo, battle.GetSpawnPoint(enemy.id)!));
     seen.add(enemy.typeId);

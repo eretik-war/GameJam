@@ -18,7 +18,10 @@ export function createBattle(info:BattleInfo,id:string,hero:Hero):EnemySession {
  const enemies=info.enemies.map(e=>createEnemyFromInfo(e.typeId,id+'-'+e.id));
  const deployments=info.enemies.map((e,i)=>({enemyId:enemies[i]!.id,spawnPointId:e.spawnPointId}));
  if(enemies.some((e,i)=>!canSpawn(e.EnemyInfo,getSpawnPoint(deployments[i]!.spawnPointId))))throw new Error('Invalid encounter placement');
- return new EnemySession(enemies,1,enemies[0]?.id ?? '',deployments,hero);
+ const session = new EnemySession(enemies,1,enemies[0]?.id ?? '',deployments,hero);
+ const target = session.deployed.find(enemy => session.CanTarget(enemy.id));
+ if (target) session.Select(target.id);
+ return session;
 }
 export function validateCampaign(data:typeof campaign):void {
  const ids=new Set<string>();
