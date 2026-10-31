@@ -15,7 +15,7 @@ export function createItemView(typeId: string) {
   const info = getItemInfo(typeId);
   const visual = visuals.get(info.typeId);
   if (!visual) throw new Error('Предмету не назначено представление.');
-  return { title: info.Name, ...visual };
+  return { title: info.Name, attackBonus: info.attackBonus, effect: info.effect, ...visual };
 }
 
 export function createItemIcon(typeId: string): HTMLImageElement {

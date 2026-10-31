@@ -14,8 +14,6 @@
     }
   ],
   "attackIds": [
-    "attack.test"
-  ],
-  "damage": 12,
-  "enemyDamage": 5
+    "attack.hero"
+  ]
 }

@@ -101,7 +101,7 @@ import { createNPCView as createEnemyView } from '../src/enemies/view';
 
 test('enemy asset resolves immutable attacks and visual metadata; rejects invalid references', () => {
   assert.equal(demoEnemyInfo.attackIds.length, 1);
-  assert.equal(getAttackInfo(demoEnemyInfo.attackIds[0]!).name, 'Тестовая атака');
+  assert.equal(getAttackInfo(demoEnemyInfo.attackIds[0]!).name, 'Поджигающий выстрел');
   assert.ok(Object.isFrozen(demoEnemyInfo.Placement));
   assert.ok(Object.isFrozen(demoEnemyInfo.attackIds));
   assert.ok(Object.isFrozen(demoEnemyInfo.Parameters[0]));

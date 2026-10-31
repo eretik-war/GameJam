@@ -7,5 +7,5 @@
     { "type": "health", "value": 30 },
     { "type": "shield", "value": 8 }
   ],
-  "attackIds": ["attack.test"]
+  "attackIds": ["attack.red"]
 }

@@ -1,0 +1,6 @@
+{
+  "typeId": "attack.teal",
+  "name": "Простой выстрел",
+  "damage": 6,
+  "effect": null
+}

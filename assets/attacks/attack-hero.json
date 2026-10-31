@@ -1,0 +1,6 @@
+{
+  "typeId": "attack.hero",
+  "name": "Атака героя",
+  "damage": 12,
+  "effect": null
+}

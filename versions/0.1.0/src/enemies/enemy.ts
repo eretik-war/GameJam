@@ -1,15 +1,18 @@
 import { Parameter, assertFinite } from '../domain/parameters';
+import { TypeEnemyParameter } from './enemy-parameters';
 import { getStatusEffect } from './status-effects/catalog';
 import type { ActiveStatus } from './status-effects/status-effect';
 import testEnemy from '../../../../assets/enemies/test-enemy.json';
 import cameraEnemies from '../../../../assets/enemies/camera-enemies.json';
-import { getAttackInfo } from './attack';
+import { getAttackInfo, type AttackInfo } from './attack';
 import { createLayerParameter, TypeBattleLayer, TypeEnemyPlacementParameter, type LayerParameter } from './placement';
-export enum TypeEnemyParameter { Health = 'health', Shield = 'shield' }
+export { TypeEnemyParameter };
 export enum TypeEnemyRole { Shooter = 'shooter', Hero = 'hero' }
 export class EnemyInfo {
   readonly Parameters: readonly Readonly<Parameter<TypeEnemyParameter>>[];
   readonly attackIds: readonly string[];
+  /** The attack this type uses on its turn; damage and effect come from the attack asset. */
+  readonly attack: AttackInfo | undefined;
   readonly Placement: LayerParameter<TypeEnemyPlacementParameter>;
   constructor(readonly typeId: string, readonly Name: string, health: number, shield: number,
     layer = TypeBattleLayer.Ground, readonly role = TypeEnemyRole.Shooter, attackIds: readonly string[] = []) {
@@ -19,6 +22,7 @@ export class EnemyInfo {
     attackIds.forEach(getAttackInfo);
     if (new Set(attackIds).size !== attackIds.length || !Object.values(TypeEnemyRole).includes(role)) throw new Error('Invalid enemy role or attacks');
     this.attackIds = Object.freeze([...attackIds]);
+    this.attack = attackIds.length ? getAttackInfo(attackIds[0]!) : undefined;
     this.Placement = createLayerParameter(TypeEnemyPlacementParameter.Layer, layer);
     Object.freeze(this);
   }
@@ -31,6 +35,7 @@ export class Enemy {
     this.#parameters = EnemyInfo.Parameters.map(p => new Parameter(p.Type, p.Value));
   }
   get typeId(): string { return this.EnemyInfo.typeId; }
+  get attack(): AttackInfo | undefined { return this.EnemyInfo.attack; }
   get layer(): TypeBattleLayer { return this.EnemyInfo.Placement.Value; }
   get Parameters() { return this.#parameters.map(p => Object.freeze(new Parameter(p.Type, p.Value))); }
   get statuses() { return this.#statuses.map(s => Object.freeze({ typeId: s.effect.typeId, name: s.effect.name, imageUrl: s.effect.imageUrl, remainingTurns: s.remainingTurns })); }

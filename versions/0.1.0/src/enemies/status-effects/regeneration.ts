@@ -1,4 +1,5 @@
-import { type Enemy, TypeEnemyParameter } from '../enemy';
+import type { Enemy } from '../enemy';
+import { TypeEnemyParameter } from '../enemy-parameters';
 import type { IStatusEffect } from './status-effect';
 export class Regeneration implements IStatusEffect {
   readonly typeId = 'regeneration';

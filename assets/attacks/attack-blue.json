@@ -1,0 +1,6 @@
+{
+  "typeId": "attack.blue",
+  "name": "Оглушающий выстрел",
+  "damage": 4,
+  "effect": { "typeId": "stun", "turns": 2 }
+}

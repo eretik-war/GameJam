@@ -1,6 +1,6 @@
 import { Enemy, enemyCatalog, createEnemyFromInfo, TypeEnemyParameter } from './enemy';
 import { canSpawn, getSpawnPoint, spawnEnemy, spawnPoints } from './spawn';
-import { Hero, enemyDamage } from '../domain/hero';
+import { Hero } from '../domain/hero';
 import type { Item } from '../domain/items';
 
 export type EnemyDeployment = Readonly<{ enemyId: string; spawnPointId: string }>;
@@ -41,10 +41,22 @@ export class EnemySession {
     if (!this.CanTarget(id)) return false;
     if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow');
     this.Select(id);
-    if (this.hero.CanAttack(random)) this.selected.TakeDamage(this.hero.AttackDamage(items));
+    if (this.hero.CanAttack(random)) {
+      this.selected.TakeDamage(this.hero.AttackDamage(items));
+      // Lenses add their effect to the hero's attack; a slain target keeps no statuses.
+      for (const effect of this.hero.AttackEffects(items)) {
+        if (!this.selected.alive) break;
+        this.selected.AddStatus(effect.typeId, effect.turns);
+      }
+    }
     for (const enemy of this.deployed) {
       if (!this.hero.alive) break;
-      if (enemy.CanAttack(random)) this.hero.TakeDamage(enemyDamage);
+      if (!enemy.CanAttack(random)) continue;
+      const attack = enemy.attack;
+      this.hero.TakeDamage(attack?.damage ?? 0);
+      const effect = attack?.effect;
+      // Stacking stun would lock the hero out of every turn, so an already stunned hero is not stunned again.
+      if (effect && this.hero.alive && !(effect.typeId === 'stun' && this.hero.stunned)) this.hero.AddStatus(effect.typeId, effect.turns);
     }
     this.hero.BeginTurn(); this.EndTurn(); return true;
   }
