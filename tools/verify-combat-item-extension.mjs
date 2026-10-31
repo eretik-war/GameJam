@@ -63,7 +63,7 @@ try {
   const resize = (width, height) => call('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
   const navigate = async (url, ready) => {
     await call('Page.navigate', { url });
-    try { await until(() => evaluate(`location.href === ${JSON.stringify(url)} && (${ready})`)); }
+    try { await until(() => evaluate(`location.href === ${JSON.stringify(url)} && (${ready})`), 60000); }
     catch (error) { console.error(JSON.stringify({ url, errors, page: await evaluate('({url:location.href, text:document.body.innerText, images:[...document.images].map(i=>({complete:i.complete,width:i.naturalWidth}))})') })); throw error; }
     await pause(300);
   };
@@ -136,6 +136,13 @@ try {
       await until(()=>evaluate("document.querySelector('#app').dataset.step==='fight-2'"));await stable();await dismissIntro();
       const original=await save();
       const target=original.enemies.find(e=>e.id===original.selectedId);
+      target.typeId='enemy.camera.teal';
+      // The active attackable target is ground whenever a guard exists; a lone air target
+      // is moved to a compatible free ground point for this focused item fixture.
+      if(points.find(p=>p.id===target.spawnPointId).placement.value==='air') {
+        const free=points.find(p=>p.placement.value==='ground'&&!original.enemies.some(e=>e!==target&&e.spawnPointId===p.id));
+        assert.ok(free);target.spawnPointId=free.id;
+      }
       for(const enemy of original.enemies) {
         enemy.statuses=[];
         enemy.Parameters.find(p=>p.Type==='health').Value=enemy===target?30:0;

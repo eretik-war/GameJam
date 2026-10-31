@@ -30,7 +30,7 @@
 | Слои противников и точки спавна | src/enemies/placement.ts, spawn.ts; assets/enemies/spawn-points.json | EnemyInfo, EnemySession; tests/enemies.test.ts |
 | Каталог четырёх камер | assets/enemies/test-enemy.json, camera-enemies.json; src/enemies/enemy.ts | единая фабрика createEnemyFromInfo, EnemySession/loadSession |
 | Модульный VisualInfo и точки крепления | assets/enemies/camera-visuals.json; src/enemies/visual-info.ts | createEnemyVisualLayout → presentation/enemy-visual.ts → Pixi, DOM и preview |
-| Извлечение и проверка камер | tools/extract-enemy-parts.ps1, preview-enemies.mjs, verify-camera-enemies.mjs | исходники dev-support/art/enemies; qa/MODULAR_ENEMIES.md |
+| Извлечение и проверка камер | tools/extract-enemy-parts.ps1, extract-robot-legs.ps1, preview-enemies.mjs, verify-camera-enemies.mjs, verify-robot-legs.mjs | исходники dev-support/art/enemies; qa/MODULAR_ENEMIES.md |
 | Фон боевой зоны и наложение инвентаря | assets/images/battle-location.jpg; main.ts первый спрайт; style.css absolute-слои | qa/INVENTORY_OVERLAY.md; сцену и юнитов не смещают |
 | Герой: три кадра/idle/положение | src/presentation/hero-animation.ts; createHeroAnimation, placeHero | main.ts renderer/тикер; HERO_ANIMATION.md; qa/HERO_ANIMATION.md |
 
@@ -48,6 +48,6 @@
 | Цепочка сцен/наполнения/герой | src/domain/campaign.ts; assets/campaigns, assets/encounters, assets/cutscenes в корне | main.ts, CutsceneController; tests/campaign.test.ts; SCENE_SEQUENCE.md |
 | Затемнение и блокировка ввода | src/presentation/scene-transition.ts | main.ts; tools/verify-campaign.mjs |
 
-| Воздушные лекари/приоритет лечения | assets/enemies/healers.json; EnemyInfo.SupportParameters; EnemySession.TryHeal | enemies/view.ts; camera-visuals.json; tests/healers.test.ts; tools/verify-healers.mjs |
+| Воздушные лекари/приоритет лечения | assets/enemies/healers.json; EnemyInfo.SupportParameters; EnemySession.TryHeal | enemies/view.ts; camera-visuals.json; tests/healers.test.ts; актуальный маршрут tools/verify-campaign.mjs; qa/SYNC_INTEGRATION.md |
 
-| Щитовики/разрушение и задержка/провокация | assets/enemies/guards.json; Enemy.guardActive/ChangeParameter/BeginTurn; EnemySession.CanTarget | visual-info.ts/view.ts/enemy-visual.ts; tests/guards.test.ts; tools/verify-guards.mjs |
+| Щитовики/разрушение и задержка/провокация | assets/enemies/guards.json; Enemy.guardActive/ChangeParameter/BeginTurn; EnemySession.CanTarget | visual-info.ts/view.ts/enemy-visual.ts; tests/guards.test.ts; актуальный маршрут tools/verify-campaign.mjs; qa/SYNC_INTEGRATION.md |

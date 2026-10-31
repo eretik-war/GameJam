@@ -25,7 +25,10 @@ const profile = await fs.mkdtemp(path.join(scratch, 'gamejam-chain-chrome-'));
 const route = JSON.parse(await fs.readFile(path.join(root, 'assets/campaigns/main.json'), 'utf8')).steps;
 const spawnPoints = JSON.parse(await fs.readFile(path.join(root, 'assets/enemies/spawn-points.json'), 'utf8'));
 const enemyTypes = [JSON.parse(await fs.readFile(path.join(root, 'assets/enemies/test-enemy.json'), 'utf8')),
-  ...JSON.parse(await fs.readFile(path.join(root, 'assets/enemies/camera-enemies.json'), 'utf8'))];
+  ...JSON.parse(await fs.readFile(path.join(root, 'assets/enemies/camera-enemies.json'), 'utf8')),
+  ...JSON.parse(await fs.readFile(path.join(root, 'assets/enemies/healers.json'), 'utf8')),
+  ...JSON.parse(await fs.readFile(path.join(root, 'assets/enemies/guards.json'), 'utf8'))];
+const capacity = spawnPoints.filter(point => enemyTypes.some(type => type.placement.value === point.placement.value)).length;
 assert.deepEqual(route.filter(step => step.type === 'battle').map(step => step.id),
   Array.from({ length: 9 }, (_, i) => `fight-${i + 1}`));
 assert.equal(route[0].type, 'battle');
@@ -83,8 +86,8 @@ try {
   };
 
 
-  const key = code => call('Input.dispatchKeyEvent',{type:'keyDown',code,key:code==='KeyD'?'d':'Enter'}).then(()=>call('Input.dispatchKeyEvent',{type:'keyUp',code}));
-  const click = async (x,y) => {await call('Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',clickCount:1});await call('Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',clickCount:1});};
+  const key = code => call('Input.dispatchKeyEvent',{type:'keyDown',code,key:code==='KeyD'?'d':code==='Escape'?'Escape':'Enter'}).then(()=>call('Input.dispatchKeyEvent',{type:'keyUp',code}));
+  const click = async (x,y) => {await call('Input.dispatchMouseEvent',{type:'mouseMoved',x,y});await call('Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',clickCount:1});await call('Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',clickCount:1});};
   const stable = () => until(()=>evaluate("document.querySelector('.scene-transition').hidden"));
   const dismissBattleDialogue = async () => {
     for (let i = 0; i < 3; i++) {
@@ -136,9 +139,16 @@ try {
         await stable();
       } else {
         await dismissBattleDialogue();
+        if (process.argv.includes('--sustain-hero')) {
+          // Explicit route-only fixture: replenish HP between battles through the
+          // existing validated debug loader, never changing enemy stats or combat rules.
+          const refill = await snapshot();
+          refill.hero.Parameters.find(p => p.Type === 'health').Value = 1000;
+          await evaluate(`localStorage.setItem('gamejam.enemies.v2', ${JSON.stringify(JSON.stringify(refill))}); document.querySelector('#load').click()`);
+        }
         const roster = await snapshot();
         const ordinal = checked.length + 1;
-        assert.equal(roster.enemies.length, Math.min(ordinal, 3));
+        assert.equal(roster.enemies.length, Math.min(ordinal, capacity));
         assert.equal(new Set(roster.enemies.map(e => e.spawnPointId)).size, roster.enemies.length);
         for (const enemy of roster.enemies) {
           assert.ok(enemy.id.startsWith(step + '-'));
@@ -146,7 +156,7 @@ try {
           const point = spawnPoints.find(point => point.id === enemy.spawnPointId);
           assert.ok(type && point && type.placement.value === point.placement.value);
         }
-        checked.push({ step, count: roster.enemies.length, types: roster.enemies.map(e => e.typeId) });
+        checked.push({ step, count: roster.enemies.length, types: roster.enemies.map(e => e.typeId), placements: roster.enemies.map(e => e.spawnPointId) });
         if(step==='fight-1') {
           await key('KeyD'); await evaluate("document.querySelector('#open-cutscene').click()"); await stable();
           await key('KeyD'); assert.equal(await evaluate("document.querySelector('.cutscene .debug').hidden"),false);
@@ -154,22 +164,35 @@ try {
           assert.equal(await evaluate("document.querySelector('#app').dataset.step"),step);
           assert.deepEqual(await snapshot(), roster);
         }
+        // Preview/debug panels must not intercept native combat clicks.
+        if (!await evaluate("document.querySelector('.debug').hidden")) await key('KeyD');
         if(step==='fight-2')await screenshot('campaign-battle-2.png');
         if(step==='fight-3')await screenshot('campaign-battle-3.png');
         // Click each real deployment from front to back, including the third ground slot.
         const bounds = await evaluate("(() => {const r = document.querySelector('#scene canvas').getBoundingClientRect(); return {x:r.x,y:r.y,width:r.width,height:r.height};})()");
-        const points = roster.enemies.map(enemy => spawnPoints.find(point => point.id === enemy.spawnPointId))
-          .sort((a,b) => a.x - b.x || a.y - b.y);
-        combat: for(const point of points) for(let i=0;i<80;i++){
+        // Re-read the live roster after each native click: a broken guard may unlock
+        // an earlier air target in the same column. Never exhaust dead/blocked targets.
+        combat: for (let i = 0; i < 180; i++) {
+          const current = await snapshot();
+          const live = current.enemies.filter(enemy => enemy.Parameters.find(p => p.Type === 'health').Value > 0);
+          const closest = Math.min(...live.map(enemy => spawnPoints.find(point => point.id === enemy.spawnPointId).x));
+          const front = live.filter(enemy => spawnPoints.find(point => point.id === enemy.spawnPointId).x === closest);
+          const guard = front.find(enemy => enemyTypes.find(type => type.typeId === enemy.typeId).role === 'guard' &&
+            enemy.Parameters.find(p => p.Type === 'shield').Value > 0 && enemy.guardRecoveryTurns === 0);
+          const target = guard ?? front[0];
+          if (!target) break;
+          const point = spawnPoints.find(point => point.id === target.spawnPointId);
+          // A live tooltip may cover the next air target. Close it with the
+          // supported Escape key rather than disabling overlays or changing CSS.
+          if (await evaluate("!!document.querySelector('.hover-card:not([hidden])')")) await key('Escape');
           await click(bounds.x + bounds.width * point.x, bounds.y + bounds.height * point.y - 10);
-          const state = await evaluate(`(() => {
-            if (document.querySelector('#reward-dialog').open) return { reward: true };
-            document.querySelector('#save').click();
-            const enemy = JSON.parse(localStorage.getItem('gamejam.enemies.v2')).enemies.find(e => e.spawnPointId === ${JSON.stringify(point.id)});
-            return { reward: false, dead: enemy.Parameters.find(p => p.Type === 'health').Value === 0 };
-          })()`);
-          if (state.reward) break combat;
-          if (state.dead) break;
+          if (await evaluate("document.querySelector('#reward-dialog').open")) break combat;
+          const after = await snapshot();
+          if (after.turn === current.turn) {
+            console.error('Blocked native attack', JSON.stringify({step,target,point,current,
+              dom:await evaluate(`({hit:document.elementFromPoint(${bounds.x + bounds.width * 0.53}, ${bounds.y + bounds.height * 0.30 - 10})?.outerHTML?.slice(0,300),debug:document.querySelector('.debug').hidden,status:document.querySelector('#status').textContent,inert:document.querySelector('#app').inert,dialogue:!!document.querySelector('.battle-message[data-kind=intro]')})`)}));
+            throw new Error('Native click did not advance a legal target');
+          }
         }
         console.log(step + ': ' + roster.enemies.length + ' enemies, combat passed');
         assert.equal(await evaluate("document.querySelector('#reward-dialog').open"), true,
@@ -203,7 +226,7 @@ try {
         checked.at(-1).rewardTiming = timing;
       }
     }
-    assert.deepEqual(checked.map(battle => battle.count), [1,2,3,3,3,3,3,3,3]);
+    assert.deepEqual(checked.map(battle => battle.count), Array.from({ length: 9 }, (_, i) => Math.min(i + 1, capacity)));
     results.push({ mode: url.startsWith('file:') ? 'file' : 'HTTP', battles: checked });
     if (process.argv.includes('--restart')) continue;
     assert.equal(await evaluate("document.querySelector('.cutscene').style.backgroundImage.includes('data:image/png')"),true);
@@ -211,7 +234,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#app').dataset.step"),'finale');
   }
   assert.equal(errors.length,0);
-  const report = { branch: process.argv.includes('--restart') ? 'restart' : 'continue', runtimeErrors: errors.length, results };
+  const report = { branch: process.argv.includes('--restart') ? 'restart' : 'continue', sustainHero: process.argv.includes('--sustain-hero'), runtimeErrors: errors.length, results };
   await fs.writeFile(path.join(out, `campaign-chain-${report.branch}.json`), JSON.stringify(report, null, 2));
-  console.log('Campaign: 9 battles, random catalog rosters, 1→2→3 cap, rewards, fades and ' + report.branch + ' passed HTTP/file');
+  console.log('Campaign: 9 battles, random catalog rosters, 1→2→3→4→5 cap, rewards, fades and ' + report.branch + ' passed HTTP/file');
 } finally {ws?.close();chrome.kill();server.kill();}
