@@ -145,6 +145,58 @@
       "scale": 1,
       "requiredRole": "guard",
       "requiredLayer": "ground"
+    },
+    {
+      "id": "shooter-leg-magenta",
+      "image": "images/enemies/legs-magenta.png",
+      "width": 411,
+      "height": 472,
+      "pivot": {
+        "y": 20,
+        "x": 210
+      },
+      "scale": 0.7676991150442478,
+      "requiredRole": "shooter",
+      "requiredLayer": "ground"
+    },
+    {
+      "id": "shooter-leg-teal",
+      "image": "images/enemies/legs-teal.png",
+      "width": 411,
+      "height": 472,
+      "pivot": {
+        "y": 20,
+        "x": 209
+      },
+      "scale": 0.7676991150442478,
+      "requiredRole": "shooter",
+      "requiredLayer": "ground"
+    },
+    {
+      "id": "shooter-leg-blue",
+      "image": "images/enemies/legs-blue.png",
+      "width": 411,
+      "height": 502,
+      "pivot": {
+        "y": 50,
+        "x": 209
+      },
+      "scale": 0.7676991150442478,
+      "requiredRole": "shooter",
+      "requiredLayer": "ground"
+    },
+    {
+      "id": "shooter-leg-gold",
+      "image": "images/enemies/legs-gold.png",
+      "width": 411,
+      "height": 502,
+      "pivot": {
+        "y": 50,
+        "x": 210
+      },
+      "scale": 0.7676991150442478,
+      "requiredRole": "shooter",
+      "requiredLayer": "ground"
     }
   ],
   "variants": [
@@ -153,7 +205,7 @@
       "image": "images/enemies/camera-magenta.png",
       "attachments": [
         {
-          "moduleId": "shooter-leg",
+          "moduleId": "shooter-leg-magenta",
           "socketId": "underside"
         }
       ]
@@ -163,7 +215,7 @@
       "image": "images/enemies/camera-teal.png",
       "attachments": [
         {
-          "moduleId": "shooter-leg",
+          "moduleId": "shooter-leg-teal",
           "socketId": "underside"
         }
       ]
@@ -173,7 +225,7 @@
       "image": "images/enemies/camera-blue.png",
       "attachments": [
         {
-          "moduleId": "shooter-leg",
+          "moduleId": "shooter-leg-blue",
           "socketId": "underside"
         }
       ]
@@ -183,7 +235,7 @@
       "image": "images/enemies/camera-gold.png",
       "attachments": [
         {
-          "moduleId": "shooter-leg",
+          "moduleId": "shooter-leg-gold",
           "socketId": "underside"
         }
       ]

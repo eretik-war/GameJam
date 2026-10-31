@@ -483,6 +483,42 @@
       "license": "Not supplied; user-provided project asset",
       "runtimeFile": "../../../assets/images/enemies/guard-shield.png",
       "sha256": "e9bd619708667ce6459819177e946fc160b5e7eb986cbad7115b83e06ba2cff3"
+    },
+    {
+      "id": "legs-magenta",
+      "kind": "image",
+      "source": "User-provided robot leg sheet; lossless extraction via tools/extract-robot-legs.ps1",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "runtimeFile": "../../../assets/images/enemies/legs-magenta.png",
+      "sha256": "f11a9ea12a23e7ac2fd43b1c860df013dbae379ec638fd98d8194cdec58cff44"
+    },
+    {
+      "id": "legs-teal",
+      "kind": "image",
+      "source": "User-provided robot leg sheet; lossless extraction via tools/extract-robot-legs.ps1",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "runtimeFile": "../../../assets/images/enemies/legs-teal.png",
+      "sha256": "8c150effa39b6697eb541e73c65e8b264b19cbe9c548ef241ab60767f90a19b1"
+    },
+    {
+      "id": "legs-blue",
+      "kind": "image",
+      "source": "User-provided robot leg sheet; lossless extraction via tools/extract-robot-legs.ps1",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "runtimeFile": "../../../assets/images/enemies/legs-blue.png",
+      "sha256": "c11ce06217f11b9ab0844740d72e51d9f1b01149ebef3a6f7687a98f33d2deec"
+    },
+    {
+      "id": "legs-gold",
+      "kind": "image",
+      "source": "User-provided robot leg sheet; lossless extraction via tools/extract-robot-legs.ps1",
+      "author": "Not supplied",
+      "license": "Not supplied; user-provided project asset",
+      "runtimeFile": "../../../assets/images/enemies/legs-gold.png",
+      "sha256": "152a5a6aab903b45ce9b3efce5c9f722b34727d35332024d1ea662990f5d005f"
     }
   ],
   "art": "User-provided local test images; camera PNGs retain original pixels/alpha. Authorship and redistribution license not supplied. Source art is outside runtime in dev-support/art/enemies. Includes user-provided battle-location background and status images from origin/main. Four opaque-body item PNGs with transparent background: AI-assisted edit of user art, full prompt and sources in dev-support/art/items.",

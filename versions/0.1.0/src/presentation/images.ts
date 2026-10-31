@@ -1,3 +1,7 @@
+import legs_gold from '../../../../assets/images/enemies/legs-gold.png';
+import legs_blue from '../../../../assets/images/enemies/legs-blue.png';
+import legs_teal from '../../../../assets/images/enemies/legs-teal.png';
+import legs_magenta from '../../../../assets/images/enemies/legs-magenta.png';
 import guard_shield from '../../../../assets/images/enemies/guard-shield.png';
 import guard_tracks from '../../../../assets/images/enemies/guard-tracks.png';
 import guard_chair from '../../../../assets/images/enemies/guard-chair.png';
@@ -32,6 +36,10 @@ import itemBlue from '../../../../assets/images/items/item-blue.png';
 import itemGold from '../../../../assets/images/items/item-gold.png';
 
 const images: Readonly<Record<string, string>> = Object.freeze({
+  'images/enemies/legs-gold.png': legs_gold,
+  'images/enemies/legs-blue.png': legs_blue,
+  'images/enemies/legs-teal.png': legs_teal,
+  'images/enemies/legs-magenta.png': legs_magenta,
   'images/enemies/guard-shield.png': guard_shield,
   'images/enemies/guard-tracks.png': guard_tracks,
   'images/enemies/guard-chair.png': guard_chair,

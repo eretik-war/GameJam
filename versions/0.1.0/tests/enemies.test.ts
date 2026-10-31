@@ -21,8 +21,8 @@ test('four camera types share immutable rig data, independent entities and a sho
     assert.ok(Object.isFrozen(visual.sockets[0]));
     assert.ok(Object.isFrozen(visual.modules[0]!.pivot));
     assert.ok(visual.sockets.length >= 4);
-    const leg = layout.parts.find(p => p.id === 'shooter-leg')!;
-    const module = visual.modules[0]!, socket = visual.sockets.find(s => s.id === 'underside')!;
+    const leg = layout.parts.find(p => p.id.startsWith('shooter-leg-'))!;
+    const module = visual.modules.find(m => m.id === leg.id)!, socket = visual.sockets.find(s => s.id === 'underside')!;
     assert.equal(leg.x + module.pivot.x * module.scale, socket.x);
     assert.equal(leg.y + module.pivot.y * module.scale, socket.y);
     assert.ok(layout.bounds.height > visual.cameraSize.height * 2.5);
@@ -33,8 +33,8 @@ test('four camera types share immutable rig data, independent entities and a sho
   }
   for (const mutate of [
     (d: typeof visualAsset) => { d.variants[0]!.attachments[0]!.socketId = 'missing'; },
-    (d: typeof visualAsset) => { d.modules[0]!.requiredRole = 'melee'; },
-    (d: typeof visualAsset) => { d.modules[0]!.requiredLayer = 'air'; },
+    (d: typeof visualAsset) => { d.modules.find(m => m.id === d.variants[0]!.attachments[0]!.moduleId)!.requiredRole = 'melee'; },
+    (d: typeof visualAsset) => { d.modules.find(m => m.id === d.variants[0]!.attachments[0]!.moduleId)!.requiredLayer = 'air'; },
     (d: typeof visualAsset) => { d.variants[0]!.image = '../missing.png'; },
     (d: typeof visualAsset) => { d.variants[1]!.typeId = d.variants[0]!.typeId; },
   ]) {
