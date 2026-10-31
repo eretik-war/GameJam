@@ -54,6 +54,6 @@
 
 | Последовательность атак/движение | enemies/session.ts AttackSequence; main.ts attack/app.ticker | tests/combat.test.ts; tools/verify-combat-animation.mjs; HERO_ANIMATION.md |
 
-| Четыре робота-босса/множитель урона | assets/enemies/bosses.json; EnemyInfo.CombatParameters; Enemy.damageMultiplier | EnemySession.AttackSteps; enemies/view.ts; camera-visuals; tests/bosses.test.ts; tools/verify-bosses.mjs |
+| Четыре робота-босса/множитель урона | assets/enemies/bosses.json; EnemyInfo.CombatParameters; Enemy.damageMultiplier | EnemySession.AttackSequence; enemies/view.ts; camera-visuals; tests/bosses.test.ts; tools/verify-bosses.mjs |
 
 | Щитовики/разрушение и задержка/провокация | assets/enemies/guards.json; Enemy.guardActive/ChangeParameter/BeginTurn; EnemySession.CanTarget | visual-info.ts/view.ts/enemy-visual.ts; tests/guards.test.ts; актуальный маршрут tools/verify-campaign.mjs; qa/SYNC_INTEGRATION.md |

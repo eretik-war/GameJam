@@ -69,13 +69,16 @@ try {
 
   for (const url of ['http://127.0.0.1:'+httpPort+'/',pathToFileURL(path.join(root,'versions/gamejam_0.1.0-offline.html')).href]) {
     await resize(1280,720); await navigate(url,"document.querySelector('#app')?.dataset.ready === 'true'");
-    await stable(); await key('Enter'); await key('Enter'); await key('Enter'); await stable();
+    await stable(); for (let i=0;i<6;i++) await key('Enter'); await stable();
     await until(()=>evaluate("document.querySelector('#app').dataset.step === 'fight-1'"));
+    for (let i=0;i<3;i++) await click(40,150);
+    // Deterministic validated fixture: preserve campaign instance ID, use a surviving ground boss.
+    await evaluate("document.querySelector('#save').click(); const fixture=JSON.parse(localStorage.getItem('gamejam.enemies.v2')); const enemy=fixture.enemies[0]; enemy.typeId='enemy.boss.blue'; enemy.spawnPointId='spawn-4'; enemy.Parameters=[{Type:'health',Value:75},{Type:'shield',Value:20}]; enemy.statuses=[]; delete enemy.guardRecoveryTurns; localStorage.setItem('gamejam.enemies.v2',JSON.stringify(fixture)); document.querySelector('#load').click()");
     const before = await evaluate("document.querySelector('#turn').textContent");
     await evaluate("window.actions=[]; new MutationObserver(()=>{const a=document.querySelector('#app').dataset.combatActor;if(a && window.actions.at(-1)?.id!==a)window.actions.push({id:a,t:performance.now()});}).observe(document.querySelector('#app'),{attributes:true,attributeFilter:['data-combat-actor']})");
-    await click(678,490);
+    await click(678,530);
     assert.equal(await evaluate("document.querySelector('#app').dataset.combatBusy"),'true');
-    await click(678,490); // Repeated input must not enqueue another turn.
+    await click(678,530); // Repeated input must not enqueue another turn.
     await pause(50); await screenshot('combat-motion-'+(url.startsWith('http')?'http':'file')+'.png');
     await until(()=>evaluate("document.querySelector('#app').dataset.combatBusy === 'false'"));
     const actions=await evaluate('window.actions');

@@ -113,12 +113,9 @@ try {
           assert.equal(await evaluate("document.querySelector('.scene-transition').hidden"),false);
           await stable();
           assert.equal(await evaluate("window.restartDocument === document"),true);
-          await until(()=>evaluate("document.querySelector('#app')?.dataset.ready === 'true' && document.querySelector('#app').dataset.step === 'fight-1'"));
+          await until(()=>evaluate("document.querySelector('#app')?.dataset.ready === 'true' && document.querySelector('#app').dataset.step === 'intro'"));
           assert.equal(await evaluate("document.querySelectorAll('.inventory-slot[data-item-id]').length"),0);
-          await dismissBattleDialogue();
-          const restarted = await snapshot();
-          assert.equal(restarted.enemies.length, 1);
-          assert.equal(restarted.hero.Parameters.find(p => p.Type === 'health').Value, 1000);
+          assert.equal(await evaluate("document.querySelector('.cutscene').hidden"), false);
           continue;
         }
         await evaluate("document.querySelector('[data-choice=continue]').click()"); await stable();
