@@ -1,0 +1,6 @@
+{
+  "typeId": "attack.test",
+  "name": "Тестовая атака",
+  "damage": 5,
+  "effect": null
+}

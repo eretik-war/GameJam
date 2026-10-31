@@ -13,6 +13,15 @@ const shield = (e: { GetParameter(type: TypeEnemyParameter): number }) => e.GetP
 /** A low random value lets every enemy attack and every effect land (applyChance 50/25/10). */
 const alwaysLand = () => 0.05;
 
+test('legacy attack.test remains available for incoming guards with unchanged five damage', () => {
+  const attack = getAttackInfo('attack.test');
+  assert.equal(attack.typeId, 'attack.test');
+  assert.equal(attack.name, 'Тестовая атака');
+  assert.equal(attack.damage, 5);
+  assert.equal(attack.effect, undefined);
+  assert.ok(Object.isFrozen(attack));
+});
+
 test('ported attack uses actual spawn columns and advances one turn with shield-first counterattacks', () => {
   const session = createSession();
   assert.equal(session.selectedId, 'enemy-4');

@@ -1,3 +1,4 @@
+import testAttack from '../../../../assets/attacks/test-attack.json';
 import tealAttack from '../../../../assets/attacks/attack-teal.json';
 import redAttack from '../../../../assets/attacks/attack-red.json';
 import blueAttack from '../../../../assets/attacks/attack-blue.json';
@@ -8,7 +9,7 @@ import { getStatusEffect } from './status-effects/catalog';
 /** A status effect an attack applies on hit. Shared immutable data. */
 export interface AttackEffect { readonly typeId: string; readonly turns: number }
 
-const attackAssets = { teal: tealAttack, red: redAttack, blue: blueAttack, gold: goldAttack, hero: heroAttack } as const;
+const attackAssets = { legacy: testAttack, teal: tealAttack, red: redAttack, blue: blueAttack, gold: goldAttack, hero: heroAttack } as const;
 type AttackAsset = (typeof attackAssets)[keyof typeof attackAssets];
 
 function createEffect(asset: AttackAsset): AttackEffect | undefined {
