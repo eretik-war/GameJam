@@ -1,0 +1,16 @@
+{
+  "typeId": "battle-2",
+  "background": "images/battle-location.jpg",
+  "enemies": [
+    {
+      "id": "blue",
+      "typeId": "enemy.camera.blue",
+      "spawnPointId": "spawn-4"
+    },
+    {
+      "id": "gold",
+      "typeId": "enemy.camera.gold",
+      "spawnPointId": "spawn-5"
+    }
+  ]
+}

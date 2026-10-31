@@ -1,3 +1,5 @@
+import finale from '../../../../assets/images/locations/finale.png';
+import cutsceneTest from '../../../../assets/images/locations/CutsceneTest.jpg';
 import hero from '../../../../assets/images/test1.jpg';
 import burning from '../../../../assets/images/fire.jpg';
 import blindness from '../../../../assets/images/blindness.png';
@@ -18,6 +20,8 @@ import itemBlue from '../../../../assets/images/items/item-blue.png';
 import itemGold from '../../../../assets/images/items/item-gold.png';
 
 const images: Readonly<Record<string, string>> = Object.freeze({
+  'images/locations/finale.png': finale,
+  'images/locations/CutsceneTest.jpg': cutsceneTest,
   'images/items/item-magenta.png': itemMagenta,
   'images/items/item-teal.png': itemTeal,
   'images/items/item-blue.png': itemBlue,

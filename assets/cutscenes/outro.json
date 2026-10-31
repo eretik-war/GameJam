@@ -1,0 +1,24 @@
+{
+  "typeId": "cutscene-outro",
+  "background": "images/locations/CutsceneTest.jpg",
+  "lines": [
+    {
+      "id": "regret",
+      "text": "О нет, это я уничтожил своих братанов"
+    },
+    {
+      "id": "choice",
+      "text": "Что же мне делать теперь",
+      "choices": [
+        {
+          "id": "restart",
+          "text": "Стереть память"
+        },
+        {
+          "id": "continue",
+          "text": "Жить дальше"
+        }
+      ]
+    }
+  ]
+}

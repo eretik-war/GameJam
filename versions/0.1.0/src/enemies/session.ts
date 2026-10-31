@@ -5,9 +5,8 @@ import type { Item } from '../domain/items';
 
 export type EnemyDeployment = Readonly<{ enemyId: string; spawnPointId: string }>;
 export class EnemySession {
-  readonly hero = new Hero();
   readonly #placements = new Map<string, string>();
-  constructor(readonly npcs: readonly Enemy[], public turn = 1, public selectedId = npcs[0]?.id ?? '', deployments?: readonly EnemyDeployment[]) {
+  constructor(readonly npcs: readonly Enemy[], public turn = 1, public selectedId = npcs[0]?.id ?? '', deployments?: readonly EnemyDeployment[], readonly hero = new Hero()) {
     if (!Number.isSafeInteger(turn) || turn < 1 || !npcs.length || new Set(npcs.map(e => e.id)).size !== npcs.length || !npcs.some(e => e.id === selectedId)) throw new Error('Invalid enemy roster');
     this.npcs = Object.freeze([...npcs]);
     const occupied = new Set<string>();

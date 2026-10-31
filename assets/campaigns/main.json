@@ -1,0 +1,40 @@
+{
+  "id": "main",
+  "steps": [
+    {
+      "id": "intro",
+      "type": "cutscene",
+      "contentId": "cutscene-test"
+    },
+    {
+      "id": "fight-1",
+      "type": "battle",
+      "contentId": "battle-1"
+    },
+    {
+      "id": "fight-2",
+      "type": "battle",
+      "contentId": "battle-2"
+    },
+    {
+      "id": "interlude",
+      "type": "cutscene",
+      "contentId": "cutscene-test"
+    },
+    {
+      "id": "fight-2-repeat",
+      "type": "battle",
+      "contentId": "battle-2"
+    },
+    {
+      "id": "outro",
+      "type": "cutscene",
+      "contentId": "cutscene-outro"
+    },
+    {
+      "id": "finale",
+      "type": "cutscene",
+      "contentId": "cutscene-finale"
+    }
+  ]
+}

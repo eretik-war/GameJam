@@ -1,9 +1,12 @@
+import { CampaignSession, battles, cutscenes, createBattle } from './domain/campaign';
+import { SceneTransition } from './presentation/scene-transition';
+import { CutsceneController } from './cutscene-controller';
 import { effects } from './enemies/status-effects/catalog';
 import { TypeEnemyParameter } from './enemies/enemy';
 import { TypeInventoryArea, TypeGameStage } from './domain/inventory';
 import * as PIXI from 'pixi.js';
 import { resolveImage } from './presentation/images';
-import { createSession, loadSession } from './enemies/session';
+import { loadSession } from './enemies/session';
 import { createNPCView, createCombatantView } from './enemies/view';
 import { InventoryController } from './inventory-controller';
 import { HoverCardController, type HoverCardAnchor, type HoverCardView } from './presentation/hover-card';
@@ -24,7 +27,12 @@ try {
   const canvasHost = requireElement('scene');
   const panel = requireElement('parameters');
   const turn = requireElement('turn');
-  let session = createSession();
+  const campaign = new CampaignSession();
+  let session = createBattle(battles[0]!, 'preview', campaign.hero);
+  const transition = new SceneTransition();
+  let rewardTimer: ReturnType<typeof setTimeout> | undefined;
+  let battleFinished = false;
+  let preview = false;
   const app = new PIXI.Application<HTMLCanvasElement>({
     backgroundColor: 0x121f30, antialias: true, autoDensity: true,
     resolution: Math.min(window.devicePixelRatio || 1, 2), resizeTo: canvasHost,
@@ -47,6 +55,14 @@ try {
     texture.baseTexture.once('loaded', () => { if (!disposed) render(); });
     return texture;
   }
+  const battleLayout = document.querySelector<HTMLElement>('.inventory-layout')!;
+  const cutscene = new CutsceneController((choice) => {
+    if (transition.busy) return;
+    if (choice === "restart") { void switchScene(false, false, true); return; }
+    if (preview) { preview = false; void switchScene(false); }
+    else void switchScene(true);
+  });
+  requireElement('app').append(cutscene.element);
   const heroTextures = HERO_FRAME_PATHS.map(getTexture);
   let hero: PIXI.AnimatedSprite | undefined;
   function sceneBounds(target: PIXI.Container): DOMRect {
@@ -68,8 +84,8 @@ try {
     target.on('pointerout', () => hoverCards.leave(anchor));
     target.on('pointertap', () => { onTap?.(); hoverCards.open(anchor, resolve); });
   }
-  app.ticker.add(delta => { if (hero?.playing) hero.update(delta); });
-  const locationTexture = getTexture('images/battle-location.jpg');
+  app.ticker.add(delta => { if (!cutscene.active && hero?.playing) hero.update(delta); });
+  let locationTexture = getTexture('images/battle-location.jpg');
   const observer = new ResizeObserver(() => {
     if (disposed) return;
     app.resize(); render();
@@ -139,9 +155,9 @@ try {
       anchor.getBoundingClientRect = () => sceneBounds(container);
       enemyAnchors.set(view.id, anchor);
       bindSceneCard(container, anchor, () => enemyCard(view.id), () => {
-        if (inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
+        if (transition.busy || campaign.complete || cutscene.active || battleFinished || inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
         const items = inventory.model.slots(TypeInventoryArea.Equipment).map((_, index) => inventory.model.itemAt({ area: TypeInventoryArea.Equipment, index }));
-        if (session.Attack(view.id, items)) render();
+        if (session.Attack(view.id, items)) { checkVictory(); render(); }
       });
       app.stage.addChild(container);
     });
@@ -167,7 +183,8 @@ try {
 
   function action(id: string, handler: () => string): void {
     requireElement(id).addEventListener('click', () => {
-      try { status.textContent = handler(); render(); }
+      if (transition.busy || campaign.complete) return;
+      try { status.textContent = handler(); checkVictory(); render(); }
       catch (error) { status.textContent = error instanceof Error ? error.message : String(error); }
     });
   }
@@ -175,28 +192,35 @@ try {
   const debug = document.querySelector<HTMLElement>('.debug')!;
   debug.hidden = true;
   function onDebugKeyDown(event: KeyboardEvent): void {
-    if (event.code === 'KeyD' && !event.repeat && !(event.target instanceof HTMLInputElement)) debug.hidden = !debug.hidden;
+    if (!transition.busy && !campaign.complete && !cutscene.active && event.code === 'KeyD' && !event.repeat && !(event.target instanceof HTMLInputElement)) debug.hidden = !debug.hidden;
   }
   document.addEventListener('keydown', onDebugKeyDown);
+  action('open-cutscene', () => {
+    if (battleFinished || inventory.model.awaitingReward) return 'Сначала завершите текущую награду.';
+    preview = true; void switchScene(false, true); return 'Тестовая катсцена.';
+  });
   action('hero-one-hp', () => { session.hero.ChangeParameter(TypeEnemyParameter.Health, 1 - session.hero.GetParameter(TypeEnemyParameter.Health)); return 'У героя 1 HP.'; });
   action('end-turn', () => { session.EndTurn(); return 'Статусы сработали в начале хода.'; });
   action('restore', () => { session.selected.TakeDamage(12); return 'Применено 12 урона: сначала щит, затем здоровье.'; });
   action('burn', () => { const effect = effects[Math.floor(Math.random() * effects.length)]!; const turns = effect.typeId === 'stun' ? 1 : 3; session.selected.AddStatus(effect.typeId, turns); return effect.name + ' · +' + turns + ' ход.'; });
-  action('save', () => { localStorage.setItem('gamejam.enemies.v2', session.Save()); return 'Прогресс сохранён в этом браузере.'; });
+  action('save', () => { localStorage.setItem('gamejam.enemies.v2', session.Save()); return 'Снимок текущего боя сохранён. Цепочка и инвентарь не сохраняются.'; });
   action('load', () => {
     const text = localStorage.getItem('gamejam.enemies.v2');
     if (!text) throw new Error('Сохранение ещё не создано.');
     const restored = loadSession(text);
     hoverCards.hide();
+    if (battleFinished || inventory.model.awaitingReward) return 'Загрузка недоступна после победы.';
+    if (restored.npcs.map(e => e.id).join() !== session.npcs.map(e => e.id).join()) return 'Это сохранение другого боя.';
+    campaign.hero = restored.hero;
     session = restored;
     return 'Прогресс восстановлен.';
   });
   function onVisibilityChange(): void {
     if (disposed) return;
-    if (document.hidden) app.stop(); else app.start();
+    if (document.hidden) app.stop(); else if (!cutscene.active) app.start();
   }
   function onPageShow(): void {
-    if (!disposed && !document.hidden) app.start();
+    if (!disposed && !document.hidden && !cutscene.active) app.start();
   }
   function onPageHide(event: PageTransitionEvent): void {
     hoverCards.hide();
@@ -207,6 +231,9 @@ try {
     window.removeEventListener('pageshow', onPageShow);
     window.removeEventListener('pagehide', onPageHide);
     observer.disconnect();
+    if (rewardTimer) clearTimeout(rewardTimer);
+    transition.dispose();
+    cutscene.dispose();
     inventory.dispose();
     hoverCards.destroy();
     app.destroy(true, { children: true, texture: false, baseTexture: false });
@@ -214,9 +241,64 @@ try {
   document.addEventListener('visibilitychange', onVisibilityChange);
   window.addEventListener('pageshow', onPageShow);
   window.addEventListener('pagehide', onPageHide);
+  inventory.campaignMode = true;
+  inventory.onRewardChosen = () => {
+    if (rewardTimer || !battleFinished) return;
+    rewardTimer = setTimeout(() => { rewardTimer = undefined; if (!disposed) void switchScene(true); }, 3000);
+  };
+  function checkVictory(): void {
+    if (campaign.current.type !== 'battle' || cutscene.active || battleFinished || campaign.complete) return;
+    if (!session.hero.alive) { status.textContent = 'Герой погиб. Прохождение остановлено.'; return; }
+    if (session.npcs.every(enemy => !enemy.alive)) {
+      battleFinished = true; hoverCards.hide(); debug.hidden = true;
+      inventory.finishCombat();
+    }
+  }
+  async function prepareImages(paths: readonly string[]): Promise<void> {
+    await Promise.all(paths.map(path => new Promise<void>((resolve,reject) => {
+      const image = new Image(); image.onload = () => resolve(); image.onerror = () => reject(new Error('Не удалось загрузить ' + path)); image.src = resolveImage(path);
+    })));
+  }
+  async function showCurrent(): Promise<void> {
+    cutscene.hide(); debug.hidden = true; hoverCards.hide();
+    const isCutscene = campaign.current.type === 'cutscene';
+    requireElement('app').dataset.step = campaign.current.id;
+    if (campaign.complete) {
+      const end = document.createElement('section'); end.className = 'campaign-end'; end.textContent = 'Тестовая последовательность завершена'; requireElement('app').append(end);
+      battleLayout.inert = true; app.stop(); return;
+    }
+    requireElement('app').classList.toggle('showing-cutscene', isCutscene);
+    battleLayout.inert = isCutscene;
+    if (isCutscene) { app.stop(); const info = cutscenes.find(c => c.typeId === campaign.current.contentId)!; await prepareImages([info.background]); cutscene.open(info); }
+    else {
+      const info = battles.find(b => b.typeId === campaign.current.contentId)!;
+      await prepareImages([info.background]);
+      session = campaign.createBattle(); enemyAnchors.clear(); battleFinished = false;
+      locationTexture = getTexture(info.background); inventory.startCombat(); render();
+      if (!document.hidden) app.start();
+    }
+  }
+  async function switchScene(advance: boolean, showPreview = false, restart = false): Promise<void> {
+    if (transition.busy || disposed) return;
+    requireElement('app').inert = true; cutscene.blocked = true; battleLayout.inert = true; debug.hidden = true; hoverCards.hide();
+    try {
+      await transition.run(async () => {
+        if (restart) {
+          if (rewardTimer) clearTimeout(rewardTimer); rewardTimer = undefined;
+          campaign.restart(); inventory.reset(); preview = false; battleFinished = false;
+          session = createBattle(battles[0]!, "preview", campaign.hero); enemyAnchors.clear();
+          await showCurrent(); return;
+        }
+        if (showPreview) { requireElement('app').classList.add('showing-cutscene'); app.stop(); cutscene.open(); return; }
+        if (advance) { campaign.advance(campaign.current.id); await showCurrent(); }
+        else { cutscene.hide(); requireElement('app').classList.remove('showing-cutscene'); render(); if (!document.hidden) app.start(); }
+      });
+    } catch (error) { status.textContent = String(error); console.error(error); }
+    finally { requireElement('app').inert = false; cutscene.blocked = false; battleLayout.inert = cutscene.active || campaign.complete; if (cutscene.active) cutscene.element.querySelector('button')?.focus(); }
+  }
   render();
+  void showCurrent().then(() => { requireElement('app').dataset.ready = 'true'; }).catch(error => { status.textContent = String(error); console.error(error); });
   status.textContent = 'Выберите противника нажатием на него. Изменения принадлежат только этой копии.';
-  requireElement('app').dataset.ready = 'true';
 } catch (error) {
   status.textContent = `Не удалось запустить игру: ${error instanceof Error ? error.message : String(error)}`;
   console.error(error);

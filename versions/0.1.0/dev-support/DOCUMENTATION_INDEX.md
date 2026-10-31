@@ -138,3 +138,6 @@ summary: Источник пользователя, встроенный image_g
 
 file: `dev-support/qa/COMBAT_INTEGRATION.md`
 summary: Перенос опубликованной атаки в модульную сцену: реальные колонки спавна, Hero/экипировка/ответы, save v2 и HTTP/file.
+
+file: `dev-support/project-docs/SCENE_SEQUENCE.md`
+summary: Цепочка сцен, JSON-наполнения, победа/награда/переходы, владельцы и границы сохранения.

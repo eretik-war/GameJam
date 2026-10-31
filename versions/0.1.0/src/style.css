@@ -89,3 +89,21 @@ button:focus-visible { outline: 3px solid #8feac9; outline-offset: 3px; }
 .hover-card dd[data-tone="blindness"] { color: #f6d879; }
 .hover-card dd[data-tone="regeneration"] { color: #68d99b; }
 .hover-card dd[data-tone="plain"] { color: #7ee0c2; }
+
+.cutscene { position: fixed; inset: 0; z-index: 200; background: #0b1421 center / cover no-repeat; }
+.cutscene[hidden] { display: none; }
+.showing-cutscene > .inventory-layout { visibility: hidden; }
+.cutscene-dialog { position: absolute; left: 32px; right: 32px; bottom: 28px; width: calc(100% - 64px); padding: 24px 28px; border-color: #b59b64; background: #101b2eed; text-align: left; box-shadow: 0 8px 32px #0008; }
+.cutscene-dialog:hover { background: #17263af5; }
+.cutscene-text { display: block; font-size: 22px; line-height: 1.6; overflow-wrap: anywhere; max-height: 45vh; overflow-y: auto; }
+.cutscene-hint { display: block; margin-top: 18px; color: #c5d0de; font-size: 15px; }
+
+.scene-transition { position:fixed; inset:0; z-index:10000; background:#000; cursor:wait; }
+.scene-transition[hidden] { display:none; }
+.campaign-end { position:fixed; inset:0; z-index:300; display:grid; place-items:center; background:#0b1421; font-size:32px; }
+
+.cutscene-choices { position: absolute; bottom: 48px; right: 60px; display: flex; gap: 16px; z-index: 1; }
+.cutscene-dialog:disabled { opacity: 1; color: inherit; padding-bottom: 96px; cursor: default; }
+.cutscene-dialog[hidden] { display: none; }
+
+.cutscene-hint[hidden] { display: none; }

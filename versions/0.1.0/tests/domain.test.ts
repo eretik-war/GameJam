@@ -145,3 +145,5 @@ test('combined effects heal, block attacks, miss at fifty percent and survive sa
   assert.equal(enemy.statuses.length, 0);
   assert.equal(enemy.CanAttack(() => 0), true);
 });
+
+import './campaign.test';
