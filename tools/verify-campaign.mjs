@@ -68,11 +68,11 @@ try {
   const stable = () => until(()=>evaluate("document.querySelector('.scene-transition').hidden"));
   for (const url of ['http://127.0.0.1:'+httpPort+'/',pathToFileURL(path.join(root,'versions/gamejam_0.1.0-offline.html')).href]) {
     await resize(1280,720); await navigate(url,"document.querySelector('#app')?.dataset.ready === 'true'");
-    for (const step of ['intro','fight-1','fight-2','interlude','fight-2-repeat','outro']) {
+    for (const step of ['intro','fight-1','memory-2','fight-2','interlude','fight-2-repeat','outro']) {
       await stable(); assert.equal(await evaluate("document.querySelector('#app').dataset.step"),step);
       if (step === 'outro') {
         await key('Enter');
-        assert.equal(await evaluate("document.querySelector('.cutscene-text').textContent"),'Что же мне делать теперь');
+        assert.equal(await evaluate("document.querySelector('.cutscene-text').textContent"),'Мои роботы-камеры должны были помещать мне вернуть воспоминания, но у них не вышло. Я опять помню все. Теперь мне остается лишь смириться и вечность быть в одиночестве. Или может быть... вновь все забыть? Снова обмануть сознанте, притворившись настоящим?');
         await key('Enter');
         assert.equal(await evaluate("document.querySelector('#app').dataset.step"),'outro');
         await screenshot('campaign-choice.png');
@@ -87,14 +87,15 @@ try {
         }
         await evaluate("document.querySelector('[data-choice=continue]').click()"); await stable();
         assert.equal(await evaluate("document.querySelector('#app').dataset.step"),'finale');
-        assert.equal(await evaluate("document.querySelector('.cutscene-dialog').hidden"),true);
+        assert.equal(await evaluate("document.querySelector('.cutscene-dialog').hidden"),false);
         await screenshot('campaign-finale.png');
         continue;
       }
-      if (['intro','interlude'].includes(step)) {
+      if (['intro','memory-2','interlude'].includes(step)) {
         assert.match(await evaluate("document.querySelector('.cutscene-hint').textContent"),/^1/);
-        await key('Enter'); await key('Enter');
-        assert.match(await evaluate("document.querySelector('.cutscene-hint').textContent"),/^3/);
+        if(step==='intro') { await key('Enter'); await pause(200); }
+        for(let i=1;i<(step==='intro'?5:1);i++) await key('Enter');
+        assert.match(await evaluate("document.querySelector('.cutscene-hint').textContent"),step==='intro'?/^5/:/^1/);
         assert.equal(await evaluate("document.querySelector('#app').dataset.step"),step);
         if(step==='intro')await screenshot('campaign-intro.png');
         await key('Enter');

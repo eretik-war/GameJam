@@ -1,6 +1,7 @@
 import { Parameter, assertFinite } from '../domain/parameters';
 import { getStatusEffect } from './status-effects/catalog';
 import type { ActiveStatus } from './status-effects/status-effect';
+import bosses from '../../../../assets/enemies/bosses.json';
 import guards from '../../../../assets/enemies/guards.json';
 import healers from '../../../../assets/enemies/healers.json';
 import testEnemy from '../../../../assets/enemies/test-enemy.json';
@@ -8,17 +9,21 @@ import cameraEnemies from '../../../../assets/enemies/camera-enemies.json';
 import { getAttackInfo } from './attack';
 import { createLayerParameter, TypeBattleLayer, TypeEnemyPlacementParameter, type LayerParameter } from './placement';
 export enum TypeEnemyParameter { Health = 'health', Shield = 'shield' }
-export enum TypeEnemyRole { Shooter = 'shooter', Hero = 'hero', Healer = 'healer', Guard = 'guard' }
+export enum TypeEnemyRole { Shooter = 'shooter', Hero = 'hero', Healer = 'healer', Guard = 'guard', Boss = 'boss' }
 export enum TypeSupportParameter { Healing = 'healing', ShieldRestore = 'shield-restore', DamageAura = 'damage-aura', DefenseAura = 'defense-aura' }
 export enum TypeSupportKind { Health = 'health', Shield = 'shield', DamageAura = 'damage-aura', DefenseAura = 'defense-aura' }
 export type SupportAsset = { kind: string; value: number };
+export enum TypeEnemyCombatParameter { DamageMultiplier = 'damage-multiplier' }
 export class EnemyInfo {
+  readonly CombatParameters: readonly Readonly<Parameter<TypeEnemyCombatParameter>>[];
   readonly SupportParameters: readonly Readonly<Parameter<TypeSupportParameter>>[];
   readonly Parameters: readonly Readonly<Parameter<TypeEnemyParameter>>[];
   readonly attackIds: readonly string[];
   readonly Placement: LayerParameter<TypeEnemyPlacementParameter>;
   constructor(readonly typeId: string, readonly Name: string, health: number, shield: number,
-    layer = TypeBattleLayer.Ground, readonly role = TypeEnemyRole.Shooter, attackIds: readonly string[] = [], support?: SupportAsset) {
+    layer = TypeBattleLayer.Ground, readonly role = TypeEnemyRole.Shooter, attackIds: readonly string[] = [], support?: SupportAsset, damageMultiplier = 1) {
+    assertFinite(damageMultiplier); if (damageMultiplier <= 0) throw new Error('Invalid damage multiplier');
+    this.CombatParameters = Object.freeze([Object.freeze(new Parameter(TypeEnemyCombatParameter.DamageMultiplier, damageMultiplier))]);
     if ((role === TypeEnemyRole.Healer) !== !!support || (support && (!Object.values(TypeSupportKind).includes(support.kind as TypeSupportKind) || !Number.isFinite(support.value) || support.value <= 0))) throw new Error('Invalid support');
     const supportTypes: Record<TypeSupportKind, TypeSupportParameter> = { [TypeSupportKind.Health]: TypeSupportParameter.Healing, [TypeSupportKind.Shield]: TypeSupportParameter.ShieldRestore, [TypeSupportKind.DamageAura]: TypeSupportParameter.DamageAura, [TypeSupportKind.DefenseAura]: TypeSupportParameter.DefenseAura };
     this.SupportParameters = Object.freeze(support ? [Object.freeze(new Parameter(supportTypes[support.kind as TypeSupportKind], support.value))] : []);
@@ -48,6 +53,7 @@ export class Enemy {
     if (!/^[a-zA-Z0-9._-]{1,80}$/.test(id)) throw new Error('Invalid enemy ID');
     this.#parameters = EnemyInfo.Parameters.map(p => new Parameter(p.Type, p.Value));
   }
+  get damageMultiplier(): number { return this.EnemyInfo.CombatParameters.find(p => p.Type === TypeEnemyCombatParameter.DamageMultiplier)!.Value; }
   get typeId(): string { return this.EnemyInfo.typeId; }
   get layer(): TypeBattleLayer { return this.EnemyInfo.Placement.Value; }
   get Parameters() { return this.#parameters.map(p => Object.freeze(new Parameter(p.Type, p.Value))); }
@@ -98,17 +104,17 @@ export class Enemy {
   }
   Save() { return { ...(this.EnemyInfo.role === TypeEnemyRole.Guard ? { guardRecoveryTurns: this.#guardRecoveryTurns } : {}), id: this.id, typeId: this.typeId, Parameters: this.Parameters, statuses: this.statuses.map(s => ({ typeId: s.typeId, remainingTurns: s.remainingTurns })) }; }
 }
-export function createEnemyInfoFromAsset(asset: typeof testEnemy & { support?: SupportAsset }): EnemyInfo {
+export function createEnemyInfoFromAsset(asset: typeof testEnemy & { support?: SupportAsset; damageMultiplier?: number }): EnemyInfo {
   if (asset.parameters.length !== 2 || new Set(asset.parameters.map(p => p.type)).size !== 2 ||
     asset.parameters.some(p => !Object.values(TypeEnemyParameter).includes(p.type as TypeEnemyParameter))) throw new Error('Invalid asset parameters');
   const health = asset.parameters.find(p => p.type === TypeEnemyParameter.Health);
   const shield = asset.parameters.find(p => p.type === TypeEnemyParameter.Shield);
   if (!health || !shield || asset.placement?.type !== TypeEnemyPlacementParameter.Layer) throw new Error('Invalid enemy asset');
   const placement = createLayerParameter(TypeEnemyPlacementParameter.Layer, asset.placement.value);
-  return new EnemyInfo(asset.typeId, asset.name, health.value, shield.value, placement.Value, asset.role as TypeEnemyRole, asset.attackIds, asset.support);
+  return new EnemyInfo(asset.typeId, asset.name, health.value, shield.value, placement.Value, asset.role as TypeEnemyRole, asset.attackIds, asset.support, asset.damageMultiplier);
 }
 export const demoEnemyInfo = createEnemyInfoFromAsset(testEnemy);
-export const enemyCatalog: readonly EnemyInfo[] = Object.freeze([demoEnemyInfo, ...cameraEnemies.map(createEnemyInfoFromAsset), ...healers.map(createEnemyInfoFromAsset), ...guards.map(createEnemyInfoFromAsset)]);
+export const enemyCatalog: readonly EnemyInfo[] = Object.freeze([demoEnemyInfo, ...cameraEnemies.map(createEnemyInfoFromAsset), ...healers.map(createEnemyInfoFromAsset), ...guards.map(createEnemyInfoFromAsset), ...bosses.map(createEnemyInfoFromAsset)]);
 if (new Set(enemyCatalog.map(info => info.typeId)).size !== enemyCatalog.length) throw new Error('Duplicate enemy type');
 export function getEnemyInfo(typeId: string): EnemyInfo {
   const info = enemyCatalog.find(info => info.typeId === typeId);

@@ -76,3 +76,17 @@ test('v2 save round-trip includes hero state while older saves keep their enemie
     assert.throws(() => loadSession(JSON.stringify(invalid))); assert.equal(session.Save(), saved);
   }
 });
+
+ test('stepped combat defers counterattacks and matches synchronous resolution', () => {
+  const stepped = createSession(), sync = loadSession(stepped.Save());
+  const before = shield(stepped.hero);
+  const sequence = stepped.AttackSequence(stepped.selectedId, [], () => .9);
+  assert.equal(sequence.next().value, stepped.hero.id);
+  assert.equal(shield(stepped.hero), before);
+  assert.equal(stepped.turn, 1);
+  const actors = [...sequence];
+  assert.ok(actors.length > 0);
+  assert.equal(new Set(actors).size, actors.length);
+  sync.Attack(sync.selectedId, [], () => .9);
+  assert.equal(stepped.Save(), sync.Save());
+ });

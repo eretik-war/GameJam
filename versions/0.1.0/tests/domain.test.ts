@@ -151,3 +151,5 @@ import './campaign.test';
 import './healers.test';
 
 import './guards.test';
+
+import './bosses.test';

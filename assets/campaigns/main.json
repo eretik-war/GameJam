@@ -4,12 +4,17 @@
     {
       "id": "intro",
       "type": "cutscene",
-      "contentId": "cutscene-test"
+      "contentId": "cutscene-intro"
     },
     {
       "id": "fight-1",
       "type": "battle",
       "contentId": "battle-1"
+    },
+    {
+      "id": "memory-2",
+      "type": "cutscene",
+      "contentId": "cutscene-memory-2"
     },
     {
       "id": "fight-2",
@@ -19,7 +24,7 @@
     {
       "id": "interlude",
       "type": "cutscene",
-      "contentId": "cutscene-test"
+      "contentId": "cutscene-memory-3"
     },
     {
       "id": "fight-2-repeat",

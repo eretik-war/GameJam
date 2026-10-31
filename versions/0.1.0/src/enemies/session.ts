@@ -40,18 +40,29 @@ export class EnemySession {
   }
   Attack(id: string, items: readonly (Item | null)[] = [], random: () => number = Math.random): boolean {
     if (!this.CanTarget(id)) return false;
+    for (const _action of this.AttackSequence(id, items, random)) { /* Timing belongs to presentation. */ }
+    return true;
+  }
+  /** Applies one action per step, without depending on the renderer or a clock. */
+  *AttackSequence(id: string, items: readonly (Item | null)[] = [], random: () => number = Math.random): Generator<string> {
+    if (!this.CanTarget(id)) return;
     if (!Number.isSafeInteger(this.turn + 1)) throw new Error('Turn overflow');
     this.Select(id);
-    if (this.hero.CanAttack(random)) this.selected.TakeDamage(this.hero.AttackDamage(items));
+    if (this.hero.CanAttack(random)) {
+      this.selected.TakeDamage(this.hero.AttackDamage(items));
+      yield this.hero.id;
+    }
     for (const enemy of this.deployed) {
       if (!this.hero.alive) break;
+      if (!enemy.CanAttack(random)) continue;
       if (enemy.EnemyInfo.role === TypeEnemyRole.Healer) {
-        if (enemy.CanAttack(random)) this.TryHeal(enemy);
-        continue;
+        if (this.TryHeal(enemy)) yield enemy.id;
+      } else {
+        this.hero.TakeDamage(enemyDamage * enemy.damageMultiplier * this.OutgoingDamageScale);
+        yield enemy.id;
       }
-      if (enemy.CanAttack(random)) this.hero.TakeDamage(enemyDamage * this.OutgoingDamageScale);
     }
-    this.hero.BeginTurn(); this.EndTurn(); return true;
+    this.hero.BeginTurn(); this.EndTurn();
   }
   private Aura(type: TypeSupportParameter): number {
     return Math.max(1, ...this.deployed.filter(e => e.alive).map(e => e.EnemyInfo.SupportParameters.find(p => p.Type === type)?.Value ?? 1));
@@ -133,4 +144,5 @@ export function loadSession(text: string): EnemySession {
   if (data.hero !== undefined) restoreCombatant(session.hero, data.hero);
   return session;
 }
+
 

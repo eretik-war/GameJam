@@ -1,5 +1,12 @@
 {
   "typeId": "cutscene-finale",
   "background": "images/locations/finale.png",
-  "lines": []
+  "characters": true,
+  "lines": [
+    {
+      "id": "line-0",
+      "text": "ААХАХАХАХХАЭА ГОРИ В ОГНЕ О ДИВНЙ МИР! А я буду лишь наблюдать, расстворяя всбя в вечности. Cogito, ergo sum!",
+      "sound": "5.1"
+    }
+  ]
 }

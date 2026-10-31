@@ -1,3 +1,6 @@
+import memory2 from '../../../../assets/cutscenes/memory-2.json';
+import memory3 from '../../../../assets/cutscenes/memory-3.json';
+import intro from '../../../../assets/cutscenes/intro.json';
 import battle1 from '../../../../assets/encounters/battle-1.json';
 import battle2 from '../../../../assets/encounters/battle-2.json';
 import cutscene from '../../../../assets/cutscenes/test.json';
@@ -9,11 +12,11 @@ import { EnemySession } from '../enemies/session';
 import { createEnemyFromInfo } from '../enemies/enemy';
 import { canSpawn, getSpawnPoint } from '../enemies/spawn';
 export interface BattleInfo { readonly typeId: string; readonly background: string; readonly enemies: readonly Readonly<{id:string;typeId:string;spawnPointId:string}>[] }
-export interface CutsceneInfo { readonly typeId:string; readonly background:string; readonly lines:readonly Readonly<{id:string;text:string;choices?:readonly Readonly<{id:string;text:string}>[]}>[] }
+export interface CutsceneInfo { readonly typeId:string; readonly background:string; readonly characters?:boolean; readonly robotTypeId?:string; readonly lines:readonly Readonly<{id:string;text:string;sound?:string;choices?:readonly Readonly<{id:string;text:string}>[]}>[] }
 function freeze<T>(v:T):T { if(v && typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}return v; }
 export const battles:readonly BattleInfo[] = freeze([battle1,battle2]);
 export const testCutscene:CutsceneInfo = freeze(cutscene);
-export const cutscenes:readonly CutsceneInfo[] = freeze([cutscene,outro,finale]);
+export const cutscenes:readonly CutsceneInfo[] = freeze([intro,memory2,memory3,cutscene,outro,finale]);
 export function createBattle(info:BattleInfo,id:string,hero:Hero):EnemySession {
  const enemies=info.enemies.map(e=>createEnemyFromInfo(e.typeId,id+'-'+e.id));
  const deployments=info.enemies.map((e,i)=>({enemyId:enemies[i]!.id,spawnPointId:e.spawnPointId}));

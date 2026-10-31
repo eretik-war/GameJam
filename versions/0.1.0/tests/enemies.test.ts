@@ -21,7 +21,7 @@ test('four camera types share immutable rig data, independent entities and a sho
     assert.ok(Object.isFrozen(visual.sockets[0]));
     assert.ok(Object.isFrozen(visual.modules[0]!.pivot));
     assert.ok(visual.sockets.length >= 4);
-    const leg = layout.parts.find(p => p.id.startsWith('shooter-leg-'))!;
+    const leg = layout.parts.find(p => p.id === 'shooter-leg')!;
     const module = visual.modules.find(m => m.id === leg.id)!, socket = visual.sockets.find(s => s.id === 'underside')!;
     assert.equal(leg.x + module.pivot.x * module.scale, socket.x);
     assert.equal(leg.y + module.pivot.y * module.scale, socket.y);

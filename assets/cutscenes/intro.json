@@ -1,0 +1,33 @@
+{
+  "typeId": "cutscene-intro",
+  "background": "images/locations/CutsceneTest.jpg",
+  "characters": true,
+  "lines": [
+    {
+      "id": "line-0",
+      "text": "Где я?.. Что это за место?.. Эй! Кто-нибудь! Никого... Я даже не помню, как попал сюда. И кто я вообще...",
+      "sound": "1.1"
+    },
+    {
+      "id": "line-1",
+      "text": "-#@*! \"! '℅¢=€}£",
+      "sound": "robotTalk"
+    },
+    {
+      "id": "line-2",
+      "text": "-ЧТО ЭТО! НЕ ПОДХОДИ!",
+      "sound": "1.2"
+    },
+    {
+      "id": "line-3",
+      "text": "-#\":\"! ~$™$℅£",
+      "sound": "clank"
+    },
+    {
+      "id": "line-4",
+      "text": "-СТОЙ! У меня есть эээ... ОТВЕРТКА! Я НЕ CДАМСЯ БЕЗ БОЯ!",
+      "sound": "1.3"
+    }
+  ],
+  "robotTypeId": "enemy.camera.teal"
+}

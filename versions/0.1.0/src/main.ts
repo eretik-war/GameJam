@@ -33,6 +33,56 @@ try {
   let rewardTimer: ReturnType<typeof setTimeout> | undefined;
   let battleFinished = false;
   let preview = false;
+  const attackMotionMs = 120;
+  let combatBusy = false;
+  let motion: { id: string; elapsed: number } | undefined;
+  const enemySprites = new Map<string, PIXI.Container>();
+  let finishWait: (() => void) | undefined;
+  let waitRemaining = 0;
+  let waitFirstTick = false;
+  function waitCombat(ms: number): Promise<void> {
+    waitRemaining = ms;
+    waitFirstTick = true;
+    return new Promise(resolve => { finishWait = resolve; });
+  }
+  function applyMotion(): void {
+    if (!motion) return;
+    const offset = Math.sin(Math.PI * Math.min(1, motion.elapsed / attackMotionMs)) * app.screen.width * 0.025;
+    if (motion.id === session.hero.id && hero) {
+      placeHero(hero, app.screen.width, app.screen.height);
+      hero.x += offset;
+    } else {
+      const sprite = enemySprites.get(motion.id);
+      if (sprite) sprite.x = -offset / sprite.parent.scale.x;
+    }
+  }
+  async function attack(id: string): Promise<void> {
+    if (combatBusy || !session.CanTarget(id)) return;
+    combatBusy = true;
+    battleLayout.inert = true;
+    requireElement('app').dataset.combatBusy = 'true';
+    try {
+      const items = inventory.model.slots(TypeInventoryArea.Equipment).map((_, index) => inventory.model.itemAt({ area: TypeInventoryArea.Equipment, index }));
+      const sequence = session.AttackSequence(id, items);
+      while (!disposed) {
+        const step = sequence.next();
+        if (step.done) break;
+        motion = { id: step.value, elapsed: 0 };
+        requireElement('app').dataset.combatActor = step.value;
+        render();
+        await waitCombat(attackMotionMs);
+        if (disposed) return;
+        motion.elapsed = attackMotionMs; applyMotion(); motion = undefined;
+      }
+      if (!disposed) { checkVictory(); render(); }
+    } catch (error) { if (!disposed) status.textContent = String(error); }
+    finally {
+      motion = undefined; combatBusy = false;
+      delete requireElement('app').dataset.combatActor;
+      requireElement('app').dataset.combatBusy = 'false';
+      if (!disposed) battleLayout.inert = cutscene.active || campaign.complete;
+    }
+  }
   const app = new PIXI.Application<HTMLCanvasElement>({
     backgroundColor: 0x121f30, antialias: true, autoDensity: true,
     resolution: Math.min(window.devicePixelRatio || 1, 2), resizeTo: canvasHost,
@@ -82,7 +132,17 @@ try {
     target.on('pointerout', () => hoverCards.leave(anchor));
     target.on('pointertap', () => { onTap?.(); hoverCards.open(anchor, resolve); });
   }
-  app.ticker.add(delta => { if (!cutscene.active && hero?.playing) hero.update(delta); });
+  app.ticker.add(delta => {
+    if (!cutscene.active && hero?.playing) hero.update(delta);
+    if (document.hidden || disposed) return;
+    const ms = waitFirstTick ? 0 : app.ticker.deltaMS;
+    waitFirstTick = false;
+    if (motion) { motion.elapsed += ms; applyMotion(); }
+    if (finishWait) {
+      waitRemaining -= ms;
+      if (waitRemaining <= 0) { const resolve = finishWait; finishWait = undefined; resolve(); }
+    }
+  });
   let locationTexture = getTexture('images/battle-location.jpg');
   const observer = new ResizeObserver(() => {
     if (disposed) return;
@@ -95,6 +155,7 @@ try {
     for (const child of app.stage.removeChildren()) {
       if (child !== hero) child.destroy({ children: true });
     }
+    enemySprites.clear();
     const enemies = session.deployed;
     const views = enemies.map(createNPCView);
     const width = app.screen.width;
@@ -136,7 +197,8 @@ try {
       if (!enemies[index]!.alive) {
         sprite.children.forEach(part => { (part as PIXI.Sprite).tint = 0x777777; });
       }
-      container.addChild(sprite);
+      const body = new PIXI.Container();
+      body.addChild(sprite); container.addChild(body); enemySprites.set(view.id, body);
       const visualWidth = bounds.width * spriteScale;
       const visualHeight = bounds.height * spriteScale;
       const visualTop = 44 - visualHeight;
@@ -161,9 +223,8 @@ try {
       anchor.getBoundingClientRect = () => sceneBounds(container);
       enemyAnchors.set(view.id, anchor);
       bindSceneCard(container, anchor, () => enemyCard(view.id), () => {
-        if (transition.busy || campaign.complete || cutscene.active || battleFinished || inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
-        const items = inventory.model.slots(TypeInventoryArea.Equipment).map((_, index) => inventory.model.itemAt({ area: TypeInventoryArea.Equipment, index }));
-        if (session.Attack(view.id, items)) { checkVictory(); render(); }
+        if (combatBusy || transition.busy || campaign.complete || cutscene.active || battleFinished || inventory.model.stage !== TypeGameStage.Combat || inventory.model.awaitingReward) return;
+        void attack(view.id);
       });
       app.stage.addChild(container);
     });
@@ -184,12 +245,13 @@ try {
       panel.append(row);
     }
     // Refresh world transforms immediately so input after a DOM action uses the new scene.
+    applyMotion();
     app.renderer.render(app.stage);
   }
 
   function action(id: string, handler: () => string): void {
     requireElement(id).addEventListener('click', () => {
-      if (transition.busy || campaign.complete) return;
+      if (combatBusy || transition.busy || campaign.complete) return;
       try { status.textContent = handler(); checkVictory(); render(); }
       catch (error) { status.textContent = error instanceof Error ? error.message : String(error); }
     });
@@ -232,6 +294,7 @@ try {
     hoverCards.hide();
     if (event.persisted) { app.stop(); return; }
     disposed = true;
+    finishWait?.(); finishWait = undefined;
     document.removeEventListener('keydown', onDebugKeyDown);
     document.removeEventListener('visibilitychange', onVisibilityChange);
     window.removeEventListener('pageshow', onPageShow);

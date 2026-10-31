@@ -156,7 +156,7 @@
         "x": 210
       },
       "scale": 0.7676991150442478,
-      "requiredRole": "shooter",
+      "requiredRole": "boss",
       "requiredLayer": "ground"
     },
     {
@@ -169,7 +169,7 @@
         "x": 209
       },
       "scale": 0.7676991150442478,
-      "requiredRole": "shooter",
+      "requiredRole": "boss",
       "requiredLayer": "ground"
     },
     {
@@ -182,7 +182,7 @@
         "x": 209
       },
       "scale": 0.7676991150442478,
-      "requiredRole": "shooter",
+      "requiredRole": "boss",
       "requiredLayer": "ground"
     },
     {
@@ -195,7 +195,7 @@
         "x": 210
       },
       "scale": 0.7676991150442478,
-      "requiredRole": "shooter",
+      "requiredRole": "boss",
       "requiredLayer": "ground"
     }
   ],
@@ -205,7 +205,7 @@
       "image": "images/enemies/camera-magenta.png",
       "attachments": [
         {
-          "moduleId": "shooter-leg-magenta",
+          "moduleId": "shooter-leg",
           "socketId": "underside"
         }
       ]
@@ -215,7 +215,7 @@
       "image": "images/enemies/camera-teal.png",
       "attachments": [
         {
-          "moduleId": "shooter-leg-teal",
+          "moduleId": "shooter-leg",
           "socketId": "underside"
         }
       ]
@@ -225,7 +225,7 @@
       "image": "images/enemies/camera-blue.png",
       "attachments": [
         {
-          "moduleId": "shooter-leg-blue",
+          "moduleId": "shooter-leg",
           "socketId": "underside"
         }
       ]
@@ -235,7 +235,7 @@
       "image": "images/enemies/camera-gold.png",
       "attachments": [
         {
-          "moduleId": "shooter-leg-gold",
+          "moduleId": "shooter-leg",
           "socketId": "underside"
         }
       ]
@@ -331,6 +331,46 @@
         {
           "moduleId": "guard-shield",
           "socketId": "guard-front"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.boss.magenta",
+      "image": "images/enemies/camera-magenta.png",
+      "attachments": [
+        {
+          "moduleId": "shooter-leg-magenta",
+          "socketId": "underside"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.boss.teal",
+      "image": "images/enemies/camera-teal.png",
+      "attachments": [
+        {
+          "moduleId": "shooter-leg-teal",
+          "socketId": "underside"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.boss.blue",
+      "image": "images/enemies/camera-blue.png",
+      "attachments": [
+        {
+          "moduleId": "shooter-leg-blue",
+          "socketId": "underside"
+        }
+      ]
+    },
+    {
+      "typeId": "enemy.boss.gold",
+      "image": "images/enemies/camera-gold.png",
+      "attachments": [
+        {
+          "moduleId": "shooter-leg-gold",
+          "socketId": "underside"
         }
       ]
     }

@@ -95,3 +95,8 @@ button:focus-visible { outline: 3px solid #8feac9; outline-offset: 3px; }
 .cutscene-dialog[hidden] { display: none; }
 
 .cutscene-hint[hidden] { display: none; }
+
+.cutscene-actors { position:absolute; inset:5% 7% 25%; pointer-events:none; }
+.cutscene-hero { position:absolute; bottom:0; left:0; height:100%; width:30%; object-fit:contain; }
+.cutscene-robot.enemy-visual { position:absolute; bottom:0; right:7.5%; width:15%; height:auto; }
+.cutscene-robot.enemy-visual img { position:absolute; max-width:none; max-height:none; }

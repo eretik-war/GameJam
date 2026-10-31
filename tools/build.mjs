@@ -17,7 +17,7 @@ export async function buildGame(offline = false) {
   const result = await build({
     entryPoints: [path.join(versionRoot, 'src/main.ts')], bundle: true, write: false,
     format: 'iife', target: 'es2022', minify: true, legalComments: 'inline',
-    loader: { '.jpg': 'dataurl', '.png': 'dataurl' },
+    loader: { '.jpg': 'dataurl', '.png': 'dataurl', '.mp3': 'dataurl' },
     plugins: [{ name: 'local-pixi-global', setup(builder) {
       builder.onResolve({ filter: /^pixi\.js$/ }, () => ({ path: 'pixi.js', namespace: 'local-pixi' }));
       builder.onLoad({ filter: /.*/, namespace: 'local-pixi' }, () => ({ contents: 'module.exports = globalThis.PIXI;', loader: 'js' }));

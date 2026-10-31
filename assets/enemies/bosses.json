@@ -1,0 +1,94 @@
+[
+  {
+    "typeId": "enemy.boss.magenta",
+    "name": "Розовый робот-босс",
+    "role": "boss",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "ground"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 75
+      },
+      {
+        "type": "shield",
+        "value": 20
+      }
+    ],
+    "attackIds": [
+      "attack.test"
+    ],
+    "damageMultiplier": 2.5
+  },
+  {
+    "typeId": "enemy.boss.teal",
+    "name": "Бирюзовый робот-босс",
+    "role": "boss",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "ground"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 75
+      },
+      {
+        "type": "shield",
+        "value": 20
+      }
+    ],
+    "attackIds": [
+      "attack.test"
+    ],
+    "damageMultiplier": 2.5
+  },
+  {
+    "typeId": "enemy.boss.blue",
+    "name": "Синий робот-босс",
+    "role": "boss",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "ground"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 75
+      },
+      {
+        "type": "shield",
+        "value": 20
+      }
+    ],
+    "attackIds": [
+      "attack.test"
+    ],
+    "damageMultiplier": 2.5
+  },
+  {
+    "typeId": "enemy.boss.gold",
+    "name": "Жёлтый робот-босс",
+    "role": "boss",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "ground"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 75
+      },
+      {
+        "type": "shield",
+        "value": 20
+      }
+    ],
+    "attackIds": [
+      "attack.test"
+    ],
+    "damageMultiplier": 2.5
+  }
+]

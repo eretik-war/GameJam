@@ -49,3 +49,7 @@
 | Воздушные лекари/приоритет лечения | assets/enemies/healers.json; EnemyInfo.SupportParameters; EnemySession.TryHeal | enemies/view.ts; camera-visuals.json; tests/healers.test.ts; tools/verify-healers.mjs |
 
 | Щитовики/разрушение и задержка/провокация | assets/enemies/guards.json; Enemy.guardActive/ChangeParameter/BeginTurn; EnemySession.CanTarget | visual-info.ts/view.ts/enemy-visual.ts; tests/guards.test.ts; tools/verify-guards.mjs |
+
+| Последовательность атак/движение | enemies/session.ts AttackSequence; main.ts attack/app.ticker | tests/combat.test.ts; tools/verify-combat-animation.mjs; HERO_ANIMATION.md |
+
+| Четыре робота-босса/множитель урона | assets/enemies/bosses.json; EnemyInfo.CombatParameters; Enemy.damageMultiplier | EnemySession.AttackSteps; enemies/view.ts; camera-visuals; tests/bosses.test.ts; tools/verify-bosses.mjs |
