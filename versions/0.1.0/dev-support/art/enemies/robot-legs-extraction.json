@@ -1,0 +1,42 @@
+[
+  {
+    "pivot": {
+      "y": 20,
+      "x": 210
+    },
+    "scale": 0.7676991150442478,
+    "width": 411,
+    "height": 472,
+    "color": "magenta"
+  },
+  {
+    "pivot": {
+      "y": 20,
+      "x": 209
+    },
+    "scale": 0.7676991150442478,
+    "width": 411,
+    "height": 472,
+    "color": "teal"
+  },
+  {
+    "pivot": {
+      "y": 50,
+      "x": 209
+    },
+    "scale": 0.7676991150442478,
+    "width": 411,
+    "height": 502,
+    "color": "blue"
+  },
+  {
+    "pivot": {
+      "y": 50,
+      "x": 210
+    },
+    "scale": 0.7676991150442478,
+    "width": 411,
+    "height": 502,
+    "color": "gold"
+  }
+]

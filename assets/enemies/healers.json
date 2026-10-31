@@ -1,0 +1,98 @@
+[
+  {
+    "typeId": "enemy.healer.magenta",
+    "name": "Розовый лекарь",
+    "role": "healer",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "air"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 3
+      },
+      {
+        "type": "shield",
+        "value": 16
+      }
+    ],
+    "attackIds": [],
+    "support": {
+      "kind": "health",
+      "value": 3
+    }
+  },
+  {
+    "typeId": "enemy.healer.teal",
+    "name": "Бирюзовый щитовик",
+    "role": "healer",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "air"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 3
+      },
+      {
+        "type": "shield",
+        "value": 16
+      }
+    ],
+    "attackIds": [],
+    "support": {
+      "kind": "shield",
+      "value": 3
+    }
+  },
+  {
+    "typeId": "enemy.healer.blue",
+    "name": "Синий защитник",
+    "role": "healer",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "air"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 3
+      },
+      {
+        "type": "shield",
+        "value": 16
+      }
+    ],
+    "attackIds": [],
+    "support": {
+      "kind": "defense-aura",
+      "value": 1.5
+    }
+  },
+  {
+    "typeId": "enemy.healer.gold",
+    "name": "Жёлтый усилитель",
+    "role": "healer",
+    "placement": {
+      "type": "enemy-layer",
+      "value": "air"
+    },
+    "parameters": [
+      {
+        "type": "health",
+        "value": 3
+      },
+      {
+        "type": "shield",
+        "value": 16
+      }
+    ],
+    "attackIds": [],
+    "support": {
+      "kind": "damage-aura",
+      "value": 1.5
+    }
+  }
+]

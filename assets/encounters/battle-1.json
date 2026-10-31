@@ -4,8 +4,18 @@
   "enemies": [
     {
       "id": "teal",
-      "typeId": "enemy.camera.teal",
+      "typeId": "enemy.guard.chair",
       "spawnPointId": "spawn-4"
+    },
+    {
+      "id": "healer-magenta",
+      "typeId": "enemy.healer.magenta",
+      "spawnPointId": "spawn-1"
+    },
+    {
+      "id": "healer-teal",
+      "typeId": "enemy.healer.teal",
+      "spawnPointId": "spawn-2"
     }
   ]
 }

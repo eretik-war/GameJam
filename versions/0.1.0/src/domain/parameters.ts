@@ -1,4 +1,4 @@
-import type { TypeEnemyParameter } from '../enemies/enemy';
+import type { TypeEnemyParameter, TypeSupportParameter } from '../enemies/enemy';
 import type { TypeCombatParameter } from './hero';
 /** These enums belong to different domains and cannot be interchanged. */
 export enum TypeParameter {
@@ -13,7 +13,7 @@ export enum TypeNPCParameter {
   Damage = 'damage',
 }
 
-export type ParameterType = TypeParameter | TypeNPCParameter | TypeEnemyParameter | TypeCombatParameter;
+export type ParameterType = TypeSupportParameter | TypeParameter | TypeNPCParameter | TypeEnemyParameter | TypeCombatParameter;
 
 export class Parameter<TType extends ParameterType> {
   constructor(public readonly Type: TType, public Value: number) {

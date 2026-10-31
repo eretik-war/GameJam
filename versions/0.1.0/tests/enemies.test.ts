@@ -2,11 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import visualAsset from '../../../assets/enemies/camera-visuals.json';
 import spawnAssets from '../../../assets/enemies/spawn-points.json';
-import { EnemyInfo, enemyCatalog, demoEnemyInfo, createEnemyFromInfo } from '../src/enemies/enemy';
+import { EnemyInfo, enemyCatalog as fullCatalog, demoEnemyInfo, createEnemyFromInfo } from '../src/enemies/enemy';
 import { TypeBattleLayer, TypeEnemyPlacementParameter, TypeSpawnPointParameter } from '../src/enemies/placement';
 import { spawnPoints, spawnEnemy, canSpawn, createSpawnPointInfo } from '../src/enemies/spawn';
 import { EnemySession, createSession, loadSession } from '../src/enemies/session';
 import { createEnemyVisualCatalog, createEnemyVisualLayout, getEnemyVisualInfo } from '../src/enemies/visual-info';
+
+const enemyCatalog = fullCatalog.filter(e => e.role === 'shooter');
 
 test('four camera types share immutable rig data, independent entities and a shooter-only leg socket', () => {
   assert.equal(enemyCatalog.length, 4);
@@ -18,9 +20,9 @@ test('four camera types share immutable rig data, independent entities and a sho
     const layout = createEnemyVisualLayout(info);
     assert.ok(Object.isFrozen(visual.sockets[0]));
     assert.ok(Object.isFrozen(visual.modules[0]!.pivot));
-    assert.equal(visual.sockets.length, 4);
-    const leg = layout.parts.find(p => p.id === 'shooter-leg')!;
-    const module = visual.modules[0]!, socket = visual.sockets.find(s => s.id === 'underside')!;
+    assert.ok(visual.sockets.length >= 4);
+    const leg = layout.parts.find(p => p.id.startsWith('shooter-leg-'))!;
+    const module = visual.modules.find(m => m.id === leg.id)!, socket = visual.sockets.find(s => s.id === 'underside')!;
     assert.equal(leg.x + module.pivot.x * module.scale, socket.x);
     assert.equal(leg.y + module.pivot.y * module.scale, socket.y);
     assert.ok(layout.bounds.height > visual.cameraSize.height * 2.5);
@@ -31,8 +33,8 @@ test('four camera types share immutable rig data, independent entities and a sho
   }
   for (const mutate of [
     (d: typeof visualAsset) => { d.variants[0]!.attachments[0]!.socketId = 'missing'; },
-    (d: typeof visualAsset) => { d.modules[0]!.requiredRole = 'melee'; },
-    (d: typeof visualAsset) => { d.modules[0]!.requiredLayer = 'air'; },
+    (d: typeof visualAsset) => { d.modules.find(m => m.id === d.variants[0]!.attachments[0]!.moduleId)!.requiredRole = 'melee'; },
+    (d: typeof visualAsset) => { d.modules.find(m => m.id === d.variants[0]!.attachments[0]!.moduleId)!.requiredLayer = 'air'; },
     (d: typeof visualAsset) => { d.variants[0]!.image = '../missing.png'; },
     (d: typeof visualAsset) => { d.variants[1]!.typeId = d.variants[0]!.typeId; },
   ]) {

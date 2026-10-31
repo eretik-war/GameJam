@@ -150,3 +150,7 @@ test('combined effects heal, block attacks, miss at fifty percent and survive sa
 import './campaign.test';
 import './battle-messages.test';
 import './combat-extension-regression.test';
+
+import './healers.test';
+
+import './guards.test';
